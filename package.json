@@ -1,0 +1,21 @@
+{
+  "name": "nodes",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "guoxin.space /notes 板块的公开数据源仓（Obsidian 风格 Markdown → JSON 构建管线）",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "validate": "node scripts/validate.mjs",
+    "dev": "node scripts/build.mjs && node scripts/validate.mjs"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "mdast-util-to-string": "^4.0.0",
+    "remark-gfm": "^4.0.0",
+    "remark-math": "^6.0.0",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.0.0"
+  }
+}
