@@ -13,6 +13,21 @@
 
 仓内存 Obsidian 风格的 Markdown 文章（`content/`），由 `scripts/build.mjs` 构建为站点消费的 JSON 产物（`build/`），通过 `raw.githubusercontent.com/GuoxinL/notes/<branch>/build/...` 直接拉取。
 
+## 写作 Skill（随仓分发）
+
+本仓自带写作技能，人和 AI 都可以直接用：
+
+| 路径 | 说明 |
+| --- | --- |
+| `.workbuddy/skills/notes-writing/SKILL.md` | 主文档：frontmatter 字段表、语法速查、7 条红线、质量自检清单 |
+| `.workbuddy/skills/notes-writing/assets/example-full.md` | 完整功能模板（全字段 + 全部支持语法） |
+| `.workbuddy/skills/notes-writing/assets/example-minimal.md` | 最小可用模板（日常速记起手） |
+| `.codebuddy/skills/notes-writing` | 指向同一目录的符号链接（CodeBuddy 亦可自动发现） |
+
+- **AI**：在本仓工作时会自动加载该 skill，按其 SOP 写文章并跑 `npm run build` + `npm run validate`。
+- **人**：直接复制 `assets/example-*.md` 到 `content/<标题>.md`（文件名即 slug），改 frontmatter 与正文即可。
+- skill 内容随本仓走，**修改后请同步到 `example` 分支**（见上方「分支」节）。
+
 ## 写作约定
 
 - 一篇文章 = `content/` 下一个 `.md` 文件，**文件名（basename）即 slug / 标题**（可用 frontmatter `title` 覆盖）。
