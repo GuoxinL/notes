@@ -19,10 +19,11 @@
 
 | 路径 | 说明 |
 | --- | --- |
-| `.workbuddy/skills/notes-writing/SKILL.md` | 主文档：frontmatter 字段表、语法速查、7 条红线、质量自检清单 |
-| `.workbuddy/skills/notes-writing/assets/example-full.md` | 完整功能模板（全字段 + 全部支持语法） |
-| `.workbuddy/skills/notes-writing/assets/example-minimal.md` | 最小可用模板（日常速记起手） |
-| `.codebuddy/skills/notes-writing` | 指向同一目录的符号链接（CodeBuddy 亦可自动发现） |
+| `SKILL/notes-writing/SKILL.md` | 主文档：frontmatter 字段表、语法速查、7 条红线、质量自检清单 |
+| `SKILL/notes-writing/assets/example-full.md` | 完整功能模板（全字段 + 全部支持语法） |
+| `SKILL/notes-writing/assets/example-minimal.md` | 最小可用模板（日常速记起手） |
+
+> 放在 `SKILL/` 而非 `.workbuddy/` / `.codebuddy/`——那些是具体工具的专属目录，**不入库**（见 `.gitignore`）。`SKILL/` 与工具无关，任何 AI / 编辑器都能直接读。
 
 - **AI**：在本仓工作时会自动加载该 skill，按其 SOP 写文章并跑 `npm run build` + `npm run validate`。
 - **人**：直接复制 `assets/example-*.md` 到 `content/<标题>.md`（文件名即 slug），改 frontmatter 与正文即可。
