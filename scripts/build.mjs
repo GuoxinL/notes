@@ -53,21 +53,34 @@ function dedupHeadingSlugs(texts) {
 
 // ── 自定义 remark 插件 ──
 // [[target|alias]] → wikiLink ; ![[target|alias]] → wikiEmbed
-function remarkWikiLinks() {
-  return (tree) => {
-    visit(tree, 'text', (node, index, parent) => {
-      if (!parent || index == null) return;
-      const value = node.value || '';
-      const re = /(!?)\[\[([^\]]+)\]\]/g;
+// 注意：raw markdown 中的 `[[...]]` 会与 remark 的链接/autolink 解析冲突（尤其是 inner 含 URL 时，
+// 如 `![[stackblitz|https://...]]` 会被拆成 text + link 节点）。因此 main() 在 parse 前先用占位符
+// 保护 `[[...]]`，解析后由本插件把占位符还原为 wikiLink/wikiEmbed 节点（store 为 placeholder→原始信息）。
+const WIKI_OPEN = '';
+const WIKI_CLOSE = '';
+/**
+ * 手写递归遍历，把文本节点里的占位符还原为 wikiLink/wikiEmbed 节点。
+ * 不依赖 unist-util-visit（其 visit-parents 对该树形会偶发 `children in undefined`），
+ * 改为显式索引管理，splice 后同步推进 `i`，安全无越界。
+ */
+function walkWikiReplace(node, store) {
+  if (!node || !Array.isArray(node.children)) return;
+  for (let i = 0; i < node.children.length; i++) {
+    const child = node.children[i];
+    if (child.type === 'text' && typeof child.value === 'string') {
+      const value = child.value;
+      const re = new RegExp(`${WIKI_OPEN}(\\d+)${WIKI_CLOSE}`, 'g');
       let m;
       let last = 0;
       const out = [];
       let changed = false;
       while ((m = re.exec(value))) {
-        const [full, bang, inner] = m;
+        const full = m[0];
+        const info = store.get(full);
+        if (!info) continue; // 占位符均由 protect 注入并登记，理论上必命中
         if (m.index > last) out.push({ type: 'text', value: value.slice(last, m.index) });
-        const [target, alias] = inner.split('|').map((s) => s.trim());
-        if (bang) {
+        const [target, alias] = info.inner.split('|').map((s) => s.trim());
+        if (info.bang) {
           if (/^stackblitz$/i.test(target)) {
             out.push({ type: 'wikiEmbed', data: { embedType: 'stackblitz', src: alias } });
           } else {
@@ -81,10 +94,30 @@ function remarkWikiLinks() {
       }
       if (changed) {
         if (last < value.length) out.push({ type: 'text', value: value.slice(last) });
-        parent.children.splice(index, 1, ...out);
-        return index + out.length;
+        node.children.splice(i, 1, ...out);
+        i += out.length - 1; // 跳过已插入的节点，继续后续兄弟
       }
-    });
+    } else if ((child.type === 'inlineCode' || child.type === 'code') && typeof child.value === 'string') {
+      // 代码语境内的 wiki 语法应保留为字面量（恢复 [[...]] 原文，避免误渲染成链接/嵌入）
+      let v = child.value;
+      let changed = false;
+      for (const [k, info] of store) {
+        if (v.includes(k)) {
+          const lit = (info.bang ? '![[' : '[[') + info.inner + ']]';
+          v = v.split(k).join(lit);
+          changed = true;
+        }
+      }
+      if (changed) child.value = v;
+    } else if (child.children) {
+      walkWikiReplace(child, store);
+    }
+  }
+}
+
+function remarkWikiLinks(store) {
+  return (tree) => {
+    walkWikiReplace(tree, store);
   };
 }
 
@@ -113,13 +146,18 @@ function remarkStripPositions() {
   };
 }
 
-const processor = unified()
-  .use(remarkParse)
-  .use(remarkGfm)
-  .use(remarkMath)
-  .use(remarkWikiLinks)
-  .use(remarkCallout)
-  .use(remarkStripPositions);
+/** 每个文档独立构建处理器：wikiStore 持有 parse 前的占位符 → 原始 [[...]] 信息。
+ *  顺序关键：remarkWikiLinks 必须紧跟 remarkParse，在 remarkGfm/remarkMath 之前把占位符还原为
+ *  wikiLink/wikiEmbed 节点——否则 gfm/math 会把 PUA 占位符字符吞掉，导致还原失败。 */
+function createProcessor(wikiStore) {
+  return unified()
+    .use(remarkParse)
+    .use(remarkWikiLinks, wikiStore)
+    .use(remarkGfm)
+    .use(remarkMath)
+    .use(remarkCallout)
+    .use(remarkStripPositions);
+}
 
 // ── git 历史（N-T05/N-T06）：date 取首提交，updated 取末提交，history 取全量 ──
 function gitHistory(absFile) {
@@ -241,7 +279,17 @@ async function main() {
   const raw = files.map((file) => {
     const content = readFileSync(file, 'utf8');
     const { data: fm, content: body } = matter(content);
-    const tree = processor.runSync(processor.parse(body));
+    // 先用占位符保护 [[...]] / ![[...]]，避免 remark 的链接/autolink 解析把含 URL 的双链拆坏
+    const wikiStore = new Map();
+    let wi = 0;
+    const protectedBody = body.replace(/(!?)\[\[([^\]]+)\]\]/g, (m, bang, inner) => {
+      const key = `${WIKI_OPEN}${wi}${WIKI_CLOSE}`;
+      wikiStore.set(key, { bang: bang === '!', inner });
+      wi += 1;
+      return key;
+    });
+    const proc = createProcessor(wikiStore);
+    const tree = proc.runSync(proc.parse(protectedBody));
     const slug = String(fm.title || basename(file, extname(file)));
     return { file, slug, tree, fm };
   });
