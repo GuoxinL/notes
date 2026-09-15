@@ -71,7 +71,11 @@ for (const f of postFiles) {
     if (n.type === 'wikiEmbed' && !n.data?.embedType) fail(`${doc.slug}: wikiEmbed 缺 data.embedType`);
   });
   const hs = [];
-  visit(doc.ast, 'heading', (n) => hs.push(mdastToString(n)));
+  // 不能用 visit(tree,'heading',fn)（mist-util-visit 字符串 test 异常多算），
+  // 与 build.mjs 一致：无 test 整体遍历 + 内部类型判断。
+  visit(doc.ast, (n) => {
+    if (n.type === 'heading') hs.push(mdastToString(n));
+  });
   const expect = dedupHeadingSlugs(hs);
   const got = doc.headings.map((h) => h.slug);
   if (JSON.stringify(expect) !== JSON.stringify(got)) fail(`${doc.slug}: heading slug 不一致\n  期望=${expect}\n  实际=${got}`);

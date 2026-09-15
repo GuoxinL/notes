@@ -17,7 +17,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, existsSy
 import { join, dirname, relative, basename, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
-import { execSync } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import matter from 'gray-matter';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
@@ -125,9 +125,12 @@ const processor = unified()
 function gitHistory(absFile) {
   try {
     const rel = relative(REPO, absFile);
-    const out = execSync(`git -C "${REPO}" log --pretty=format:%ad|%s --date=short -- "${rel}"`, {
-      encoding: 'utf8',
-    });
+    // 用数组传参（execFileSync），避免 format 里的 `|` 被 shell 当成管道
+    const out = execFileSync(
+      'git',
+      ['-C', REPO, 'log', '--pretty=format:%ad|%s', '--date=short', '--', rel],
+      { encoding: 'utf8' }
+    );
     return out
       .split('\n')
       .map((l) => {
@@ -161,9 +164,12 @@ function readingTime(tree) {
 
 function collectHeadings(tree) {
   const hs = [];
-  visit(tree, 'heading', (n) =>
-    hs.push({ node: n, depth: Math.min(Math.max(n.depth ?? 2, 1), 4), text: mdastToString(n) })
-  );
+  // 注意：不能用 visit(tree,'heading',fn)（字符串 test 在 unist-util-visit 下会异常多算），
+  // 改用无 test 的整体遍历 + 内部类型判断，结果稳定。
+  visit(tree, (n) => {
+    if (n.type !== 'heading') return;
+    hs.push({ node: n, depth: Math.min(Math.max(n.depth ?? 2, 1), 4), text: mdastToString(n) });
+  });
   const slugs = dedupHeadingSlugs(hs.map((h) => h.text));
   return hs.map((h, i) => {
     h.node.data = { ...(h.node.data || {}), headingId: slugs[i] };
@@ -178,6 +184,18 @@ function normalizeTags(t) {
     .split(',')
     .map((s) => s.trim())
     .filter(Boolean);
+}
+
+// YAML 可能把 `date: 2026-09-15` 解析成 Date 对象，统一收敛为 YYYY-MM-DD 字符串
+function toISODate(v) {
+  if (v == null) return undefined;
+  if (v instanceof Date) return v.toISOString().slice(0, 10);
+  return String(v);
+}
+function todayISO() {
+  const d = new Date();
+  const p = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
 
 function collectReferences(tree, knownSlugs) {
@@ -257,8 +275,8 @@ async function main() {
   const docs = raw.map((r) => {
     const fm = r.fm;
     const hist = gitHistory(r.file);
-    const date = String(fm.date || (hist.length ? hist[hist.length - 1].date : new Date().toISOString().slice(0, 10)));
-    const updated = String(fm.updated || (hist.length ? hist[0].date : date));
+    const date = toISODate(fm.date) || (hist.length ? hist[hist.length - 1].date : todayISO());
+    const updated = toISODate(fm.updated) || (hist.length ? hist[0].date : date);
     const tags = normalizeTags(fm.tags);
     const seriesFm = fm.series || undefined;
     const headings = collectHeadings(r.tree);
@@ -308,6 +326,12 @@ async function main() {
 
   // ── pass 3：富化 wikiLink/wikiEmbed + 反链 ──
   const backlinkMap = new Map();
+  const pushBacklink = (target, fromDoc) => {
+    const sum = summaryBySlug.get(target);
+    if (!sum || sum.slug === fromDoc.slug) return; // 跳过自引用 / 不存在目标
+    if (!backlinkMap.has(target)) backlinkMap.set(target, []);
+    backlinkMap.get(target).push({ slug: fromDoc.slug, title: fromDoc.title, context: firstParagraphText(fromDoc.ast) });
+  };
   for (const { doc } of docs) {
     visit(doc.ast, (n) => {
       if (n.type === 'wikiLink') {
@@ -317,6 +341,7 @@ async function main() {
           exists: knownSlugs.has(target),
           permalink: `/notes/${encodeURIComponent(target)}/`,
         };
+        pushBacklink(target, doc);
       } else if (n.type === 'wikiEmbed' && n.data?.embedType === 'note') {
         const target = n.data.target;
         const sum = summaryBySlug.get(target);
@@ -326,10 +351,7 @@ async function main() {
           description: sum ? sum.description : '',
           tags: sum ? sum.tags : [],
         };
-        if (sum && sum.slug !== doc.slug) {
-          if (!backlinkMap.has(target)) backlinkMap.set(target, []);
-          backlinkMap.get(target).push({ slug: doc.slug, title: doc.title, context: firstParagraphText(doc.ast) });
-        }
+        pushBacklink(target, doc);
       }
     });
   }
