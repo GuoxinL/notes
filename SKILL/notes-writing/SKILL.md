@@ -1,10 +1,22 @@
 ---
 name: notes-writing
-description: 为 guoxin.space 的 Notes 板块撰写/修订文章（Obsidian 风格 Markdown）。在 notes 数据仓内工作：写 `content/*.md` → `npm run build` 生成 JSON 产物 → `npm run validate` 校验。触发场景：写篇笔记/文章发到 guoxin.space、往 notes 数据仓加一篇、补 frontmatter、写双链/嵌入/Callout/公式/表格/脚注等 Obsidian 语法、跑 build+validate。内置完整示例模板与最小模板，供照抄改。
+description: 把知识沉淀成一篇 Notes 文章（Obsidian 风格 Markdown）。典型触发：和 AI 讨论完一个问题后想「记下来 / 沉淀一下 / 写成文章 / 存进 notes / 收录到知识库」；或要新增、修订 notes 数据仓里的文章，补 frontmatter，写双链/嵌入/Callout/公式/表格/脚注等语法，跑 `npm run build` + `npm run validate` 生成数据。在 notes 数据仓内工作：写 `content/*.md` → 构建产物 → 校验。内置完整示例模板与最小模板，供照抄改。
 agent_created: true
 ---
 
-# notes-writing：给 guoxin.space /notes 写文章
+# notes-writing：把知识沉淀成一篇 Notes 文章
+
+## 何时使用本 skill
+
+**用**：
+- 一段对话里聊出了结论 / 排查过程 / 方案决策，用户想**沉淀下来**（说法如「记一下」「沉淀成文章」「存进 notes」「写到知识库」「别让我下次再问一遍」）
+- 用户要新增或修订 `content/` 下的文章，或要补 frontmatter / 双链 / Callout 等语法
+- 改完文章要**编译数据**（`npm run build` + `npm run validate`）并推送
+- 拿不准某个语法（双链、嵌入、公式、表格、脚注）渲染器支不支持
+
+**不用**：
+- 只是聊天、没有落盘意图——别自作主张创建文件
+- 改的是**站点代码**（渲染器、样式、构建流程）——那是站点仓库的活，不是本 skill 职责
 
 ## 0. 工作前提
 
@@ -16,14 +28,16 @@ agent_created: true
 | 文章存放 | `content/**/*.md`——**文件名 basename 即 slug/标题**（frontmatter `title` 可覆盖） |
 | 构建 | `npm run build`（生成 `build/`）+ `npm run validate`（契约校验），**两条都要跑** |
 | 产物 | `build/posts.json`、`build/posts/<id>.json`、`build/all.json`、`build/search-index.json`——**随提交进仓** |
-| 消费方 | 站点（如 guoxin.space）**运行时**拉取 `raw.githubusercontent.com/<owner>/<repo>/main/build/**`；`<owner>/<repo>` 以本仓 `git remote -v` 为准，不用猜 |
+| 消费方 | 站点**运行时**拉取 `raw.githubusercontent.com/<owner>/<repo>/main/build/**`；`<owner>/<repo>` 以本仓 `git remote -v` 为准，不用猜。**具体是哪个站点由部署方决定，本 skill 不绑定任何站点** |
 | 生效延迟 | GitHub raw CDN 约 5 分钟；浏览器强刷即可 |
 
 **写作者只需要管两件事：把文章写好、把数据编译好**（build + validate 全绿并推送）。站点怎么消费、分支怎么维护、fixture 怎么同步，都不在本 skill 职责内。
 
-**文案口径（站点已定）**：模块名 / 导航 / 页面标题写 **Notes**；句子里的通名写「文章」（「暂无 Notes」这类混排不可用）。
+**文案口径（消费站点的默认约定，可随站点调整）**：模块名 / 导航 / 页面标题写 **Notes**；句子里的通名写「文章」（「暂无 Notes」这类混排读着别扭）。
 
 ## 1. 写文章 SOP
+
+> **从对话沉淀时**：先定主题边界——**一次一篇**，别把三个话题塞进一篇文章；标题写「问题 / 结论」（如 `Qwik 的 resumability 是怎么工作的`），不要写成「与 AI 的讨论记录」。定好再往下走。
 
 1. **定 slug**：中文标题即可（如 `Qwik 与 SSR 笔记`）。**先查重**：`ls content/` 并检查已有文件的 `title`——slug 重复会让构建直接 `exit 1`。
 2. **建文件**：`content/<标题>.md`。
