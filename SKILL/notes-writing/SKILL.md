@@ -31,20 +31,24 @@ agent_created: true
 | 消费方 | 站点**运行时**拉取 `raw.githubusercontent.com/<owner>/<repo>/main/build/**`；`<owner>/<repo>` 以本仓 `git remote -v` 为准，不用猜。**具体是哪个站点由部署方决定，本 skill 不绑定任何站点** |
 | 生效延迟 | GitHub raw CDN 约 5 分钟；浏览器强刷即可 |
 
-### 职责边界
+### 谁做什么
 
-**写作者负责一条完整链路**（对应 §1 的 SOP）：定标题并查重 → 写 `content/*.md` → `npm run build` + `npm run validate` → **把 `build/` 产物随代码一起提交推送** → 确认站点能读到新文章。
+一次发布是一条完整链路：**定标题并查重 → 写 `content/*.md` → `npm run build` + `npm run validate` → 把 `build/` 产物随代码提交推送 → 确认站点能读到新文章**。
 
-- 关键点：**产物必须提交进仓**。站点是**运行时直接读仓库里的 `build/`**，没有服务端构建环节，所以「编译了但没提交产物」等于没发布。
-- 所以「站点怎么消费」写作者**需要知道**（不然不知道为什么要提交产物、为什么要等 CDN）；只是**不需要去改**消费端。
+分工如下——**机械劳动全部由 SKILL 承担，人只做判断与拍板**：
 
-**不归写作者管**（需要时找数据仓维护者）：
+| 环节 | 谁做 | 说明 |
+| --- | --- | --- |
+| 拟定标题 / slug + **查重** | **SKILL** | 查重扫描 `content/` 全部文件名与 `title`；撞名直接报错并给候选名，不硬写 |
+| 建文件、写 frontmatter | **SKILL** | 人给主题与要点，SKILL 成文；`date` 取当天 |
+| **抽取标签 `tags`** | **SKILL** | 按 §2.1 规则从正文抽取，**优先复用仓里已有标签**，不让人手填 |
+| 写正文 | 人提供 / SKILL 代写后**必须给人过目** | 从对话沉淀时，SKILL 直接把讨论结论整理成文 |
+| `npm run build` + `npm run validate` | **SKILL** | 两条都要跑，必须全绿；失败要自己读懂报错修到通过 |
+| 提交 + 推送（含 `build/` 产物） | **SKILL** | 见 §1 第 6–7 步 |
+| 确认站点能读到 | **SKILL** | 校验 raw URL 与文章是否出现在列表 |
+| **拍板**：标题定稿、内容取舍、是否发布 | **人** | SKILL 不得在未确认时擅自推送（除非用户已明确授权「你直接发」） |
 
-| 事项 | 归属 |
-| --- | --- |
-| 改 `scripts/` 构建脚本、给渲染器加新语法支持 | 数据仓维护者 / 站点开发 |
-| 分支基线维护（如 `example` 分支同步） | 数据仓维护者 |
-| 站点代码、站点侧测试 fixture | 站点仓库 |
+**不归本 skill 管**（需要时找数据仓维护者）：改 `scripts/` 构建脚本、给渲染器加新语法支持、分支基线维护（如 `example` 分支同步）、站点代码与站点侧测试 fixture。
 
 **文案口径（消费站点的默认约定，可随站点调整）**：模块名 / 导航 / 页面标题写 **Notes**；句子里的通名写「文章」（「暂无 Notes」这类混排读着别扭）。
 
@@ -52,18 +56,20 @@ agent_created: true
 
 > **从对话沉淀时**：先定主题边界——**一次一篇**，别把三个话题塞进一篇文章；标题写「问题 / 结论」（如 `Qwik 的 resumability 是怎么工作的`），不要写成「与 AI 的讨论记录」。定好再往下走。
 
-1. **定 slug**：中文标题即可（如 `Qwik 与 SSR 笔记`）。**先查重**：`ls content/` 并检查已有文件的 `title`——slug 重复会让构建直接 `exit 1`。
-2. **建文件**：`content/<标题>.md`。
-3. **写 frontmatter**（最小集：`title` / `date` / `tags` / `description`；详见 §2）。
-4. **写正文**：**从 `##` 二级标题起步**，不要用 `#`（原因见 §4 红线 1）。
-5. **编译校验**：`npm run build && npm run validate`，必须全绿。
-6. **提交**：`git add -A && git commit -m "<人话描述>"`——**commit message 会显示在该文章的「更新历史」区块**，别写 `update` 这类废话。
-7. **推送**（沙箱内需绕开 known_hosts 写入）：
+> 除「标题定稿 / 内容取舍 / 是否发布」要人拍板，以下步骤**全部由 SKILL 执行**（标注 `[人]` 的才需要人参与）。
+
+1. **定 slug 并查重** `[SKILL]`：中文标题即可（如 `Qwik 与 SSR 笔记`）。查重扫 `content/` 全部文件名与 `title`——slug 重复会让构建直接 `exit 1`；撞名时报错并给候选名，**不硬写**。标题定稿 `[人]`。
+2. **建文件** `[SKILL]`：`content/<标题>.md`。
+3. **写 frontmatter** `[SKILL]`：最小集 `title` / `date` / `tags` / `description`；**`tags` 由 SKILL 按 §2.1 抽取**，不要让人手填（详见 §2）。
+4. **写正文** `[人/SKILL]`：**从 `##` 二级标题起步**，不要用 `#`（原因见 §4 红线 1）。从对话沉淀时由 SKILL 整理成文，**成稿必须给人过目** `[人]`。
+5. **编译校验** `[SKILL]`：`npm run build && npm run validate`，必须全绿；报错要自己读明白并修到通过。
+6. **提交** `[SKILL]`：`git add -A && git commit -m "<人话描述>"`——**commit message 会显示在该文章的「更新历史」区块**，别写 `update` 这类废话。
+7. **推送** `[SKILL，需授权]`（沙箱内需绕开 known_hosts 写入）：
    ```bash
    find .git -name "*.lock" -delete   # 沙箱常残留 lock，写操作前先清
    GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o BatchMode=yes" git push origin main
    ```
-8. **确认生效**：`curl -s https://raw.githubusercontent.com/<owner>/<repo>/main/build/posts.json` 返回 200 且含新文章。
+8. **确认生效** `[SKILL]`：`curl -s https://raw.githubusercontent.com/<owner>/<repo>/main/build/posts.json` 返回 200 且含新文章。
 
 ## 2. frontmatter 字段
 
@@ -73,7 +79,7 @@ title: 文章标题            # 可选；缺省=文件名 basename
 date: 2026-09-15          # 可选；缺省取该文件 git 首提交日，再缺省取今天
 updated: 2026-09-16       # 可选；缺省取 git 末提交日
 description: 一句话摘要     # 可选；缺省取正文首段（列表页卡片用，强烈建议手写）
-tags: [qwik, ssr]          # 数组或逗号串；缺省 []
+tags: [qwik, ssr]          # 由 SKILL 按 §2.1 抽取，不让人手填；数组或逗号串，缺省 []
 category: 前端             # 可选
 status: evergreen          # 可选，缺省 evergreen
 series:                    # 可选；total/prev/next 由管线自动算，不要手写
@@ -83,6 +89,15 @@ series:                    # 可选；total/prev/next 由管线自动算，不�
 ```
 
 `date` 用 `YYYY-MM-DD`。YAML 会把它解析成 Date 对象，管线已收敛为字符串，**别加引号以外的花活**。
+
+### 2.1 标签抽取规则（由 SKILL 执行，不打扰用户）
+
+1. **来源**：从标题与正文抽**主题 / 技术名词**，不抽动词、形容词。
+2. **数量**：**3–5 个**，宁少勿多。
+3. **复用优先**（关键）：先扫 `content/*.md` 已有的 `tags` 取并集（或读 `build/posts.json` 的 tags 统计）——**同一概念必须复用已有写法**，禁止造同义词：`qwik` / `qwikjs` 只留一个，`构建` / `build` 只留一个。
+4. **粒度**：不要过宽（`技术`、`笔记`——无检索价值），也不要过窄（只有这一篇用得到、不构成主题）。
+5. **形式**：英文小写、多词用连字符（`ci-cd`）；中文标签就纯中文；**单个标签内不混中英**。
+6. 抽完在提交前的回复里**列出最终 tags 供人过目**（写进汇报即可，不必停下来等答复）。
 
 ## 3. 语法速查（站点渲染器实际支持的节点）
 
