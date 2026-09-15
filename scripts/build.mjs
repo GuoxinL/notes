@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * nodes 数据仓构建脚本（N-T01~N-T06）。
+ * notes 数据仓构建脚本（N-T01~N-T06）。
  *
- * 输入：content/ 下的 Obsidian 风格 Markdown（支持 [[双链]] / ![[笔记嵌入]] / ![[stackblitz|url]] /
+ * 输入：content/ 下的 Obsidian 风格 Markdown（支持 [[双链]] / ![[文章嵌入]] / ![[stackblitz|url]] /
  *       > [!callout] 语法，frontmatter 可选）。
- * 输出（build/，站点通过 raw.githubusercontent.com/GuoxinL/nodes/<branch>/build 拉取）：
+ * 输出（build/，站点通过 raw.githubusercontent.com/GuoxinL/notes/<branch>/build 拉取）：
  *   - posts.json        PostsIndex（列表页）
  *   - posts/<id>.json   每篇 ArticleDoc（详情页）
  *   - all.json          全量 ArticleDoc[]（搜索建索引用）
@@ -432,8 +432,8 @@ async function main() {
   const index = {
     schemaVersion: 1,
     generatedAt: new Date().toISOString(),
-    sourceRef: 'GuoxinL/nodes',
-    toolchain: { node: process.version.replace(/^v/, ''), builder: 'nodes-build' },
+    sourceRef: 'GuoxinL/notes',
+    toolchain: { node: process.version.replace(/^v/, ''), builder: 'notes-build' },
     posts,
     slugToId: Object.fromEntries(docs.map(({ doc }) => [doc.slug, doc.id])),
   };
