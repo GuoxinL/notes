@@ -2,6 +2,15 @@
 
 `guoxin.space` 站点 **/notes** 板块的**公开数据源仓**（N-T01~N-T06）。
 
+## 分支
+
+| 分支 | 定位 | 内容 |
+| --- | --- | --- |
+| `main` | **用户文档分支**（站点取数来源：`raw.githubusercontent.com/GuoxinL/notes/main/build/...`） | `content/` 下是正式文章；`scripts/` 构建脚本；`build/` 提交态产物 |
+| `example` | **完整基线分支**（脚本 + 示例文档 + 数据产物，供新环境起步 / AI 写作参考 / 站点 e2e fixture 对照） | 与 `main` 同构，但保留的是**示例型**文章与配套产物 |
+
+**同步红线**：`scripts/` 构建脚本或示例文档发生变化时，**必须同步到 `example` 分支**（保持基线最新）。依据 guoxin.space 的 `CONSTRAINTS.md` **C-54**。同步方式：`git checkout example && git cherry-pick <commit>`（或 `git merge main`，仅在确认不夹带用户文章时）。
+
 仓内存 Obsidian 风格的 Markdown 文章（`content/`），由 `scripts/build.mjs` 构建为站点消费的 JSON 产物（`build/`），通过 `raw.githubusercontent.com/GuoxinL/notes/<branch>/build/...` 直接拉取。
 
 ## 写作约定
