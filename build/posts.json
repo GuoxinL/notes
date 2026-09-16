@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-16T03:48:18.555Z",
+  "generatedAt": "2026-09-16T04:21:43.725Z",
   "sourceRef": "GuoxinL/notes",
   "toolchain": {
     "node": "22.22.2",
@@ -25,8 +25,8 @@
         "order": 1
       },
       "readingTime": {
-        "minutes": 1,
-        "words": 438
+        "minutes": 2,
+        "words": 515
       }
     },
     {
