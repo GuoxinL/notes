@@ -89,7 +89,17 @@ $$
 
 ## 图片与嵌入
 
-普通图片（图）：![示例图片](<data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='180'%3E%3Crect width='320' height='180' fill='%23A053FE'/%3E%3Ctext x='50%25' y='50%25' fill='white' font-size='18' text-anchor='middle' dominant-baseline='middle'%3ESample%3C/text%3E%3C/svg%3E>)
+普通图片（方案 A：相对路径，构建期重写为 raw 绝对 URL，站点零配置显示）：
+
+![架构图](<Markdown 全功能示例.assets/arch-flow.webp>)
+
+矢量图（同目录 svg，验证 SVG 渲染；尖括号包裹是推荐写法，路径含空格/特殊字符时必用）：
+
+![示意图](Markdown%20全功能示例.assets/demo.svg)
+
+内联 data URI（不重写、不校验，作为对照）：
+
+![示例图片](data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='320'%20height='180'%3E%3Crect%20width='320'%20height='180'%20fill='%23A053FE'/%3E%3Ctext%20x='50%25'%20y='50%25'%20fill='white'%20font-size='18'%20text-anchor='middle'%20dominant-baseline='middle'%3ESample%3C/text%3E%3C/svg%3E)
 
 笔记嵌入卡片（语法 `![[笔记标题]]`）：
 
