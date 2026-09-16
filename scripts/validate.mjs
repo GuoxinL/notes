@@ -69,6 +69,13 @@ for (const f of postFiles) {
   visit(doc.ast, (n) => {
     if (n.type === 'wikiLink' && !n.data?.target) fail(`${doc.slug}: wikiLink 缺 data.target`);
     if (n.type === 'wikiEmbed' && !n.data?.embedType) fail(`${doc.slug}: wikiEmbed 缺 data.embedType`);
+    // 图片：构建期应已把相对路径重写为 raw 绝对 URL；漏重写会让浏览器按站点根解析 → 404
+    if (n.type === 'image') {
+      const u = String(n.url ?? '');
+      if (!/^https?:\/\//i.test(u) && !u.startsWith('data:')) {
+        fail(`${doc.slug}: 图片 URL 未重写为绝对地址 → ${u}（应写相对路径交给构建期重写，或写完整 URL）`);
+      }
+    }
   });
   const hs = [];
   // 不能用 visit(tree,'heading',fn)（mist-util-visit 字符串 test 异常多算），
