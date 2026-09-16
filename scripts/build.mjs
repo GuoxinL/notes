@@ -14,7 +14,7 @@
  * mdast-util-to-string / unist-util-visit / gray-matter。
  */
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, existsSync } from 'node:fs';
-import { join, dirname, relative, basename, extname } from 'node:path';
+import { join, dirname, relative, basename, extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
@@ -30,6 +30,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO = join(__dirname, '..');
 const CONTENT_DIR = join(REPO, 'content');
 const BUILD_DIR = join(REPO, 'build');
+
+/**
+ * 仓库 slug（owner/repo）：raw 图片 URL 前缀与产物 `sourceRef` 共用，**改仓库名时只改这里**。
+ * Obsidian 风格附件目录：`content/<文章>.assets/`，Markdown 里写相对路径，构建期重写为 RAW_BASE 下的绝对 URL。
+ */
+const REPO_SLUG = 'GuoxinL/notes';
+const RAW_BASE = `https://raw.githubusercontent.com/${REPO_SLUG}/main`;
 
 // ── slug 工具（与站点 app/src/lib/notes/slugify.ts 完全一致）──
 function slugifyHeading(text) {
@@ -146,16 +153,56 @@ function remarkStripPositions() {
   };
 }
 
+/**
+ * 图片（方案 A：随数据仓存，构建期重写为 raw 绝对 URL）。
+ *
+ * 为什么必须重写：正文在**站点域**渲染，Markdown 里的相对路径（`x.webp` / `./<文章>.assets/x.webp`）
+ * 会被浏览器解析成站点根路径 → 404。所以构建期统一改写成
+ * `https://raw.githubusercontent.com/<owner>/<repo>/main/<仓库内相对路径>`。
+ *
+ * 不重写的三类：① `http(s)://` 完整外链 ② `data:` 内联 ③ `/` 开头（视为站点根，由站点自己提供）。
+ * 相对路径解析基准 = **该 .md 文件所在目录**（Obsidian 风格：附件放同级的 `<文章>.assets/`）。
+ * 顺带做两件校验：文件不存在 → 记入 missing；单图超阈值 → 记入 oversize（均只告警，不阻断构建）。
+ */
+const IMG_WARN_BYTES = 200 * 1024; // 200KB
+function remarkImages(ctx) {
+  return (tree) => {
+    visit(tree, 'image', (node) => {
+      const url = String(node.url ?? '');
+      if (!url) return;
+      if (/^(https?:)?\/\//i.test(url) || url.startsWith('data:') || url.startsWith('/')) return;
+      const clean = url.split(/[?#]/)[0];
+      let abs;
+      try {
+        abs = resolve(dirname(ctx.file), decodeURIComponent(clean));
+      } catch {
+        abs = resolve(dirname(ctx.file), clean);
+      }
+      const rel = relative(REPO, abs).split(sep).join('/');
+      if (rel.startsWith('..') || !existsSync(abs)) {
+        ctx.missing.push(`${relative(REPO, ctx.file).split(sep).join('/')} → ${url}`);
+        return;
+      }
+      const size = statSync(abs).size;
+      if (size > IMG_WARN_BYTES) {
+        ctx.oversize.push(`${rel}（${Math.round(size / 1024)}KB）`);
+      }
+      node.url = `${RAW_BASE}/${rel.split('/').map(encodeURIComponent).join('/')}`;
+    });
+  };
+}
+
 /** 每个文档独立构建处理器：wikiStore 持有 parse 前的占位符 → 原始 [[...]] 信息。
  *  顺序关键：remarkWikiLinks 必须紧跟 remarkParse，在 remarkGfm/remarkMath 之前把占位符还原为
  *  wikiLink/wikiEmbed 节点——否则 gfm/math 会把 PUA 占位符字符吞掉，导致还原失败。 */
-function createProcessor(wikiStore) {
+function createProcessor(wikiStore, imgCtx) {
   return unified()
     .use(remarkParse)
     .use(remarkWikiLinks, wikiStore)
     .use(remarkGfm)
     .use(remarkMath)
     .use(remarkCallout)
+    .use(remarkImages, imgCtx)
     .use(remarkStripPositions);
 }
 
@@ -288,10 +335,11 @@ async function main() {
       wi += 1;
       return key;
     });
-    const proc = createProcessor(wikiStore);
+    const imgCtx = { file, missing: [], oversize: [] };
+    const proc = createProcessor(wikiStore, imgCtx);
     const tree = proc.runSync(proc.parse(protectedBody));
     const slug = String(fm.title || basename(file, extname(file)));
-    return { file, slug, tree, fm };
+    return { file, slug, tree, fm, imgCtx };
   });
 
   // ── N-T02 文件名/标题唯一性校验 ──
@@ -432,7 +480,7 @@ async function main() {
   const index = {
     schemaVersion: 1,
     generatedAt: new Date().toISOString(),
-    sourceRef: 'GuoxinL/notes',
+    sourceRef: REPO_SLUG,
     toolchain: { node: process.version.replace(/^v/, ''), builder: 'notes-build' },
     posts,
     slugToId: Object.fromEntries(docs.map(({ doc }) => [doc.slug, doc.id])),
@@ -454,6 +502,16 @@ async function main() {
   console.log(
     `✓ 构建完成：${docs.length} 篇文章 → build/（posts.json + posts/*.json + all.json + search-index.json）`
   );
+
+  // ── 图片校验汇总（只告警，不阻断）：缺失 / 超 200KB ──
+  const missing = raw.flatMap((r) => r.imgCtx.missing);
+  const oversize = [...new Set(raw.flatMap((r) => r.imgCtx.oversize))];
+  if (missing.length) {
+    console.warn(`⚠ 图片缺失（相对路径找不到文件，已保留原样）：\n  - ${missing.join('\n  - ')}`);
+  }
+  if (oversize.length) {
+    console.warn(`⚠ 图片超过 ${IMG_WARN_BYTES / 1024}KB（建议压缩或改用对象存储）：\n  - ${oversize.join('\n  - ')}`);
+  }
 }
 
 main().catch((e) => {
