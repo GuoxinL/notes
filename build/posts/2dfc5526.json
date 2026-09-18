@@ -1,0 +1,273 @@
+{
+  "schemaVersion": 1,
+  "id": "2dfc5526",
+  "slug": "Mac根目录Read-only-file-system报错解决",
+  "title": "Mac根目录Read-only-file-system报错解决",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "本文记录 macOS 在根目录创建文件时出现 Read-only file system 报错的原因与解决方法，可通过 sudo mount -uw / 以读写方式重新挂载根目录。",
+  "tags": [
+    "Mac",
+    "macOS",
+    "根目录",
+    "只读",
+    "Read-only"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 1,
+    "words": 312
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "问题现象",
+      "slug": "问题现象"
+    },
+    {
+      "depth": 3,
+      "text": "解决方案",
+      "slug": "解决方案"
+    },
+    {
+      "depth": 3,
+      "text": "补充说明",
+      "slug": "补充说明"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：个人笔记整理版"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "问题现象"
+          }
+        ],
+        "data": {
+          "headingId": "问题现象"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "在 Mac 根目录（/）下创建文件夹时出现报错："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "Read-only file system"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图内容描述（原图为终端报错截图）：在终端执行 mkdir（或 touch）类命令创建根目录下的文件夹/文件时，系统返回 mkdir: ... Read-only file system 错误——这是 macOS 自 Catalina（10.15）起 对系统卷（System Volume）的只读保护机制，根目录默认不可写。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "解决方案"
+          }
+        ],
+        "data": {
+          "headingId": "解决方案"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "执行以下命令以读写方式重新挂载根目录："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "sudo mount -uw /"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "执行后需输入管理员密码，然后即可在根目录创建文件/文件夹。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "补充说明"
+          }
+        ],
+        "data": {
+          "headingId": "补充说明"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "命令含义"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-u 更新挂载选项；-w 以读写（read-write）方式挂载"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "持久性"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "重启后失效，需要每次重新执行（补充）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "替代方案"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "建议将需要写入的数据放到 /Users/xxx/、/opt 等可写目录，而非修改根目录权限（补充）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "适用版本"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "macOS Catalina (10.15) 及之后版本（补充）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "⚠️ 修改系统卷读写属于绕过系统保护的行为，请仅在明确知道后果的临时场景使用，日常请勿长期保持根目录可写。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      }
+    ]
+  }
+}

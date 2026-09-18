@@ -1,0 +1,1801 @@
+{
+  "schemaVersion": 1,
+  "id": "bcf53227",
+  "slug": "CloudDM4.1.0发布-达梦与Cloudberry数据源支持",
+  "title": "CloudDM4.1.0发布-达梦与Cloudberry数据源支持",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "CloudDM 4.1.0 发布，新增 Apache Cloudberry 与达梦数据源、MongoDB/Redis SSL 连接，SQL 工单支持文件上传，数据库 CI/CD 支持级联编排。",
+  "tags": [
+    "CloudDM",
+    "数据库管理",
+    "达梦",
+    "Cloudberry",
+    "数据源"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 5,
+    "words": 1470
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "1. 产品简介",
+      "slug": "1-产品简介"
+    },
+    {
+      "depth": 3,
+      "text": "2. 版本亮点（3 项）",
+      "slug": "2-版本亮点3-项"
+    },
+    {
+      "depth": 3,
+      "text": "3. 新增功能（11 项）",
+      "slug": "3-新增功能11-项"
+    },
+    {
+      "depth": 3,
+      "text": "4. 优化项（7 项）",
+      "slug": "4-优化项7-项"
+    },
+    {
+      "depth": 3,
+      "text": "5. 问题修复（10 项）",
+      "slug": "5-问题修复10-项"
+    },
+    {
+      "depth": 4,
+      "text": "5.1 数据库兼容性",
+      "slug": "51-数据库兼容性"
+    },
+    {
+      "depth": 4,
+      "text": "5.2 功能逻辑",
+      "slug": "52-功能逻辑"
+    },
+    {
+      "depth": 4,
+      "text": "5.3 交互与数据",
+      "slug": "53-交互与数据"
+    },
+    {
+      "depth": 3,
+      "text": "6. 社区贡献",
+      "slug": "6-社区贡献"
+    },
+    {
+      "depth": 3,
+      "text": "7. 快速体验（Docker 部署）",
+      "slug": "7-快速体验docker-部署"
+    },
+    {
+      "depth": 4,
+      "text": "7.1 海外镜像",
+      "slug": "71-海外镜像"
+    },
+    {
+      "depth": 4,
+      "text": "7.2 中国区镜像",
+      "slug": "72-中国区镜像"
+    },
+    {
+      "depth": 4,
+      "text": "7.3 相关链接",
+      "slug": "73-相关链接"
+    },
+    {
+      "depth": 3,
+      "text": "8. 知识点延展（补充）",
+      "slug": "8-知识点延展补充"
+    },
+    {
+      "depth": 4,
+      "text": "8.1 Apache Cloudberry",
+      "slug": "81-apache-cloudberry"
+    },
+    {
+      "depth": 4,
+      "text": "8.2 达梦数据库（DM）",
+      "slug": "82-达梦数据库dm"
+    },
+    {
+      "depth": 4,
+      "text": "8.3 数据库 CI/CD 级联编排",
+      "slug": "83-数据库-cicd-级联编排"
+    }
+  ],
+  "references": [
+    {
+      "kind": "external",
+      "label": "http://localhost:8222",
+      "href": "http://localhost:8222"
+    },
+    {
+      "kind": "external",
+      "label": "https://www.cdmgr.com/",
+      "href": "https://www.cdmgr.com/"
+    },
+    {
+      "kind": "external",
+      "label": "https://www.cdmgr.com/docs/intro/product_intro",
+      "href": "https://www.cdmgr.com/docs/intro/product_intro"
+    },
+    {
+      "kind": "external",
+      "label": "https://github.com/ClouGence/open-cdm",
+      "href": "https://github.com/ClouGence/open-cdm"
+    },
+    {
+      "kind": "external",
+      "label": "https://gitee.com/clougence/open-cdm",
+      "href": "https://gitee.com/clougence/open-cdm"
+    },
+    {
+      "kind": "external",
+      "label": "https://mp.weixin.qq.com/s/_DR-TKhyi8MmQ85_i4hthQ",
+      "href": "https://mp.weixin.qq.com/s/_DR-TKhyi8MmQ85_i4hthQ"
+    }
+  ],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：微信公众号 CloudDM（2026-08-14 发布） · 整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "1. 产品简介"
+          }
+        ],
+        "data": {
+          "headingId": "1-产品简介"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "CloudDM 是一款免费且开源的团队化数据库管理工具，核心能力："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "统一 Web 数据库访问"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "浏览器内一站式管理多类型数据库"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "权限控制"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "账号级资源权限精细化管理"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "数据脱敏"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "查询结果按列血缘自动脱敏"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "SQL 审核"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "安全规则检查 + 审批流"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "流程协同"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "工单化变更流程"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "数据库 CI/CD"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "发布流程自动化编排"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "2. 版本亮点（3 项）"
+          }
+        ],
+        "data": {
+          "headingId": "2-版本亮点3-项"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "SQL 工单支持上传 SQL 文件：分段预览分析、审批、分发与执行不同阶段的内容。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "数据库 CI/CD 发布流程级联编排：通过父子流程批量编排数据库变更。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "新增数据源：Apache Cloudberry、达梦；补充 MongoDB Atlas、MongoDB SSL 和 Redis SSL 连接能力。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "3. 新增功能（11 项）"
+          }
+        ],
+        "data": {
+          "headingId": "3-新增功能11-项"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "SQL 工单文件上传"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "支持 UTF-8 SQL 文件、可配置大小限制、按行分段预览"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "CI/CD 发布流程级联编排"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "父子流程、批量编排、变更传递、失败重试、触发权限控制"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "私有化 GitLab 发布源"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "HTTP/HTTPS、非标准端口、子路径部署；Push、Merge Request Webhook"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Apache Cloudberry 数据源"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "连接配置、元数据浏览、SQL 查询、PostgreSQL 兼容表结构管理"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "5"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "达梦数据源完善"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "专用 SQL 引擎：SQL 拆分、行为与权限分析、安全规则、系统函数和系统对象识别"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "6"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MongoDB Atlas SRV"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "新增 SRV 连接模式"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "7"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MongoDB SSL"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "新增 SSL 连接能力"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "8"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Redis SSL"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "支持 CA、TrustStore、KeyStore 和客户端证书等配置方式"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "9"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "账号批量授权/回收"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "一次为多个账号配置相同资源权限"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "10"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "常用数据库驱动"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "新增 11 种数据库驱动（安装包内置）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "4. 优化项（7 项）"
+          }
+        ],
+        "data": {
+          "headingId": "4-优化项7-项"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "大 SQL 流式处理"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "审批预分析、安全规则检查、CI/CD SQL 处理、任务打包、Sidecar 下载和执行报告均流式处理，减少重复加载"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "SQL 引擎架构统一"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "统一多数据库 SQL 拆分、行为和资源分析、执行授权及审计状态；MySQL 查询结果脱敏支持基于列血缘识别来源字段"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "工单/CI/CD 详情展示"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "展示 SQL 识别、行为分析、安全规则检查及执行阶段进度、统计、日志和失败原因"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "偏好设置重构"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "账号安全、CI/CD、数据查询和审批按页签组织，类型化控件、变更状态和服务端校验"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "5"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MFA 登录安全"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "数据库一次性挑战替代 MFA 前置 JWT，支持跨 Console 节点原子重试次数限制、过期清理和一次性消费"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "6"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "SQL 工作台交互"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "数据源树、空结果页签、列宽交互；复制截断单元格读取完整内容；恢复 Monaco SQL 诊断信息"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "7"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "审计与日志体验"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "审计记录执行前创建、按稳定查询标识更新状态，提升异步执行和 Sidecar 回报场景状态一致性"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "5. 问题修复（10 项）"
+          }
+        ],
+        "data": {
+          "headingId": "5-问题修复10-项"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.1 数据库兼容性"
+          }
+        ],
+        "data": {
+          "headingId": "51-数据库兼容性"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ClickHouse 启动依赖冲突"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MariaDB INT UNSIGNED 读取"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MySQL TINYINT(1) 数值展示"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "PostgreSQL CREATE TYPE 执行"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Doris BUCKETS AUTO 表结构解析"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "PostgreSQL 临时 Schema 干扰对象浏览"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MariaDB 查询和 SSL 连接兼容性"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.2 功能逻辑"
+          }
+        ],
+        "data": {
+          "headingId": "52-功能逻辑"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "不完整的非 MySQL 列血缘分析导致正常查询执行前失败（保留 SQL 行为分析、权限校验和安全规则检查）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "初始化升级阶段加载安全规则插件时全局服务未注册导致初始化失败"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "并发结果脱敏时原子类型缓存可能抛出 ConcurrentModificationException"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "表结构强制刷新仍读取旧缓存、全局查询安全规则未生效、安全规则手动修改参数不生效、规则详情布局错位、环境备注无法清空、Doris 物化视图无法展开"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.3 交互与数据"
+          }
+        ],
+        "data": {
+          "headingId": "53-交互与数据"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "SQL 审计时间筛选、时区转换、总数分页、自定义列渲染、空用户名写入失败"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "工单重复提交、执行状态不自动刷新、恢复的 SQL 页签无法输入"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "大 SQL 工单详情未继续分段加载、追加内容后阅读位置跳动"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "数据源删除确认信息不直观"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "数据源保存后临时上传的证书附件未清理"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "6. 社区贡献"
+          }
+        ],
+        "data": {
+          "headingId": "6-社区贡献"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "BetaCat0（中国上海）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "7. 快速体验（Docker 部署）"
+          }
+        ],
+        "data": {
+          "headingId": "7-快速体验docker-部署"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "7.1 海外镜像"
+          }
+        ],
+        "data": {
+          "headingId": "71-海外镜像"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "docker run -d --name cgdm-alone -p 8222:8222 \\\n  -v cgdm_alone_conf:/root/cgdm/alone/conf \\\n  -v cgdm_alone_logs:/root/cgdm/alone/logs \\\n  -v cgdm_alone_data:/root/cgdm/alone/data \\\n  -v cgdm_mysql_data:/var/lib/mysql \\\n  bladepipe/cgdm-alone:latest"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "7.2 中国区镜像"
+          }
+        ],
+        "data": {
+          "headingId": "72-中国区镜像"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "docker run -d --name cgdm-alone -p 8222:8222 \\\n  -v cgdm_alone_conf:/root/cgdm/alone/conf \\\n  -v cgdm_alone_logs:/root/cgdm/alone/logs \\\n  -v cgdm_alone_data:/root/cgdm/alone/data \\\n  -v cgdm_mysql_data:/var/lib/mysql \\\n  cloudcanal-registry.cn-shanghai.cr.aliyuncs.com/clougence/cgdm-alone:latest"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "启动完成后，浏览器访问："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "http://localhost:8222",
+            "children": [
+              {
+                "type": "text",
+                "value": "http://localhost:8222"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "7.3 相关链接"
+          }
+        ],
+        "data": {
+          "headingId": "73-相关链接"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "官网"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://www.cdmgr.com/",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://www.cdmgr.com/"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "文档"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://www.cdmgr.com/docs/intro/product_intro",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://www.cdmgr.com/docs/intro/product_intro"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "GitHub"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://github.com/ClouGence/open-cdm",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://github.com/ClouGence/open-cdm"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Gitee"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://gitee.com/clougence/open-cdm",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://gitee.com/clougence/open-cdm"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "8. 知识点延展（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "8-知识点延展补充"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "8.1 Apache Cloudberry"
+          }
+        ],
+        "data": {
+          "headingId": "81-apache-cloudberry"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "开源云原生数据仓库，基于 Greenplum 演进，PostgreSQL 语法兼容，支持 MPP 大规模并行处理。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "8.2 达梦数据库（DM）"
+          }
+        ],
+        "data": {
+          "headingId": "82-达梦数据库dm"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "国产关系型数据库，兼容 Oracle/MySQL 语法，常用 SQL 引擎需支持：SQL 拆分、行为与权限分析、安全规则、系统函数与系统对象识别。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "8.3 数据库 CI/CD 级联编排"
+          }
+        ],
+        "data": {
+          "headingId": "83-数据库-cicd-级联编排"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "父子流程：父流程触发多个子流程，实现多库批量变更；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "变更传递：一次定义变更，自动应用到多个环境/数据库；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "失败重试 + 触发权限控制：保障发布链路的可靠性与合规性。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "原文链接："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mp.weixin.qq.com/s/_DR-TKhyi8MmQ85_i4hthQ",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mp.weixin.qq.com/s/_DR-TKhyi8MmQ85_i4hthQ"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

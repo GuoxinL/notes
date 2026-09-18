@@ -1,0 +1,577 @@
+{
+  "schemaVersion": 1,
+  "id": "a45915f5",
+  "slug": "telnet命令-Escape-character提示与常用命令",
+  "title": "telnet命令-Escape-character提示与常用命令",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "telnet 连接后提示 Escape character is '^]'，表示按 Ctrl+] 可呼出 telnet 命令行；本文解释其含义并列出 close、quit、status 等常用内部命令。",
+  "tags": [
+    "telnet",
+    "Linux",
+    "网络",
+    "Escape",
+    "调试"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 1,
+    "words": 394
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、问题现象",
+      "slug": "一问题现象"
+    },
+    {
+      "depth": 3,
+      "text": "二、含义解读",
+      "slug": "二含义解读"
+    },
+    {
+      "depth": 3,
+      "text": "三、常用 telnet 命令",
+      "slug": "三常用-telnet-命令"
+    },
+    {
+      "depth": 3,
+      "text": "四、总结",
+      "slug": "四总结"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：个人笔记整理版"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、问题现象"
+          }
+        ],
+        "data": {
+          "headingId": "一问题现象"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Linux/Unix 下使用 telnet ip 端口号 连接主机时，出现提示："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "telnet 180.76.172.97 12345\nTrying 180.76.172.97...\nConnected to 180.76.172.97.\nEscape character is '^]'."
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、含义解读"
+          }
+        ],
+        "data": {
+          "headingId": "二含义解读"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "^ 是 Ctrl 键的意思！"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "按 Ctrl + ] 会呼出 telnet 命令行（提示符 telnet>）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "进入 telnet 命令行后，可以执行 telnet 内部命令"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "退出 telnet 命令行用 quit"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "示例："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "telnet 180.76.172.97 12345\nTrying 180.76.172.97...\nConnected to 180.76.172.97.\nEscape character is '^]'.\n^]                      ← 按 Ctrl + ]\ntelnet>                 ← 进入 telnet 命令行窗口"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、常用 telnet 命令"
+          }
+        ],
+        "data": {
+          "headingId": "三常用-telnet-命令"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "close"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "关闭当前连接"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "logout"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "强制退出远程用户并关闭连接"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "display"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "显示当前操作的参数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "mode"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "试图进入命令行方式或字符方式"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "open"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "连接到某一站点"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "quit"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "退出"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "send"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "发送特殊字符"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "set"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "设置当前操作的参数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "unset"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "复位当前操作参数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "status"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "打印状态信息"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "toggle"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "对操作参数进行开关转换"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "slc"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "改变特殊字符的状态"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "auth"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "打开/关闭确认功能，z 挂起"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "environ"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "更改环境变量，? 显示帮助信息"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "四、总结"
+          }
+        ],
+        "data": {
+          "headingId": "四总结"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Escape character is '^]'. 只是一个提示——告诉你按 Ctrl+] 键可以呼出 telnet 的命令行。日常端口连通性测试时可直接忽略。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "补充：telnet 常用于测试 TCP 端口是否可达（如 telnet 192.168.1.1 3306）；但因其明文传输，现代生产环境已用 ssh/nc（netcat）替代远程管理，端口测试也可用 nc -zv ip port 或 timeout 3 bash -c \"</dev/tcp/ip/port\"。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      }
+    ]
+  }
+}

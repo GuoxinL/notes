@@ -1,0 +1,4059 @@
+{
+  "schemaVersion": 1,
+  "id": "50ef86c2",
+  "slug": "libp2p网络模块与DHT-Kademlia迭代查询源码解析",
+  "title": "libp2p网络模块与DHT-Kademlia迭代查询源码解析",
+  "date": "2026-08-20",
+  "updated": "2026-08-20",
+  "description": "由四篇 libp2p 笔记合并整理，解析 Kademlia 迭代查询的源码流程、关键数据结构与退出条件，并附长安链集成实践与实战问题排查。",
+  "tags": [
+    "libp2p",
+    "Kademlia",
+    "DHT",
+    "分布式哈希表",
+    "P2P网络"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 22,
+    "words": 6480
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "1. 背景基础：Kademlia 算法与 libp2p",
+      "slug": "1-背景基础kademlia-算法与-libp2p"
+    },
+    {
+      "depth": 4,
+      "text": "1.1 Kademlia 算法核心思想",
+      "slug": "11-kademlia-算法核心思想"
+    },
+    {
+      "depth": 4,
+      "text": "1.2 libp2p 简介",
+      "slug": "12-libp2p-简介"
+    },
+    {
+      "depth": 4,
+      "text": "1.3 关键概念速查表",
+      "slug": "13-关键概念速查表"
+    },
+    {
+      "depth": 3,
+      "text": "2. DHT 迭代查询源码解析（核心）",
+      "slug": "2-dht-迭代查询源码解析核心"
+    },
+    {
+      "depth": 4,
+      "text": "2.1 迭代查询概述",
+      "slug": "21-迭代查询概述"
+    },
+    {
+      "depth": 4,
+      "text": "2.2 总体流程（7 步）",
+      "slug": "22-总体流程7-步"
+    },
+    {
+      "depth": 4,
+      "text": "2.3 时序图",
+      "slug": "23-时序图"
+    },
+    {
+      "depth": 4,
+      "text": "2.4 重要数据结构",
+      "slug": "24-重要数据结构"
+    },
+    {
+      "depth": 4,
+      "text": "2.5 主要函数解析",
+      "slug": "25-主要函数解析"
+    },
+    {
+      "depth": 4,
+      "text": "runLookupWithFollowup",
+      "slug": "runlookupwithfollowup"
+    },
+    {
+      "depth": 4,
+      "text": "runQuery",
+      "slug": "runquery"
+    },
+    {
+      "depth": 4,
+      "text": "run",
+      "slug": "run"
+    },
+    {
+      "depth": 4,
+      "text": "recordValuablePeers",
+      "slug": "recordvaluablepeers"
+    },
+    {
+      "depth": 4,
+      "text": "constructLookupResult",
+      "slug": "constructlookupresult"
+    },
+    {
+      "depth": 4,
+      "text": "spawnQuery",
+      "slug": "spawnquery"
+    },
+    {
+      "depth": 4,
+      "text": "queryPeer",
+      "slug": "querypeer"
+    },
+    {
+      "depth": 4,
+      "text": "dialPeer",
+      "slug": "dialpeer"
+    },
+    {
+      "depth": 4,
+      "text": "updateState",
+      "slug": "updatestate"
+    },
+    {
+      "depth": 4,
+      "text": "isReadyToTerminate",
+      "slug": "isreadytoterminate"
+    },
+    {
+      "depth": 4,
+      "text": "isLookupTermination",
+      "slug": "islookuptermination"
+    },
+    {
+      "depth": 4,
+      "text": "isStarvationTermination",
+      "slug": "isstarvationtermination"
+    },
+    {
+      "depth": 4,
+      "text": "GetClosestNInStates",
+      "slug": "getclosestninstates"
+    },
+    {
+      "depth": 3,
+      "text": "3. ChainMaker 网络模块集成实践",
+      "slug": "3-chainmaker-网络模块集成实践"
+    },
+    {
+      "depth": 4,
+      "text": "3.1 网络模块演进",
+      "slug": "31-网络模块演进"
+    },
+    {
+      "depth": 4,
+      "text": "3.2 连接控制与黑名单",
+      "slug": "32-连接控制与黑名单"
+    },
+    {
+      "depth": 4,
+      "text": "3.3 节点发现机制（libp2pDiscovery）",
+      "slug": "33-节点发现机制libp2pdiscovery"
+    },
+    {
+      "depth": 4,
+      "text": "3.4 消息处理与流",
+      "slug": "34-消息处理与流"
+    },
+    {
+      "depth": 3,
+      "text": "4. 实战问题排查",
+      "slug": "4-实战问题排查"
+    },
+    {
+      "depth": 4,
+      "text": "4.1 节点连接问题",
+      "slug": "41-节点连接问题"
+    },
+    {
+      "depth": 4,
+      "text": "4.2 节点 ID 映射问题",
+      "slug": "42-节点-id-映射问题"
+    },
+    {
+      "depth": 4,
+      "text": "4.3 共识与出块问题",
+      "slug": "43-共识与出块问题"
+    },
+    {
+      "depth": 4,
+      "text": "4.4 流池与拨号",
+      "slug": "44-流池与拨号"
+    },
+    {
+      "depth": 4,
+      "text": "4.5 种子节点与非种子节点",
+      "slug": "45-种子节点与非种子节点"
+    },
+    {
+      "depth": 4,
+      "text": "4.6 测试案例记录",
+      "slug": "46-测试案例记录"
+    },
+    {
+      "depth": 3,
+      "text": "附录：原文出处",
+      "slug": "附录原文出处"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "本文档由 4 篇 libp2p 相关笔记合并整理：《libp2p DHT Kademlia 迭代查询》（源码解析，核心）、《2022-01-05 libp2p 分享-明超》（ChainMaker 集成实践）、《2022-02-07 学习 libp2p》（KAD 算法速记，已补全）、《libp2p 遇到的问题》（实战排查）。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "1. 背景基础：Kademlia 算法与 libp2p"
+          }
+        ],
+        "data": {
+          "headingId": "1-背景基础kademlia-算法与-libp2p"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.1 Kademlia 算法核心思想"
+          }
+        ],
+        "data": {
+          "headingId": "11-kademlia-算法核心思想"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "原文速记：KAD 算法（Kademlia）其实是在 chord 上做的优化。主要是两个点：1、用二进制（32/64/128）表示一个节点的 id，两节点的 id 异或运算得到节点间的距离……"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Kademlia 是 P2P 网络中经典的一致性哈希（DHT）路由算法，相对 Chord 的核心改进如下："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "距离度量"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "顺时针环上顺时针差值"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "节点 ID 按位异或（XOR）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "距离性质"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "单向（非对称）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "对称：dist(A,B) == dist(B,A)，且满足三角不等式"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "路由表"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "finger table（对数级）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "K 桶（K-bucket），按公共前缀长度分桶"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "节点查找"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每次跳转距离减半"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每轮并发查询 alpha 个节点，对数级收敛 + 高并发"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "容错"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "依赖 successor list"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "同一 K 桶存 k 个节点，单点失效不影响"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "K 桶关键规则："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "节点 ID 用二进制表示（32/64/128 bit 可选），两个 ID 异或运算的结果即节点间\"距离\"，距离越小越\"近\"；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "路由表按公共前缀（XOR 距离的最高位）划分成一组 K 桶（默认每桶最多 k 个节点）；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "查找目标 key 时，从最近的桶开始，每次取距离最近的 alpha 个节点并发查询，迭代逼近目标；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "桶中节点按最近活跃时间排序，旧节点被淘汰（LRU），保持路由表新鲜度。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.2 libp2p 简介"
+          }
+        ],
+        "data": {
+          "headingId": "12-libp2p-简介"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "libp2p 是一个模块化的 P2P 网络协议栈（IPFS 团队发起），提供传输层抽象、身份（Peer ID）、连接管理、流多路复用、节点发现（DHT / mDNS / Gossip）等能力。Go 生态的核心实现为 go-libp2p，其协议接口定义在 go-libp2p-core（第 3 章中 ChainMaker 的国密改造正是围绕这一层展开）。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.3 关键概念速查表"
+          }
+        ],
+        "data": {
+          "headingId": "13-关键概念速查表"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "bucketSize（k）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "20"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "K 桶大小，路由表中每桶最大节点数，也是种子 peer 数量"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "alpha"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "10"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每轮并发查询的节点数（并发度）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "beta"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "终止条件：查到 beta 个最近节点即认为查询完成"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "PeerHeard"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "已听说但未查询的节点（初始状态）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "PeerWaiting"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "已发起查询、等待结果中的节点"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "PeerQueried"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "查询成功的节点（终态）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "PeerUnreachable"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "拨号/RPC 失败的节点（终态，移出路由表）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "LastUsefulAt"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "路由表中节点\"最近有用\"时间，用于 MVP 记录与淘汰"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "2. DHT 迭代查询源码解析（核心）"
+          }
+        ],
+        "data": {
+          "headingId": "2-dht-迭代查询源码解析核心"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.1 迭代查询概述"
+          }
+        ],
+        "data": {
+          "headingId": "21-迭代查询概述"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "query 是整个 DHT 的核心，这里称之为迭代查询。DHT routing 中几乎所有方法都调用它，如 FindPeer、FindProviders、GetValue、PutValue、Provide。理解 query 是理解整个 DHT 的关键。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "入口函数：runLookupWithFollowup(ctx, target, queryFn, stopFn) —— 使用指定查询函数在目标上执行查找，并在上下文被取消或停止函数返回 true 时停止。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "参数说明："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ctx"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "context.Context"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "上下文"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "target"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "string"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "要查询的目标，可以是 peerid、multihash 等类型的 key"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "queryFn"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "queryFn"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "查询方法参数：func(context.Context, peer.ID) ([]*peer.AddrInfo, error)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "stopFn"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "stopFn"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "停止函数，查询到符合条件的 peerid 时返回 true"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "返回值："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "type lookupWithFollowupResult struct {\n\tpeers []peer.ID            // 获得排名前 20 个（DHT K 桶大小）\n\tstate []qpeerset.PeerState // peers 对应的状态\n\n\t// indicates that neither the lookup nor the followup has been prematurely terminated by an external condition such\n\t// as context cancellation or the stop function being called.\n\t// 查询和后续操作都没有被外部条件（例如：上下文取消或调用的停止函数）提前终止。\n\tcompleted bool\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.2 总体流程（7 步）"
+          }
+        ],
+        "data": {
+          "headingId": "22-总体流程7-步"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "首先根据 key 值，从本地路由表中获取最近的 k（默认 20）个节点作为种子 peer；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "再从种子 peer 截取 alpha（默认 10）个 peer，这 alpha 个 peer 称之为查询 peer；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每个查询 peer 启动一个 task，发起 rpc 查询请求，发起 rpc 查询请求前会先拨号。每个 task 执行有快有慢，最后会等待所有 task 都执行完。就算把这些查询 peer 都查完可能也不满足循环退出条件（例如：10 个 peer 中 8 个离线、1 个 rpc 查询失败、只有 1 个查询成功，那么需要根据这个查询成功的 peer 去迭代查询）；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "查询 peer 在某些类型（如 GET_VALUE、GET_PROVIDERS、FIND_NODE）rpc 请求中会把离它最近的 peer 作为响应消息发回（也可以通过 GetClosestPeers 获取最近的节点），这些离查询 peer 最近的 peer 称之为新 peer；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "一个 peer 可能有多个地址，新 peer 可能已经在本地 peerstore 中，但本地 peerstore 的地址和查询到的新地址可能不一致（本地可能不是最新的），合并它们将这些已知的地址都加入本地 peerstore（下次迭代查询发起 rpc 查询前会先拨号，拨号需要地址）；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "将这些新 peer 发回到 chan，这时新 peer 转换成查询 peer，准备第二次查询。最外面的循环里首先会对查询 peer 的状态进行更新，再对状态为 PeerHeard 的新 peer 继续启动 task，发起 rpc 查询请求。依次反复直到满足退出条件，整个迭代查询结束；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "将排序后的结果返回。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "迭代查询退出条件（3 个）："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "stopFn"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "调用者通过闭包传入，如 GetClosestPeers 始终返回 false"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "isLookupTermination"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "查到了 beta（默认 3）个 peer"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "isStarvationTermination"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "没有 peer 可查（饥饿）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.3 时序图"
+          }
+        ],
+        "data": {
+          "headingId": "23-时序图"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "原始配图：watermark,type_ZmFuZ3poZW5naGVpdGk,...t_70.png（CSDN 博文截图）"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图内容描述：该图为 DHT Kademlia 迭代查询的时序图，展示了一次完整 lookup 的调用链：调用方 → runLookupWithFollowup → runQuery → query.run（内部循环：updateState → isReadyToTerminate → spawnQuery 迭代）→ 对每个查询 peer 先 dialPeer 拨号、再 queryFn 发 RPC → 收到新 peer 后合并地址、继续下一轮迭代 → 满足退出条件（beta 个已查询 / 无 peer 可查 / stopFn）后 terminate → 排序返回 top-K 结果。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "以下用 Mermaid 重绘等价时序："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "mermaid",
+        "meta": null,
+        "value": "sequenceDiagram\n    autonumber\n    participant Caller as 调用方(FindPeer等)\n    participant DHT as IpfsDHT\n    participant RT as 本地路由表\n    participant Q as query 对象\n    participant P as 查询peer(alpha个并发)\n\n    Caller->>DHT: runLookupWithFollowup(ctx, target, queryFn, stopFn)\n    DHT->>RT: NearestPeers(targetKadID, bucketSize=20)\n    RT-->>DHT: 返回 20 个种子peer\n    DHT->>Q: 构造 query 对象并 q.run()\n    Note over Q: 种子peer以 heard 状态入 QueryPeerset\n    loop 迭代循环\n        Q->>Q: updateState(更新各peer状态)\n        Q->>Q: isReadyToTerminate(alpha - NumWaiting)\n        alt 满足退出条件\n            Q->>Q: terminate(cancelPath)\n        else 未满足\n            Q->>P: spawnQuery × alpha 个\n            Note over P: 每个查询peer: 先 dialPeer 拨号\n            P-->>Q: queryFn 发 RPC 成功\n            Note over Q: 返回的新peer(heard)合并地址到 peerstore<br/>新peer转查询peer进入下一轮\n            P-->>Q: 失败(拨号/RPC错误)\n            Note over Q: peer 移出路由表,状态→PeerUnreachable\n        end\n    end\n    Q-->>DHT: 返回 top-K 排序结果(peers+state)\n    DHT-->>Caller: lookupWithFollowupResult"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.4 重要数据结构"
+          }
+        ],
+        "data": {
+          "headingId": "24-重要数据结构"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "// query represents a single DHT query.\n// query 结构用于表示单个 DHT 查询\ntype query struct {\n\t// unique identifier for the lookup instance\n\t// 每个查询的唯一标识\n\tid uuid.UUID\n\n\t// target key for the lookup\n\t// 要查找的目标 key\n\tkey string\n\n\t// the query context.\n\t// 上下文\n\tctx context.Context\n\n\t// 当前 dht 对象\n\tdht *IpfsDHT\n\n\t// 查询设置中的种子节点\n\tseedPeers []peer.ID\n\n\t// peerTimes contains the duration of each successful query to a peer\n\t// 查询耗费的时间（成功的查询）\n\tpeerTimes map[peer.ID]time.Duration\n\n\t// queryPeers is the set of peers known by this query and their respective states.\n\t// 查询已知的一组 peer 及其各自的状态\n\tqueryPeers *qpeerset.QueryPeerset\n\n\t// terminated is set when the first worker thread encounters the termination condition.\n\t// 当第一个 Worker 符合终止条件时（stopFn 返回 false），则终止\n\tterminated bool\n\n\t// waitGroup ensures lookup does not end until all query goroutines complete.\n\t// 确保在所有查询协程完成之前查找不会结束\n\twaitGroup sync.WaitGroup\n\n\t// the function that will be used to query a single peer.\n\t// 将用于查询单个 peer 的函数\n\tqueryFn queryFn\n\n\t// stopFn is used to determine if we should stop the WHOLE disjoint query.\n\t// 用于确定是否应停止整个查询\n\tstopFn stopFn\n}"
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "// QueryPeerset 维护 Kademlia 异步查找的状态。查找状态是一组 peer，每个 peer 都标记有一个 peer 状态（queryPeerState）。\ntype QueryPeerset struct {\n\t// 正在搜索的 key\n\tkey ks.Key\n\n\t// 所有已知的 peers\n\tall []queryPeerState\n\n\t// 如果所有 peer 已排序，则 sorted 为 true\n\tsorted bool\n}"
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "// queryPeerState：单个 peer 的查询状态\ntype queryPeerState struct {\n\tid         peer.ID\n\t// 距 referredBy 的距离，用于排序\n\tdistance   *big.Int\n\tstate      PeerState\n\treferredBy peer.ID\n}"
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "// queryUpdate：查询结果（传递到 chan），每个查询都有一个结果，会调用 updateState 更新\ntype queryUpdate struct {\n\tcause       peer.ID\n\tqueried     []peer.ID\n\theard       []peer.ID\n\tunreachable []peer.ID\n\n\tqueryDuration time.Duration\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.5 主要函数解析"
+          }
+        ],
+        "data": {
+          "headingId": "25-主要函数解析"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "runLookupWithFollowup"
+          }
+        ],
+        "data": {
+          "headingId": "runlookupwithfollowup"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "runLookupWithFollowup 是整个迭代查询的入口。"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "调用 runQuery 启动迭代查询任务；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "从 runQuery 返回结果中将状态为 PeerHeard、PeerWaiting 的 peer 筛选出来。可能经过了几轮迭代查询后迭代退出条件已经满足，但已经收到了新的 peer，还没来得及调用 spawnQuery 发起任务，此时就会存在 PeerHeard 状态的 peer。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "这里的过滤 PeerWaiting 的 peer 应该是多余的。可能已经启动了 spawnQuery 还没查询完，但退出迭代条件已经满足。例如：10 个 query，有 3 个 query 已经查询成功，但其他 7 个 query 还没查询完，这时调用了 terminate 取消了 context，那么这 7 个 PeerWaiting 的 peer 状态就会变为 PeerUnreachable 或 PeerQueried。执行 runQuery 后不会再存在 PeerWaiting 状态的 peer，因为 run 中有执行 waitGroup.Wait 方法会等待所有查询结果，查询要么成功要么失败，就算取消 context 整个 queryPeer 方法也会照样执行（始终会将 queryUpdate 消息发回 chan）。"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "如果没有状态为 PeerHeard、PeerWaiting 的 peer，则说明查询已经结束；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "如果 ctx 出错或 stopFn 条件满足也说明查询结束；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "对状态为 PeerHeard、PeerWaiting 的 peer 再做一次查询（启动协程，调用 queryFn），收尾工作，前面做到一半的工作不能不做完；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "从 chan doneCh 查询结果，有几个 peer 接收几次；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "如果 stopFn 满足条件或 ctx 完成则退出 doneCh 循环；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "如果 completed 仍为 false，则将 chan doneCh 的消息取完（阻塞等待查询完成）。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func (dht *IpfsDHT) runLookupWithFollowup(ctx context.Context, target string, queryFn queryFn, stopFn stopFn) (*lookupWithFollowupResult, error) {\n\t// run the query\n\tlookupRes, err := dht.runQuery(ctx, target, queryFn, stopFn)\n\tif err != nil {\n\t\treturn nil, err\n\t}\n\n\tqueryPeers := make([]peer.ID, 0, len(lookupRes.peers))\n\tfor i, p := range lookupRes.peers {\n\t\tif state := lookupRes.state[i]; state == qpeerset.PeerHeard || state == qpeerset.PeerWaiting {\n\t\t\tqueryPeers = append(queryPeers, p)\n\t\t}\n\t}\n\n\tif len(queryPeers) == 0 {\n\t\treturn lookupRes, nil\n\t}\n\n\t// return if the lookup has been externally stopped\n\tif ctx.Err() != nil || stopFn() {\n\t\tlookupRes.completed = false\n\t\treturn lookupRes, nil\n\t}\n\n\tdoneCh := make(chan struct{}, len(queryPeers))\n\tfollowUpCtx, cancelFollowUp := context.WithCancel(ctx)\n\tdefer cancelFollowUp()\n\tfor _, p := range queryPeers {\n\t\tqp := p\n\t\tgo func() {\n\t\t\t_, _ = queryFn(followUpCtx, qp)\n\t\t\tdoneCh <- struct{}{}\n\t\t}()\n\t}\n\n\t// wait for all queries to complete before returning, aborting ongoing queries if we've been externally stopped\n\tfollowupsCompleted := 0\nprocessFollowUp:\n\tfor i := 0; i < len(queryPeers); i++ {\n\t\tselect {\n\t\tcase <-doneCh:\n\t\t\tfollowupsCompleted++\n\t\t\tif stopFn() {\n\t\t\t\tcancelFollowUp()\n\t\t\t\tif i < len(queryPeers)-1 {\n\t\t\t\t\tlookupRes.completed = false\n\t\t\t\t}\n\t\t\t\tbreak processFollowUp\n\t\t\t}\n\t\tcase <-ctx.Done():\n\t\t\tlookupRes.completed = false\n\t\t\tcancelFollowUp()\n\t\t\tbreak processFollowUp\n\t\t}\n\t}\n\n\tif !lookupRes.completed {\n\t\tfor i := followupsCompleted; i < len(queryPeers); i++ {\n\t\t\t<-doneCh\n\t\t}\n\t}\n\n\treturn lookupRes, nil\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "runQuery"
+          }
+        ],
+        "data": {
+          "headingId": "runquery"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "调用 dht.routingTable.NearestPeers 获取 key 最近的 20 个 peer 作为种子 peer（也就是从本地路由表获取最近的 peer）；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "根据 key 和 20 个 seedpeer 构建 query；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "调用 query.run 等待结果（用 waitGroup 等待所有查询完成）；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "更新最有价值的 peer；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "构造查询结果并返回。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func (dht *IpfsDHT) runQuery(ctx context.Context, target string, queryFn queryFn, stopFn stopFn) (*lookupWithFollowupResult, error) {\n\t// pick the K closest peers to the key in our Routing table.\n\ttargetKadID := kb.ConvertKey(target)\n\tseedPeers := dht.routingTable.NearestPeers(targetKadID, dht.bucketSize)\n\tif len(seedPeers) == 0 {\n\t\t......\n\t\treturn nil, kb.ErrLookupFailure\n\t}\n\n\tq := &query{\n\t\tid:         uuid.New(),\n\t\tkey:        target,\n\t\tctx:        ctx,\n\t\tdht:        dht,\n\t\tqueryPeers: qpeerset.NewQueryPeerset(target),\n\t\tseedPeers:  seedPeers,\n\t\tpeerTimes:  make(map[peer.ID]time.Duration),\n\t\tterminated: false,\n\t\tqueryFn:    queryFn,\n\t\tstopFn:     stopFn,\n\t}\n\n\t// run the query\n\tq.run()\n\n\tif ctx.Err() == nil {\n\t\tq.recordValuablePeers()\n\t}\n\n\tres := q.constructLookupResult(targetKadID)\n\treturn res, nil\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "run"
+          }
+        ],
+        "data": {
+          "headingId": "run"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "启动 loop 循环前，将 20 个 seedpeer 放进了 queryUpdate 的 heard 集合中；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "启动 loop，监听 queryUpdate，发现有更新消息，调用 updateState 更新 peer 状态；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "进入 loop 后，首先进入 case update 分支，将 seedpeer 加入 queryPeers 集合（QueryPeerset）中，此时 seedpeer 的状态还是 heard；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "紧接着计算启动的 query 任务数量：maxNumQueriesToSpawn = alpha - q.queryPeers.NumWaiting()，alpha 默认为 10，第一次循环进来 waiting 数量为 0，maxNumQueriesToSpawn 的值此时为 10；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "调用 isReadyToTerminate 检查查询是否需要终止、生成新的 peer 集合。依次判断 stopFn/isStarvationTermination/isLookupTermination 条件是否满足，如果满足则直接退出 isReadyToTerminate，如果不满足退出条件则根据传入的 maxNumQueriesToSpawn 值，从 queryPeers 集合中取出状态为 PeerHeard 的节点（第一次循环进来 queryPeers 里有 20 个 seedpeer，那么这里只截取了前 10 个）；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "根据 isReadyToTerminate 的返回结果决定是否需要调用 terminate 方法终止迭代查询。如果 ready 为 true，则退出 run 方法（唯一的退出 run 出口），如果没有终止，则循环 qPeers 调用 spawnQuery 发起查询（qPeers 是上一步从 queryPeers 集合中截取的若干条记录）；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "waitGroup 等待所有 spawnQuery 任务完成。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func (q *query) run() {\n\tpathCtx, cancelPath := context.WithCancel(q.ctx)\n\tdefer cancelPath()\n\n\talpha := q.dht.alpha\n\n\tch := make(chan *queryUpdate, alpha)\n\tch <- &queryUpdate{cause: q.dht.self, heard: q.seedPeers}\n\n\t// return only once all outstanding queries have completed.\n\tdefer q.waitGroup.Wait()\n\tfor {\n\t\tvar cause peer.ID\n\t\tselect {\n\t\tcase update := <-ch:\n\t\t\tq.updateState(pathCtx, update)\n\t\t\tcause = update.cause\n\t\tcase <-pathCtx.Done():\n\t\t\tq.terminate(pathCtx, cancelPath, LookupCancelled)\n\t\t}\n\n\t\t// calculate the maximum number of queries we could be spawning.\n\t\t// Note: NumWaiting will be updated in spawnQuery\n\t\tmaxNumQueriesToSpawn := alpha - q.queryPeers.NumWaiting()\n\n\t\t// termination is triggered on end-of-lookup conditions or starvation of unused peers\n\t\t// it also returns the peers we should query next for a maximum of `maxNumQueriesToSpawn` peers.\n\t\tready, reason, qPeers := q.isReadyToTerminate(pathCtx, maxNumQueriesToSpawn)\n\t\tif ready {\n\t\t\tq.terminate(pathCtx, cancelPath, reason)\n\t\t}\n\n\t\tif q.terminated {\n\t\t\treturn\n\t\t}\n\n\t\t// try spawning the queries, if there are no available peers to query then we won't spawn them\n\t\tfor _, p := range qPeers {\n\t\t\tq.spawnQuery(pathCtx, cause, p, ch)\n\t\t}\n\t}\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "recordValuablePeers"
+          }
+        ],
+        "data": {
+          "headingId": "recordvaluablepeers"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "如果没出错，则调用 recordValuablePeers 记录最有价值的 peer："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "对种子节点 peerTimes 做一个排序，获取到最小的查询花费时间，将这个设置为 MVP 时间；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "如果所有 seedpeer 的 peerTimes 时间 < MVP 时间 * 2，则认为这个节点标记为有价值的（即更新路由表中该节点的 LastUsefulAt 字段）。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "虽然只能计算 peer 之间的逻辑距离，但这个机制也能优化节点之间的查询性能。k 桶中查询延迟小的 peer，LastUsefulAt 时间较新。"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func (q *query) recordPeerIsValuable(p peer.ID) {\n\tif !q.dht.routingTable.UpdateLastUsefulAt(p, time.Now()) {\n\t\t// not in routing table\n\t\treturn\n\t}\n}"
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func (q *query) recordValuablePeers() {\n\tmvpDuration := time.Duration(math.MaxInt64)\n\tfor _, p := range q.seedPeers {\n\t\tif queryTime, ok := q.peerTimes[p]; ok && queryTime < mvpDuration {\n\t\t\tmvpDuration = queryTime\n\t\t}\n\t}\n\tfor _, p := range q.seedPeers {\n\t\tif queryTime, ok := q.peerTimes[p]; ok && queryTime < mvpDuration*2 {\n\t\t\tq.recordPeerIsValuable(p)\n\t\t}\n\t}\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "constructLookupResult"
+          }
+        ],
+        "data": {
+          "headingId": "constructlookupresult"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "设置 completed 为 true，如果 isLookupTermination、isStarvationTermination 都返回 false，则置 completed 为 false；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "通过 queryPeers.GetClosestNInStates 获取 20 个 peer，它们的状态可能是 PeerHeard、PeerWaiting、PeerQueried；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "调用 kb.SortClosestPeers 排序（这里貌似是多余的，上一步不是已经排序了？）；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "返回 lookupWithFollowupResult，里面的 peers、state 字段是个数组，各个 peer 的状态根据数组下标从 state 里获取。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func (q *query) constructLookupResult(target kb.ID) *lookupWithFollowupResult {\n\t// determine if the query terminated early\n\tcompleted := true\n\n\tif !(q.isLookupTermination() || q.isStarvationTermination()) {\n\t\tcompleted = false\n\t}\n\n\t// extract the top K not unreachable peers\n\tvar peers []peer.ID\n\tpeerState := make(map[peer.ID]qpeerset.PeerState)\n\tqp := q.queryPeers.GetClosestNInStates(q.dht.bucketSize, qpeerset.PeerHeard, qpeerset.PeerWaiting, qpeerset.PeerQueried)\n\tfor _, p := range qp {\n\t\tstate := q.queryPeers.GetState(p)\n\t\tpeerState[p] = state\n\t\tpeers = append(peers, p)\n\t}\n\n\t// 下面四行代码感觉是多余。qp 总数就是 20，再截取 20。GetClosestNInStates 已经对 peer 排序了下面又排序。\n\tsortedPeers := kb.SortClosestPeers(peers, target)\n\tif len(sortedPeers) > q.dht.bucketSize {\n\t\tsortedPeers = sortedPeers[:q.dht.bucketSize]\n\t}\n\n\tres := &lookupWithFollowupResult{\n\t\tpeers:     sortedPeers,\n\t\tstate:     make([]qpeerset.PeerState, len(sortedPeers)),\n\t\tcompleted: completed,\n\t}\n\n\tfor i, p := range sortedPeers {\n\t\tres.state[i] = peerState[p]\n\t}\n\n\treturn res\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "spawnQuery"
+          }
+        ],
+        "data": {
+          "headingId": "spawnquery"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "将被查询的 peer 状态设置为 PeerWaiting；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "waitGroup 计数加 1；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "启动一个协程调用 queryPeer。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func (q *query) spawnQuery(ctx context.Context, cause peer.ID, queryPeer peer.ID, ch chan<- *queryUpdate) {\n\t......\n\tq.queryPeers.SetState(queryPeer, qpeerset.PeerWaiting)\n\tq.waitGroup.Add(1)\n\tgo q.queryPeer(ctx, ch, queryPeer)\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "queryPeer"
+          }
+        ],
+        "data": {
+          "headingId": "querypeer"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "记录一个查询开始时间 startQuery；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "调用 dht.dialPeer 对该 peer 拨号，如果拨号失败则将该 peer 从路由表移除并发送一个 queryUpdate 消息，将该 peerid 填入 queryUpdate 的 unreachable 集合，这个 peer 的状态将由 PeerWaiting 变为 PeerUnreachable；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "如果拨号成功，再调用 queryFn（如果是 GetClosestPeers，则实际调用的是 dht.findPeerSingle），发送 rpc 查询请求到该 peer，如果查询失败则和上一步一样首先将 peer 从路由表移除再将该 peer 状态改为 PeerUnreachable；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "如果执行 queryFn 成功，则计算该查询花费的时间 queryDuration（queryDuration 计算 mvp 有用到），再调用 dht.peerFound 将该 peer 加入到路由表；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "queryFn 成功后，会返回 newPeers，通过查询本地 peerstore 获取这些新的 peer 当前 addr 信息，本地的 peerstore 存储的 addr 信息可能不是最新的，地址可能变化（如新增了地址），需要将获取的最新 addrs 信息重新加入到 peerstore。最后调用 dht.queryPeerFilter 对这些新 peer 做一次过滤（默认 queryPeerFilter 为空总返回 true）。如果新 peer 尚未连接到本节点，则将它们的 addrs 加入到 AddrBook。下次迭代拨号时会使用这些地址（这里地址不会重复，peerstore.AddAddrs 有去重机制）；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "将符合过滤条件的新的 peer 加入到 saw 集合中，构造一个新的 queryUpdate 消息，将 saw 添加到 queryUpdate 的 heard 集合中，同时带上 queryDuration。这时会重新进入 query.run 的 loop 循环；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "调用 waitGroup.Done()，run 结束时会等待，也就是 spawnQuery 都执行完后，run 才会退出。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func (q *query) queryPeer(ctx context.Context, ch chan<- *queryUpdate, p peer.ID) {\n\tdefer q.waitGroup.Done()\n\tdialCtx, queryCtx := ctx, ctx\n\n\tstartQuery := time.Now()\n\t// dial the peer\n\tif err := q.dht.dialPeer(dialCtx, p); err != nil {\n\t\t// remove the peer if there was a dial failure..but not because of a context cancellation\n\t\tif dialCtx.Err() == nil {\n\t\t\tq.dht.peerStoppedDHT(q.dht.ctx, p)\n\t\t}\n\t\tch <- &queryUpdate{cause: p, unreachable: []peer.ID{p}}\n\t\treturn\n\t}\n\n\t// send query RPC to the remote peer\n\tnewPeers, err := q.queryFn(queryCtx, p)\n\tif err != nil {\n\t\tif queryCtx.Err() == nil {\n\t\t\tq.dht.peerStoppedDHT(q.dht.ctx, p)\n\t\t}\n\t\tch <- &queryUpdate{cause: p, unreachable: []peer.ID{p}}\n\t\treturn\n\t}\n\n\tqueryDuration := time.Since(startQuery)\n\n\t// query successful, try to add to RT\n\tq.dht.peerFound(q.dht.ctx, p, true)\n\n\t// process new peers\n\tsaw := []peer.ID{}\n\tfor _, next := range newPeers {\n\t\tif next.ID == q.dht.self {\n\t\t\t// don't add self.\n\t\t\tlogger.Debugf(\"PEERS CLOSER -- worker for: %v found self\", p)\n\t\t\tcontinue\n\t\t}\n\n\t\t// add any other know addresses for the candidate peer.\n\t\tcurInfo := q.dht.peerstore.PeerInfo(next.ID)\n\t\tnext.Addrs = append(next.Addrs, curInfo.Addrs...)\n\n\t\t// add their addresses to the dialer's peerstore\n\t\tif q.dht.queryPeerFilter(q.dht, *next) {\n\t\t\tq.dht.maybeAddAddrs(next.ID, next.Addrs, pstore.TempAddrTTL)\n\t\t\tsaw = append(saw, next.ID)\n\t\t}\n\t}\n\n\tch <- &queryUpdate{cause: p, heard: saw, queried: []peer.ID{p}, queryDuration: queryDuration}\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "dialPeer"
+          }
+        ],
+        "data": {
+          "headingId": "dialpeer"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "如果 peer 已经连接到本节点直接退出；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "否则调用 host.Connect 发起连接（拨号）请求。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func (dht *IpfsDHT) dialPeer(ctx context.Context, p peer.ID) error {\n\t// short-circuit if we're already connected.\n\tif dht.host.Network().Connectedness(p) == network.Connected {\n\t\treturn nil\n\t}\n\t......\n\tpi := peer.AddrInfo{ID: p}\n\tif err := dht.host.Connect(ctx, pi); err != nil {\n\t\t......\n\t\treturn err\n\t}\n\tlogger.Debugf(\"connected. dial success.\")\n\treturn nil\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "updateState"
+          }
+        ],
+        "data": {
+          "headingId": "updatestate"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "任务初始化时状态为 PeerHeard，启动协程查询时设置为 PeerWaiting，再根据每个协程执行结果将 peer 状态设置为 PeerUnreachable 或 PeerQueried。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "可能的状态转化：PeerHeard -> PeerWaiting -> PeerUnreachable | PeerQueried"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "如果 queryUpdate 状态为 heard，则调用 query.queryPeers.TryAdd 方法尝试将 peer 加入 query 的 queryPeers 集合中，peer 此时的初始状态为 PeerHeard。TryAdd 不会将重复的值加入；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "如果 queryUpdate 状态为 queried，只有当 peer 的状态为 PeerWaiting 才更新为 PeerQueried，并更新 peer 的 peerTimes 为 queryDuration；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "如果 queryUpdate 状态为 unreachable，只有当 peer 的状态为 PeerWaiting 才更新为 PeerUnreachable。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func (q *query) updateState(ctx context.Context, up *queryUpdate) {\n\tif q.terminated {\n\t\tpanic(\"update should not be invoked after the logical lookup termination\")\n\t}\n\t......\n\tfor _, p := range up.heard {\n\t\tif p == q.dht.self {\n\t\t\t// don't add self.\n\t\t\tcontinue\n\t\t}\n\t\tq.queryPeers.TryAdd(p, up.cause)\n\t}\n\tfor _, p := range up.queried {\n\t\tif p == q.dht.self {\n\t\t\t// don't add self.\n\t\t\tcontinue\n\t\t}\n\t\tif st := q.queryPeers.GetState(p); st == qpeerset.PeerWaiting {\n\t\t\tq.queryPeers.SetState(p, qpeerset.PeerQueried)\n\t\t\tq.peerTimes[p] = up.queryDuration\n\t\t} else {\n\t\t\tpanic(fmt.Errorf(\"kademlia protocol error: tried to transition to the queried state from state %v\", st))\n\t\t}\n\t}\n\tfor _, p := range up.unreachable {\n\t\tif p == q.dht.self {\n\t\t\t// don't add self.\n\t\t\tcontinue\n\t\t}\n\n\t\tif st := q.queryPeers.GetState(p); st == qpeerset.PeerWaiting {\n\t\t\tq.queryPeers.SetState(p, qpeerset.PeerUnreachable)\n\t\t} else {\n\t\t\tpanic(fmt.Errorf(\"kademlia protocol error: tried to transition to the unreachable state from state %v\", st))\n\t\t}\n\t}\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "isReadyToTerminate"
+          }
+        ],
+        "data": {
+          "headingId": "isreadytoterminate"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "如果依次满足 stopFn、isStarvationTermination、isLookupTermination 则终止查询；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "通过调用 queryPeers.GetClosestInStates(qpeerset.PeerHeard)，获取 queryPeers 集合中状态为 PeerHeard 的 peer，只获取 maxNumQueriesToSpawn 个 peer（即 alpha - q.queryPeers.NumWaiting()）。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func (q *query) isReadyToTerminate(ctx context.Context, nPeersToQuery int) (bool, LookupTerminationReason, []peer.ID) {\n\t// give the application logic a chance to terminate\n\tif q.stopFn() {\n\t\treturn true, LookupStopped, nil\n\t}\n\tif q.isStarvationTermination() {\n\t\treturn true, LookupStarvation, nil\n\t}\n\tif q.isLookupTermination() {\n\t\treturn true, LookupCompleted, nil\n\t}\n\n\t// The peers we query next should be ones that we have only Heard about.\n\tvar peersToQuery []peer.ID\n\tpeers := q.queryPeers.GetClosestInStates(qpeerset.PeerHeard)\n\tcount := 0\n\tfor _, p := range peers {\n\t\tpeersToQuery = append(peersToQuery, p)\n\t\tcount++\n\t\tif count == nPeersToQuery {\n\t\t\tbreak\n\t\t}\n\t}\n\n\treturn false, -1, peersToQuery\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "isLookupTermination"
+          }
+        ],
+        "data": {
+          "headingId": "islookuptermination"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "调用 queryPeers.GetClosestNInStates 中获取 beta 个节点，这些节点状态可能是 PeerHeard、PeerWaiting、PeerQueried；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "遍历获取到的 beta（默认为 3）个节点，如果最近的 beta 个节点状态不是 PeerQueried 则说明查询尚未完成。假设要查询的个数为 3，返回的 PeerHeard、PeerWaiting、PeerQueried 的 peer 各一个，则必须等到 PeerHeard、PeerWaiting 状态的 peer 状态转为 PeerQueried 查询才算终止。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func (q *query) isLookupTermination() bool {\n\tpeers := q.queryPeers.GetClosestNInStates(q.dht.beta, qpeerset.PeerHeard, qpeerset.PeerWaiting, qpeerset.PeerQueried)\n\tfor _, p := range peers {\n\t\tif q.queryPeers.GetState(p) != qpeerset.PeerQueried {\n\t\t\treturn false\n\t\t}\n\t}\n\treturn true\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "isStarvationTermination"
+          }
+        ],
+        "data": {
+          "headingId": "isstarvationtermination"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "很饥饿，没有 peer 可以迭代了。"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func (q *query) isStarvationTermination() bool {\n\treturn q.queryPeers.NumHeard() == 0 && q.queryPeers.NumWaiting() == 0\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "GetClosestNInStates"
+          }
+        ],
+        "data": {
+          "headingId": "getclosestninstates"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "首先对 queryPeers 做一个排序，最近的排前面；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "遍历 queryPeers 将状态一致的 peer 加入 result。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func (qp *QueryPeerset) GetClosestNInStates(n int, states ...PeerState) (result []peer.ID) {\n\tqp.sort()\n\tm := make(map[PeerState]struct{}, len(states))\n\tfor i := range states {\n\t\tm[states[i]] = struct{}{}\n\t}\n\n\tfor _, p := range qp.all {\n\t\tif _, ok := m[p.state]; ok {\n\t\t\tresult = append(result, p.id)\n\t\t}\n\t}\n\tif len(result) >= n {\n\t\treturn result[:n]\n\t}\n\treturn result\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "3. ChainMaker 网络模块集成实践"
+          }
+        ],
+        "data": {
+          "headingId": "3-chainmaker-网络模块集成实践"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：《2022-01-05 libp2p 分享-明超》（会议分享笔记，已补全为结构化说明）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.1 网络模块演进"
+          }
+        ],
+        "data": {
+          "headingId": "31-网络模块演进"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1.2.6"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "网络模块基于 libp2p"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2.1.0"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "自研网络（替换 libp2p）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "ChainMaker（长安链）网络模块在 1.2.6 及之前基于 libp2p，2.1.0 起自研网络。关键文件："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "libp2p_net.go —— libp2p 网络实现"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "libp2p_host.go —— libp2p host（节点主机）封装"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "架构要点："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "net 接口在 go-libp2p-core 中实现；为了支持国密（SM2/SM4），在 go.mod 中替换了 core 包（replace 为内部国密实现）；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "host 负责消息的发送/接收总装；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "peerId 等于 nodeid（libp2p 的 Peer ID 即 ChainMaker 的节点 ID）。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.2 连接控制与黑名单"
+          }
+        ],
+        "data": {
+          "headingId": "32-连接控制与黑名单"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Q：如何将节点加入黑名单？\nA：需要拿到节点的公钥，根据指定的算法，可以拿到 PeerId（Peer ID 由公钥哈希派生，黑名单按 Peer ID 维度生效）。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "过滤器限制接口的三个实现："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "黑名单过滤 —— 屏蔽指定 Peer ID 的连接"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "memberStatusValidator 节点过滤器 —— 按节点成员状态校验"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "链接总数限制 —— 控制节点最大连接数"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "节点优先级的概念存在于 connManager（连接管理器）中。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "ConnSupervisor 与种子节点的链接：专门维护与种子节点的连接监督。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "拨号策略：斐波那契队列拨号方式 —— 从密集拨号到分散拨号，减少性能消耗（拨号失败后按斐波那契间隔退避重试，而非固定频率）。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "host 拨号相关概念："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "peerAddrInfos"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "种子节点信息（地址簿）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "allConnected"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "所有节点建立链接"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "actuators"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每个链接都有一个 worker"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "tryTime"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "尝试次数，默认 50 次（合理的链接次数）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.3 节点发现机制（libp2pDiscovery）"
+          }
+        ],
+        "data": {
+          "headingId": "33-节点发现机制libp2pdiscovery"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "基于 KadDHT（K 桶）："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Gossip：随机询问其他节点是否能找到对应节点；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "分布式哈希桶：默认 16 个桶，每个桶默认 20 个节点信息，通过公共前缀（XOR 距离高位）放到对应的桶中；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每隔 10 分钟刷新一遍所有桶；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "路由表本质是一个一维空间数组。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "讨论要点："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "5~9 是如何建立连接到的？—— 答：IpfsDHT（节点发现 + 迭代查询建立）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "节点中断后是否能够重新链接？—— 种子节点有重连机制，非种子节点没有（见第 4 章）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.4 消息处理与流"
+          }
+        ],
+        "data": {
+          "headingId": "34-消息处理与流"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "message_handler_distributor：注册回调、注册链信息 chainId，按链 ID 分发消息；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "流池：管理节点间的流（stream），连接复用。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "4. 实战问题排查"
+          }
+        ],
+        "data": {
+          "headingId": "4-实战问题排查"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：《libp2p 遇到的问题》（ChainMaker 实战问题排查记录，已补全为结构化说明）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.1 节点连接问题"
+          }
+        ],
+        "data": {
+          "headingId": "41-节点连接问题"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "问题 1：通过节点发现连接不稳定（都是共识节点的情况下）"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "问题 2：节点连接状态不稳定 —— 一边连接正常，一边断开"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每个节点都会连接两个连接：一个是 127.0.0.1，一个是实际 id。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "问题 3：no stream can lot loord（偶发，压测时）"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "作者说设置 100 个足够，但咱们默认就是 100，为什么在这个情景下会出现这个问题？（可能与流池扩容、swarm 拨号机制有关，见 4.4）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.2 节点 ID 映射问题"
+          }
+        ],
+        "data": {
+          "headingId": "42-节点-id-映射问题"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "问题 4：certId not mapping（map）"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "节点维护 map<certId, nodeId>，为了兼容 certId 维护了这么一个 map。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "问题 5：field to did nodeid（修改 Gateway）"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Gateway 的作用：物理机（网关节点）。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "问题 6：node id not mapping"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "节点维护 map<certId, nodeId>，为了兼容 certId 维护了这么一个 map。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.3 共识与出块问题"
+          }
+        ],
+        "data": {
+          "headingId": "43-共识与出块问题"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "问题 7：压测停节点时 TBFT 有问题，raft 没问题，dead block off"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "trigger 自己调自己的时候使用异步调用；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "底层 notify 通知机制：断开、连接时做什么，但是出问题的没有通知。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "不出块的原因："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "共识"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "状态不一致，临界点卡共识"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "合约"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "合约结果不一致，导致的问题"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.4 流池与拨号"
+          }
+        ],
+        "data": {
+          "headingId": "44-流池与拨号"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "问题 8：流池扩容 dial backoff"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "swarm 拨号机制底层频繁拨号；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "一个节点狂刷创建流。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.5 种子节点与非种子节点"
+          }
+        ],
+        "data": {
+          "headingId": "45-种子节点与非种子节点"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "什么是种子节点和非种子节点？"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "种子节点有重连机制，非种子节点没有。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "案例："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1234 是种子节点，56789 是非种子节点，非种子节点连接不稳定；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "结论：节点发现逻辑冗余。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.6 测试案例记录"
+          }
+        ],
+        "data": {
+          "headingId": "46-测试案例记录"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "case1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "税总分支"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "TBFT"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "本地文件存储"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "case2"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "税总分支"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "TBFT"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "NFS"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "附录：原文出处"
+          }
+        ],
+        "data": {
+          "headingId": "附录原文出处"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "《libp2p DHT Kademlia 迭代查询》"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "学无止境\\golang\\libp2p|CSDN 博文，源码级解析，第 1、2 章主体来源"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "《2022-01-05 libp2p 分享-明超》"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "废寝忘食\\Chainmaker\\任务\\2021-12-30_libp2p|会议分享笔记，第 3 章来源"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "《2022-02-07 学习 libp2p》"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "同上"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "KAD 算法速记（原文一句话），已补全为 1.1 节"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "《libp2p 遇到的问题》"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "同上"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "问题排查清单，第 4 章来源"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

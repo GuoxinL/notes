@@ -1,0 +1,3746 @@
+{
+  "schemaVersion": 1,
+  "id": "08734a7f",
+  "slug": "knowledge-base-skill-guide",
+  "title": "knowledge-base-skill-guide",
+  "date": "2026-08-22",
+  "updated": "2026-08-22",
+  "description": "本文档系统梳理 Skill 在 AI 领域的概念定义、组成结构、工作原理、最佳实践及相关生态，适合作为个人或团队构建 AI 技能知识库的参考手册。",
+  "tags": [
+    "Skill",
+    "SKILL.md",
+    "AI Agent",
+    "知识管理",
+    "frontmatter"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 11,
+    "words": 3328
+  },
+  "headings": [
+    {
+      "depth": 2,
+      "text": "Skill 知识库完全指南",
+      "slug": "skill-知识库完全指南"
+    },
+    {
+      "depth": 3,
+      "text": "一、什么是 Skill",
+      "slug": "一什么是-skill"
+    },
+    {
+      "depth": 4,
+      "text": "1.1 核心定义",
+      "slug": "11-核心定义"
+    },
+    {
+      "depth": 4,
+      "text": "1.2 Skill 的核心价值",
+      "slug": "12-skill-的核心价值"
+    },
+    {
+      "depth": 4,
+      "text": "1.3 Skill 与 Prompt 的区别",
+      "slug": "13-skill-与-prompt-的区别"
+    },
+    {
+      "depth": 3,
+      "text": "二、SKILL.md 格式规范",
+      "slug": "二skillmd-格式规范"
+    },
+    {
+      "depth": 4,
+      "text": "2.1 文件结构",
+      "slug": "21-文件结构"
+    },
+    {
+      "depth": 4,
+      "text": "2.2 Frontmatter 字段详解",
+      "slug": "22-frontmatter-字段详解"
+    },
+    {
+      "depth": 4,
+      "text": "2.3 Body 内容编写指南",
+      "slug": "23-body-内容编写指南"
+    },
+    {
+      "depth": 4,
+      "text": "2.4 编写原则",
+      "slug": "24-编写原则"
+    },
+    {
+      "depth": 3,
+      "text": "三、Skill 项目目录结构",
+      "slug": "三skill-项目目录结构"
+    },
+    {
+      "depth": 4,
+      "text": "3.1 标准目录结构",
+      "slug": "31-标准目录结构"
+    },
+    {
+      "depth": 4,
+      "text": "3.2 各目录说明",
+      "slug": "32-各目录说明"
+    },
+    {
+      "depth": 4,
+      "text": "3.3 核心规则",
+      "slug": "33-核心规则"
+    },
+    {
+      "depth": 3,
+      "text": "四、渐进式披露设计思想",
+      "slug": "四渐进式披露设计思想"
+    },
+    {
+      "depth": 3,
+      "text": "五、Skill 的工作原理",
+      "slug": "五skill-的工作原理"
+    },
+    {
+      "depth": 4,
+      "text": "5.1 调用逻辑",
+      "slug": "51-调用逻辑"
+    },
+    {
+      "depth": 4,
+      "text": "5.2 触发条件",
+      "slug": "52-触发条件"
+    },
+    {
+      "depth": 3,
+      "text": "六、Skill 的分类",
+      "slug": "六skill-的分类"
+    },
+    {
+      "depth": 3,
+      "text": "七、Skill 的优缺点",
+      "slug": "七skill-的优缺点"
+    },
+    {
+      "depth": 4,
+      "text": "7.1 优点",
+      "slug": "71-优点"
+    },
+    {
+      "depth": 4,
+      "text": "7.2 缺点",
+      "slug": "72-缺点"
+    },
+    {
+      "depth": 3,
+      "text": "八、Skill 的构建流程",
+      "slug": "八skill-的构建流程"
+    },
+    {
+      "depth": 4,
+      "text": "8.1 构建步骤",
+      "slug": "81-构建步骤"
+    },
+    {
+      "depth": 4,
+      "text": "8.2 编写高质量 Skill 的原则",
+      "slug": "82-编写高质量-skill-的原则"
+    },
+    {
+      "depth": 3,
+      "text": "九、完整示例",
+      "slug": "九完整示例"
+    },
+    {
+      "depth": 2,
+      "text": "``",
+      "slug": "section"
+    },
+    {
+      "depth": 3,
+      "text": "十、Skill 生态与工具链",
+      "slug": "十skill-生态与工具链"
+    },
+    {
+      "depth": 4,
+      "text": "10.1 主流平台支持",
+      "slug": "101-主流平台支持"
+    },
+    {
+      "depth": 4,
+      "text": "10.2 社区资源",
+      "slug": "102-社区资源"
+    },
+    {
+      "depth": 4,
+      "text": "10.3 使用场景",
+      "slug": "103-使用场景"
+    },
+    {
+      "depth": 3,
+      "text": "标签",
+      "slug": "标签"
+    },
+    {
+      "depth": 2,
+      "text": "-skill-ai：AI 领域 Skill 概念定义\n-skill-md-format：SKILL.md 格式规范\n-skill-architecture：Skill 架构与工作原理\n-skill-best-practices：Skill 编写最佳实践\n-skill-classification：Skill 分类体系\n-skill-workflow：Skill 构建流程\n-skill-ecosystem：Skill 生态与工具链\n-progressive-disclosure：渐进式披露设计思想\n-frontmatter：YAML 前置元数据\n-knowledge-management`：知识管理",
+      "slug": "skill-aiai-领域-skill-概念定义-skill-md-formatskillmd-格式规范-skill-architectureskill-架构与工作原理-skill-best-practicesskill-编写最佳实践-skill-classificationskill-分类体系-skill-workflowskill-构建流程-skill-ecosystemskill-生态与工具链-progressive-disclosure渐进式披露设计思想-frontmatteryaml-前置元数据-knowledge-management知识管理"
+    },
+    {
+      "depth": 3,
+      "text": "引用",
+      "slug": "引用"
+    }
+  ],
+  "references": [
+    {
+      "kind": "external",
+      "label": "https://github.com/anthropics/skills",
+      "href": "https://github.com/anthropics/skills"
+    },
+    {
+      "kind": "external",
+      "label": "https://skillnav.com",
+      "href": "https://skillnav.com/"
+    },
+    {
+      "kind": "external",
+      "label": "https://github.com/openclaw/skills",
+      "href": "https://github.com/openclaw/skills"
+    },
+    {
+      "kind": "external",
+      "label": "https://github.com/Tencent/SKILL",
+      "href": "https://github.com/Tencent/SKILL"
+    },
+    {
+      "kind": "external",
+      "label": "https://github.com/anthropics/skills",
+      "href": "https://github.com/anthropics/skills"
+    },
+    {
+      "kind": "external",
+      "label": "https://github.com/Tencent/SKILL",
+      "href": "https://github.com/Tencent/SKILL"
+    },
+    {
+      "kind": "external",
+      "label": "https://github.com/openclaw/skills",
+      "href": "https://github.com/openclaw/skills"
+    },
+    {
+      "kind": "external",
+      "label": "https://github.com/aishaoqing/ami/skills",
+      "href": "https://github.com/aishaoqing/ami/skills"
+    },
+    {
+      "kind": "external",
+      "label": "https://skillnav.com",
+      "href": "https://skillnav.com"
+    }
+  ],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "heading",
+        "depth": 2,
+        "children": [
+          {
+            "type": "text",
+            "value": "Skill 知识库完全指南"
+          }
+        ],
+        "data": {
+          "headingId": "skill-知识库完全指南"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "本文档系统梳理了 Skill 在 AI 领域的概念定义、组成结构、工作原理、最佳实践及相关生态，适合作为个人或团队构建 AI 技能知识库的参考手册。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、什么是 Skill"
+          }
+        ],
+        "data": {
+          "headingId": "一什么是-skill"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.1 核心定义"
+          }
+        ],
+        "data": {
+          "headingId": "11-核心定义"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Skill 是一套标准化规范，用于定义 AI 代理（Agent）可执行的能力单元。它类似于 npm 包之于 JavaScript 生态，或 PyPI 包之于 Python 生态——但专为 AI 代理之间的发现、加载和执行而设计。每个 Skill 通过 SKILL.md 文件描述其功能、触发条件和执行逻辑，使 AI 模型能够理解、发现并调用外部功能。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.2 Skill 的核心价值"
+          }
+        ],
+        "data": {
+          "headingId": "12-skill-的核心价值"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "统一描述"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "让不同 AI 模型和框架能以统一的方式理解技能的功能、输入输出"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "动态发现"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "AI 代理可以自动发现并注册可用的技能"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "标准化调用"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "定义技能调用的接口、参数验证、错误处理等"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "跨平台兼容"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "使技能能在不同 AI 生态（如 Claude、GPT、开源模型）之间复用"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "知识沉淀"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "将零散的技术知识点、项目经验、学习路径进行系统化归类和关联"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.3 Skill 与 Prompt 的区别"
+          }
+        ],
+        "data": {
+          "headingId": "13-skill-与-prompt-的区别"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "形式"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "一段自然语言指令"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "封装好的模块（含 Prompt、工具、逻辑）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "复用性"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每次需要重新编写或调整"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "可以一键调用，多次复用"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "复杂度"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "单轮或多轮对话"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "可能包含多步推理、工具调用、条件分支"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "本质"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "写在对话上下文的指令，一次性，随对话消失"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "独立封装的规则文档，工具动态加载，可复用"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "用\"做菜\"来类比：Prompt 是口头告诉 AI\"做一道鱼香肉丝\"；Skill 是给 AI 一本《鱼香肉丝标准化菜谱》，配好调料包和厨具。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、SKILL.md 格式规范"
+          }
+        ],
+        "data": {
+          "headingId": "二skillmd-格式规范"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.1 文件结构"
+          }
+        ],
+        "data": {
+          "headingId": "21-文件结构"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "SKILL.md 是技能的核心描述文件，遵循 YAML 前置元数据（Frontmatter）+ Markdown 正文 的结构："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "markdown",
+        "meta": null,
+        "value": "---\nname: my-skill\nversion: 1.0.0\ndescription: 技能的功能描述及触发条件\ntags: [category, use-case]\n---\n\n## 技能名称\n\n### 操作步骤\nAgent 需要执行的具体步骤和规则。"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.2 Frontmatter 字段详解"
+          }
+        ],
+        "data": {
+          "headingId": "22-frontmatter-字段详解"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "name"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "string"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "是"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "技能的唯一标识符，小写字母+连字符，与目录名一致"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "description"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "string"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "是"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "技能功能描述和触发场景，是 Agent 决定是否加载的关键依据"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "version"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "string"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "否"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "语义化版本号"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "tags"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "string[]"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "否"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "搜索标签，便于分类"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "author"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "string"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "否"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "技能作者或组织"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "license"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "string"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "否"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "SPDX 许可证标识符"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "repository"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "string"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "否"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "源代码仓库 URL"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "agents"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "string[]"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "否"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "兼容的 Agent 列表"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "env"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "object[]"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "否"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "所需环境变量声明"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "description 编写要点：不超过 1024 字符，包含 功能 + 触发场景 + 关键能力 三部分，使用具体、可操作的描述，避免模糊表述。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "示例："
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "children": [
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "type": "text",
+                "value": "description: 生成符合规范的周报，无需用户手动排版。当用户提到\"写周报\"\"生成周报\"\"周报模板\"时使用。"
+              }
+            ]
+          },
+          {
+            "type": "code",
+            "lang": null,
+            "meta": null,
+            "value": ""
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.3 Body 内容编写指南"
+          }
+        ],
+        "data": {
+          "headingId": "23-body-内容编写指南"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Body 部分使用标准 Markdown 编写，推荐采用以下章节组织："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "markdown",
+        "meta": null,
+        "value": "### 概述\n\n技能功能的简要说明。\n\n### 前提条件\n\n运行前需要满足的条件（如环境变量、工具链等）。\n\n### 操作步骤\n\nAgent 需要遵循的具体指令，使用数字编号分步说明。\n\n### 规则与约束\n\nAgent 必须遵守的安全规则和行为边界（使用 MUST / NEVER 关键词）。\n\n### 验证检查清单\n\n- [ ] 检查项 1\n- [ ] 检查项 2\n### 示例\n\n输入/输出的具体示例，帮助 Agent 理解预期行为。\n\n### 异常处理\n\n预判常见失败场景及应对策略。\n\n### 来源\n\n记录知识的来源（URL、文档名称、对话等）。"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.4 编写原则"
+          }
+        ],
+        "data": {
+          "headingId": "24-编写原则"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "使用 "
+                  },
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "祈使句"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "，直接给出指令（如\"创建文件\"而非\"你应该创建文件\"）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每条指令对应一个\"可以独立验收的产出\""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "正文建议控制在 500 行以内，超出部分拆分到 "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "references/"
+                  },
+                  {
+                    "type": "text",
+                    "value": " 目录"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "包含具体的输入输出示例"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "使用 "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "MUST"
+                  },
+                  {
+                    "type": "text",
+                    "value": " 和 "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "NEVER"
+                  },
+                  {
+                    "type": "text",
+                    "value": " 明确行为边界"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、Skill 项目目录结构"
+          }
+        ],
+        "data": {
+          "headingId": "三skill-项目目录结构"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.1 标准目录结构"
+          }
+        ],
+        "data": {
+          "headingId": "31-标准目录结构"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "一个完整的、可复用的 Skill 项目，通常会包含以下目录结构："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "your-skill/\n├── SKILL.md            # 【必需】核心技能文件\n├── references/         # 【可选】按需加载的参考文档\n│   ├── api-guide.md\n│   └── workflow.md\n├── scripts/            # 【可选】可执行脚本（Python、Bash 等）\n│   └── helper.py\n├── assets/             # 【可选】模板、字体、图标等静态资源\n│   └── template.md\n├── resources/          # 【可选】示例数据、JSON Schema 等\n│   ├── examples.md\n│   └── schema.json\n├── skill.toml          # 【可选】机器可读清单文件\n├── lifecycle.yaml      # 【可选】生命周期配置\n├── README.md           # 【可选】人类可读的项目说明\n└── LICENSE             # 【可选】许可证文件"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.2 各目录说明"
+          }
+        ],
+        "data": {
+          "headingId": "32-各目录说明"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "目录/文件"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "必需性"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "核心职责"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "加载策略"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "SKILL.md"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "必需"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "元数据 + 核心指令"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "匹配时加载"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "references/"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "可选"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "参考文档、规范、API 手册"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "按需读取"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "scripts/"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "可选"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "确定性可执行代码"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "按需执行，不占上下文"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "assets/"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "可选"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "模板、图片等静态资源"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "按需引用"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "resources/"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "可选"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "示例数据、Schema"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "按需引用"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "skill.toml"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "可选"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "机器可读元数据清单"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "解析时加载"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.3 核心规则"
+          }
+        ],
+        "data": {
+          "headingId": "33-核心规则"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "SKILL.md"
+                  },
+                  {
+                    "type": "text",
+                    "value": " 必须严格区分大小写，不可写成 "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "skill.md"
+                  },
+                  {
+                    "type": "text",
+                    "value": " 或 "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "SKILL.MD"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "文件夹名必须使用 kebab-case（小写字母加连字符）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "只有 "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "SKILL.md"
+                  },
+                  {
+                    "type": "text",
+                    "value": " 是必需文件，其余均为可选"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "四、渐进式披露设计思想"
+          }
+        ],
+        "data": {
+          "headingId": "四渐进式披露设计思想"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Skill 设计了一套三层分级加载机制，以平衡效果和效率："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "层级"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内容"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "加载时机"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "占用 Token"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "第一层"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "name"
+                  },
+                  {
+                    "type": "text",
+                    "value": " + "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "description"
+                  },
+                  {
+                    "type": "text",
+                    "value": "（元数据）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "启动时始终加载"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "~100 tokens"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "第二层"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "SKILL.md"
+                  },
+                  {
+                    "type": "text",
+                    "value": " 正文"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "任务匹配时加载"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "数 KB"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "第三层"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "scripts/"
+                  },
+                  {
+                    "type": "text",
+                    "value": "、"
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "references/"
+                  },
+                  {
+                    "type": "text",
+                    "value": "、"
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "assets/"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "需要时按需加载"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "按需"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "这种机制避免了在对话开始时将所有内容塞入上下文，实现了 "
+          },
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "text",
+                "value": "上下文不膨胀、加载更精准、支持海量信息"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " 的效果。"
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "五、Skill 的工作原理"
+          }
+        ],
+        "data": {
+          "headingId": "五skill-的工作原理"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.1 调用逻辑"
+          }
+        ],
+        "data": {
+          "headingId": "51-调用逻辑"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Agent 执行 Skill 的完整流程如下："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "start": 1,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "意图匹配"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：Agent 聆听用户需求，扫描所有 Skill 的元数据，寻找最匹配的 Skill"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "读取手册"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：找到匹配的 Skill 后，Agent 读取 SKILL.md 正文，研究详细的执行步骤和注意事项"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "按需执行"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：根据手册指引，Agent 开始工作，需要时从工具箱中拿出脚本或工具完成具体操作"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "反馈结果"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：任务完成后，Agent 向用户汇报最终结果，或在遇到困难时及时请教"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.2 触发条件"
+          }
+        ],
+        "data": {
+          "headingId": "52-触发条件"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "当用户提问命中预设的主题，系统自动调用 "
+          },
+          {
+            "type": "inlineCode",
+            "value": "read_skill"
+          },
+          {
+            "type": "text",
+            "value": " 加载对应技能。只要用户问这类问题，就不再靠模型自由发挥，全部读取 SKILL.md 里写好的官方口径回复，防止模型编造错误的产品规则。"
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "六、Skill 的分类"
+          }
+        ],
+        "data": {
+          "headingId": "六skill-的分类"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "分类"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "说明"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "典型示例"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "任务型 Skill"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "完成特定单次任务"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "邮件起草、会议纪要生成、周报撰写"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "角色型 Skill"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "赋予 AI 特定职业身份"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "法律顾问、心理咨询师、投资分析师"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "工具体系 Skill"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "绑定外部系统能力"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "数据库查询、Jira 工单创建、K8s 集群管理"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "流程型 Skill"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "多步骤复杂工作流"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "软件开发生命周期辅助（需求→设计→编码→测试）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "知识型 Skill"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内置领域知识库"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "医学诊断辅助、法规合规检查、历史文献解读"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "七、Skill 的优缺点"
+          }
+        ],
+        "data": {
+          "headingId": "七skill-的优缺点"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "7.1 优点"
+          }
+        ],
+        "data": {
+          "headingId": "71-优点"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "输出稳定可控"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：相同问题，输出高度一致，避免大模型幻觉乱编规则、政策、产品说明"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "维护方便"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：修改 SKILL.md 文档，所有会话立刻生效，不需要重新训练模型"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "边界清晰"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：明确什么能回答、什么拒绝回答，用于合规、客服场景非常合适"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "可复用"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：一套规则多个会话复用，有明确触发条件"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "热插拔"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：好的 Skill 系统应该让你运行时新增/禁用 Skill，不重启 Agent"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "7.2 缺点"
+          }
+        ],
+        "data": {
+          "headingId": "72-缺点"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "不够灵活"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：被手册死死限制，超出文档范围的需求处理很差"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "依赖文档质量"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：如果 SKILL.md 写的不全，就会出现回答残缺"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "属于提示工程方案"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：不能解决模型底层能力缺陷"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "八、Skill 的构建流程"
+          }
+        ],
+        "data": {
+          "headingId": "八skill-的构建流程"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "8.1 构建步骤"
+          }
+        ],
+        "data": {
+          "headingId": "81-构建步骤"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "创建一个高质量的 Skill 通常遵循以下步骤："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "start": 1,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "需求定义"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " → 明确 Skill 要解决的痛点和使用场景"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "知识采集"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " → 收集领域文档、规则、专家经验、案例库"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "Prompt 工程"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " → 设计核心指令模板，包含角色、规则、输出约束"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "工具集成"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " → 绑定必要的外部 API/数据库/脚本（如需要）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "测试迭代"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " → 用大量案例测试，调优指令和逻辑"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "封装发布"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " → 打包成可一键调用的 Skill 模块"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "8.2 编写高质量 Skill 的原则"
+          }
+        ],
+        "data": {
+          "headingId": "82-编写高质量-skill-的原则"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "单一职责原则"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：每个 Skill 只专注解决一类问题，不要\"大而全\""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "给例子（Few-Shot Prompting）"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：直接给出清晰的输入输出示例，模型通过具体例子秒懂想要的格式、风格和行为"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "立规矩（Structured Instructions）"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：定角色、拆步骤、画红线，明确告诉它\"不能做什么\""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "造接口（Interface Design）"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：像设计软件 API 一样，明确定义 Skill 的输入参数和输出格式"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "勤复盘（Iterative Refinement）"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：把 Skill 当作产品来迭代，将 Bad Case 变成新的规则或反例补充到定义中"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "九、完整示例"
+          }
+        ],
+        "data": {
+          "headingId": "九完整示例"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "以下是一个完整的 SKILL.md 示例，以一个"
+          },
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "text",
+                "value": "生成周报"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "的技能为例："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "markdown",
+        "meta": null,
+        "value": "name: weekly-report-generator\ndescription: >\n  自动生成符合职场规范的周报，无需用户手动排版。\n  当用户提到\"写周报\"\"生成周报\"\"周报模板\"，\n  或要求\"总结本周工作\"\"规划下周任务\"时使用。\nversion: 1.0.0\nauthor: AI 助手\n\n### tags: [report, weekly, productivity]\n\n## 周报自动生成技能\n\n### 操作步骤\n\n#### 步骤 1：获取用户核心信息\n\n主动询问用户 3 个关键问题：\n\n- 本周核心工作成果（3-5 条，每条简洁明了）\n- 本周遇到的问题及解决办法（1-2 条，可选）\n- 下周工作计划（3-4 条，明确具体动作）\n#### 步骤 2：生成标准化周报\n\n按照以下模板填充用户提供的信息：\n\n【本周周报】\n\n汇报人：（用户未提供则留空，提示用户补充）\n\n汇报周期：（自动获取当前日期）\n\n一、本周工作成果\n\n- （填充用户提供的第 1 条成果）\n- （填充用户提供的第 2 条成果）\n二、本周问题与解决办法\n\n- 问题：（用户提供的问题）\n解决办法：（用户提供的解决办法）\n三、下周工作计划\n\n- （填充用户提供的第 1 条计划）\n- （填充用户提供的第 2 条计划）\n#### 步骤 3：优化与确认\n\n- 检查格式是否符合上述模板\n- 提示用户：\"周报已生成，可根据你的需求调整内容细节\"\n### 规则\n\n- MUST：周报开头要有\"汇报人\"和\"汇报周期\"字段\n- MUST：成果部分使用数字编号，每条不超过 50 字\n- NEVER：不编造用户未提供的信息\n- NEVER：不使用口语化表达\n### 异常处理\n\n- 如果用户提供的信息过于简略，温和提示用户补充具体内容\n- 如果用户要求修改格式，按用户要求调整后再次确认\n### 检查清单\n\n- [ ] 是否包含汇报人和汇报周期？\n- [ ] 成果是否用数字编号？\n- [ ] 每个问题是否都有对应的解决办法？\n- [ ] 是否有用户未提供但被编造的内容？"
+      },
+      {
+        "type": "heading",
+        "depth": 2,
+        "children": [
+          {
+            "type": "text",
+            "value": "``"
+          }
+        ],
+        "data": {
+          "headingId": "section"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "十、Skill 生态与工具链"
+          }
+        ],
+        "data": {
+          "headingId": "十skill-生态与工具链"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "10.1 主流平台支持"
+          }
+        ],
+        "data": {
+          "headingId": "101-主流平台支持"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Skill 已得到多个主流 AI 编码代理和平台的广泛支持，包括："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Claude Code"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Codex"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Cursor"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Windsurf"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "TRAE.ai"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "OpenClaw"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "GitHub Copilot"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "10.2 社区资源"
+          }
+        ],
+        "data": {
+          "headingId": "102-社区资源"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "资源"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "链接"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Claude 官方 Skills 仓库"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://github.com/anthropics/skills",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://github.com/anthropics/skills"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "SkillNav 技能导航"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://skillnav.com/",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://skillnav.com"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "OpenClaw 技能库"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://github.com/openclaw/skills",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://github.com/openclaw/skills"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "腾讯 SKILL 协议"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://github.com/Tencent/SKILL",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://github.com/Tencent/SKILL"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "10.3 使用场景"
+          }
+        ],
+        "data": {
+          "headingId": "103-使用场景"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "使用方式"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "说明"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "适用场景"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "全局使用"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "放置于~/.claude/skills/，所有项目均可调用"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "通用场景（如 PDF 处理、文件重命名）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "项目内使用"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "放置于项目根目录.claude/skills/，可提交 Git 共享"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "项目专属规范（如团队 Vue 组件开发规则）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "官方预装/插件安装"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "通过工具命令安装官方或第三方 Skill 插件"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "快速获取文档处理技能"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "标签"
+          }
+        ],
+        "data": {
+          "headingId": "标签"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 2,
+        "children": [
+          {
+            "type": "text",
+            "value": "-skill-ai：AI 领域 Skill 概念定义\n-skill-md-format：SKILL.md 格式规范\n-skill-architecture：Skill 架构与工作原理\n-skill-best-practices：Skill 编写最佳实践\n-skill-classification：Skill 分类体系\n-skill-workflow：Skill 构建流程\n-skill-ecosystem：Skill 生态与工具链\n-progressive-disclosure：渐进式披露设计思想\n-frontmatter：YAML 前置元数据\n-knowledge-management`：知识管理"
+          }
+        ],
+        "data": {
+          "headingId": "skill-aiai-领域-skill-概念定义-skill-md-formatskillmd-格式规范-skill-architectureskill-架构与工作原理-skill-best-practicesskill-编写最佳实践-skill-classificationskill-分类体系-skill-workflowskill-构建流程-skill-ecosystemskill-生态与工具链-progressive-disclosure渐进式披露设计思想-frontmatteryaml-前置元数据-knowledge-management知识管理"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "引用"
+          }
+        ],
+        "data": {
+          "headingId": "引用"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "TRAE.ai — 一文读懂 Skills：从概念到实操的完整指南"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "京东云 — Skill 功能介绍"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "博客园 — Skill（技能）核心概念详解"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "GitHub — Anthropic Skills 官方仓库. "
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://github.com/anthropics/skills",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://github.com/anthropics/skills"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "GitHub — 腾讯 SKILL 协议. "
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://github.com/Tencent/SKILL",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://github.com/Tencent/SKILL"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "GitHub — OpenClaw 技能库. "
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://github.com/openclaw/skills",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://github.com/openclaw/skills"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "GitHub — Markdown Organizer 技能项目. "
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://github.com/aishaoqing/ami/skills",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://github.com/aishaoqing/ami/skills"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "SkillNav — 方案导出技能示例. "
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://skillnav.com",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://skillnav.com"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

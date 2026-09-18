@@ -1,0 +1,2181 @@
+{
+  "schemaVersion": 1,
+  "id": "bb9fb0e4",
+  "slug": "单例模式的五种写法-整理版",
+  "title": "单例模式的五种写法-整理版",
+  "date": "2026-08-18",
+  "updated": "2026-08-18",
+  "description": "整理单例模式的五种 Java 实现方式，逐一对比懒汉、饿汉、双检锁、静态内部类与枚举的线程安全与延迟加载特性，并给出场景选型建议。",
+  "tags": [
+    "设计模式",
+    "单例模式",
+    "Java",
+    "线程安全",
+    "面试"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 5,
+    "words": 1594
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "1. 单例模式基础",
+      "slug": "1-单例模式基础"
+    },
+    {
+      "depth": 4,
+      "text": "1.1 概念",
+      "slug": "11-概念"
+    },
+    {
+      "depth": 4,
+      "text": "1.2 适用场景",
+      "slug": "12-适用场景"
+    },
+    {
+      "depth": 3,
+      "text": "2. 五种实现方式",
+      "slug": "2-五种实现方式"
+    },
+    {
+      "depth": 4,
+      "text": "2.1 懒汉式（线程不安全）",
+      "slug": "21-懒汉式线程不安全"
+    },
+    {
+      "depth": 4,
+      "text": "2.2 懒汉式（线程安全，加锁）",
+      "slug": "22-懒汉式线程安全加锁"
+    },
+    {
+      "depth": 4,
+      "text": "2.3 饿汉式",
+      "slug": "23-饿汉式"
+    },
+    {
+      "depth": 4,
+      "text": "2.4 双检锁（Double-Check Locking，DCL）",
+      "slug": "24-双检锁double-check-lockingdcl"
+    },
+    {
+      "depth": 4,
+      "text": "2.5 静态内部类（推荐）",
+      "slug": "25-静态内部类推荐"
+    },
+    {
+      "depth": 4,
+      "text": "2.6 枚举（最佳实践）",
+      "slug": "26-枚举最佳实践"
+    },
+    {
+      "depth": 3,
+      "text": "3. 五种方式对比",
+      "slug": "3-五种方式对比"
+    },
+    {
+      "depth": 3,
+      "text": "4. 场景选型决策树",
+      "slug": "4-场景选型决策树"
+    },
+    {
+      "depth": 3,
+      "text": "5. 常见坑 & 注意事项",
+      "slug": "5-常见坑-注意事项"
+    },
+    {
+      "depth": 4,
+      "text": "5.1 反序列化破坏单例",
+      "slug": "51-反序列化破坏单例"
+    },
+    {
+      "depth": 4,
+      "text": "5.2 反射破坏单例",
+      "slug": "52-反射破坏单例"
+    },
+    {
+      "depth": 4,
+      "text": "5.3 指令重排（DCL 必须 volatile）",
+      "slug": "53-指令重排dcl-必须-volatile"
+    },
+    {
+      "depth": 4,
+      "text": "5.4 ClassLoader 破坏单例",
+      "slug": "54-classloader-破坏单例"
+    },
+    {
+      "depth": 3,
+      "text": "6. 知识延展",
+      "slug": "6-知识延展"
+    },
+    {
+      "depth": 4,
+      "text": "6.1 Spring Bean 单例 vs 单例模式",
+      "slug": "61-spring-bean-单例-vs-单例模式"
+    },
+    {
+      "depth": 4,
+      "text": "6.2 相关模式",
+      "slug": "62-相关模式"
+    },
+    {
+      "depth": 3,
+      "text": "附录 A：Java 代码速查",
+      "slug": "附录-ajava-代码速查"
+    },
+    {
+      "depth": 4,
+      "text": "懒汉式（不安全）",
+      "slug": "懒汉式不安全"
+    },
+    {
+      "depth": 4,
+      "text": "饿汉式",
+      "slug": "饿汉式"
+    },
+    {
+      "depth": 4,
+      "text": "双检锁",
+      "slug": "双检锁"
+    },
+    {
+      "depth": 4,
+      "text": "静态内部类",
+      "slug": "静态内部类"
+    },
+    {
+      "depth": 4,
+      "text": "枚举（推荐）",
+      "slug": "枚举推荐"
+    },
+    {
+      "depth": 3,
+      "text": "附录 B：原文方法选用建议（保留原文）",
+      "slug": "附录-b原文方法选用建议保留原文"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：整合 6 张 Java 代码截图（懒汉、饿汉、双检锁、静态内部类、枚举）\n主题：单例模式（创建型模式）的 5 种经典实现，对比与场景选型"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "1. 单例模式基础"
+          }
+        ],
+        "data": {
+          "headingId": "1-单例模式基础"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.1 概念"
+          }
+        ],
+        "data": {
+          "headingId": "11-概念"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "定义：确保一个类只有一个实例，并提供全局访问点"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "分类：设计模式 → 创建型模式"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "核心代码：构造方法私有化（private），外部无法 new"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.2 适用场景"
+          }
+        ],
+        "data": {
+          "headingId": "12-适用场景"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "全局配置"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "应用配置类"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "日志"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Logger 单例"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "数据库连接池"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Connection Pool"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "缓存"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Cache Manager"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "线程池、文件管理器"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "2. 五种实现方式"
+          }
+        ],
+        "data": {
+          "headingId": "2-五种实现方式"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.1 懒汉式（线程不安全）"
+          }
+        ],
+        "data": {
+          "headingId": "21-懒汉式线程不安全"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "特征：用时再建，懒加载"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "public class LHan {\n    private static LHan instance; // 懒汉式\n\nprivate LHan() {} // 私有构造方法\n\npublic static LHan getInstance() {\n    if (instance == null) {\n        instance = new LHan();\n    }\n    return instance;\n}\n\n}"
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "延迟加载（lazy loading）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "线程不安全（多线程下可能创建多个实例）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "节省内存"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "不推荐生产使用"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.2 懒汉式（线程安全，加锁）"
+          }
+        ],
+        "data": {
+          "headingId": "22-懒汉式线程安全加锁"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "public static synchronized LHan getInstance() {\n    if (instance == null) {\n        instance = new LHan();\n    }\n    return instance;\n}"
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "线程安全"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每次 getInstance 都要加锁，性能差"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "锁粒度太大"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.3 饿汉式"
+          }
+        ],
+        "data": {
+          "headingId": "23-饿汉式"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "特征：类初始化时就建好，类加载即实例化"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "public class EHan {\n    private static EHan instance = new EHan(); // 饿汉式\n\nprivate EHan() {} // 私有化构造方法\n\npublic static EHan getInstance() {\n    return instance;\n}\n\n}"
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "线程安全（由 JVM 类加载机制保证）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "浪费内存（用不到也创建）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "实现简单"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "无 lazy loading 效果"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.4 双检锁（Double-Check Locking，DCL）"
+          }
+        ],
+        "data": {
+          "headingId": "24-双检锁double-check-lockingdcl"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "特征：综合懒汉式 + 饿汉式优缺点，最常用"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "public class DoubleCheck {\n\nprivate static DoubleCheck instance;\n\nprivate DoubleCheck() {}\n\npublic static DoubleCheck getInstance() {\n    if (instance == null) {\n        synchronized (DoubleCheck.class) {\n            if (instance == null) {\n                instance = new DoubleCheck();\n            }\n        }\n    }\n    return instance;\n}\n\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "关键细节："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "外层 if"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "第一次判空，避免每次都进同步块（性能关键）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "synchronized"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "保证线程安全"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内层 if"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "防止多个线程同时通过外层 if 后重复创建"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "注意：instance 字段应加 volatile 防止指令重排（JDK 1.5+ 才有正确语义）："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "private static volatile DoubleCheck instance;"
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "线程安全 + 高性能 + 延迟加载"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "实现稍复杂；需理解 volatile"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.5 静态内部类（推荐）"
+          }
+        ],
+        "data": {
+          "headingId": "25-静态内部类推荐"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "public class Singleton {\n\nprivate static class SingletonHolder {\n    private static final Singleton INSTANCE = new Singleton();\n}\n\nprivate Singleton() {}\n\npublic static final Singleton getInstance() {\n    return SingletonHolder.INSTANCE;\n}\n\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "核心原理："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "外部类加载时，静态内部类不会被加载（lazy loading）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "调用 getInstance() 才加载 SingletonHolder，此时才创建实例"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "JVM 类加载机制保证线程安全（类初始化阶段加锁）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "线程安全 + 延迟加载 + 实现简洁"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "只适用于静态域"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "比双检锁更优雅"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "实例域需要延迟初始化时不能用"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.6 枚举（最佳实践）"
+          }
+        ],
+        "data": {
+          "headingId": "26-枚举最佳实践"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "public enum Singleton {\n    INSTANCE;\n    public void anyMethod() {\n        // 业务方法\n    }\n}"
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "实现最简洁"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "不能延迟加载（枚举实例在类加载时创建）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "自动支持序列化机制"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "不适合需要传参构造的场景"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "绝对防止多次实例化（JVM 枚举机制）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "线程安全（枚举实例天生单例）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Effective Java 作者 Joshua Bloch 推荐的实现方式。最简洁 + 最安全。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "3. 五种方式对比"
+          }
+        ],
+        "data": {
+          "headingId": "3-五种方式对比"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "懒汉（不安全）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "最好"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "⭐"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "懒汉（synchronized）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "差"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "⭐"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "饿汉式"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "好"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "⭐"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "双检锁"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "好"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "⭐⭐⭐"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌（需 volatile）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "静态内部类"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "好"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "⭐⭐"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "枚举"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "最好"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "⭐"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅（JVM 保证）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "4. 场景选型决策树"
+          }
+        ],
+        "data": {
+          "headingId": "4-场景选型决策树"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "你的应用是否需要延迟加载？\n├─ 不需要（启动时即用）\n│   ├─ 涉及反序列化？ → ✅ 枚举（最佳）\n│   └─ 普通场景       → ✅ 饿汉式\n│\n└─ 需要延迟加载\n├─ 实例域（不是静态域）→ ✅ 双检锁\n└─ 静态域            → ✅ 静态内部类\n|||\n|---|---|\n|Spring Bean 单例|用容器（不需要自己实现）|\n|工具类（无状态）|枚举 或 饿汉|\n|重量级资源（DB 连接池）|双检锁 或 静态内部类|\n|JDK / 框架内部单例|枚举（Joshua Bloch 推荐）|\n|需要传参构造|双检锁（其他方式构造时无法传参）|"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "5. 常见坑 & 注意事项"
+          }
+        ],
+        "data": {
+          "headingId": "5-常见坑-注意事项"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.1 反序列化破坏单例"
+          }
+        ],
+        "data": {
+          "headingId": "51-反序列化破坏单例"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "// 双检锁 / 饿汉：序列化 → 反序列化会创建新实例\n// 解决：添加 readResolve 方法\nprivate Object readResolve() {\n    return instance;\n}\n// 枚举天然免疫（JVM 内部实现）"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.2 反射破坏单例"
+          }
+        ],
+        "data": {
+          "headingId": "52-反射破坏单例"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "// 反射调用 private 构造器可绕过单例\n// 解决：在构造器中防反射\nprivate Singleton() {\n    if (instance != null) {\n        throw new RuntimeException(\"禁止反射创建\");\n    }\n}\n// 枚举天然免疫（不能通过反射创建枚举）"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.3 指令重排（DCL 必须 volatile）"
+          }
+        ],
+        "data": {
+          "headingId": "53-指令重排dcl-必须-volatile"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "// 错误：DCL 没有 volatile 可能返回未初始化的对象\nprivate static DoubleCheck instance;\n\npublic static DoubleCheck getInstance() {\n    if (instance == null) {              // 1\n        synchronized (DoubleCheck.class) {\n            if (instance == null) {\n                instance = new DoubleCheck();  // 2 这一步可能被重排\n            }\n        }\n    }\n    return instance;                    // 3\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "new 实际分 3 步：分配内存 → 初始化对象 → 赋值引用"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "指令重排可能导致：分配内存 → 赋值引用 → 初始化对象"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "此时其他线程看到 instance 非空，返回未初始化的对象 → NPE"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "修复：private static volatile DoubleCheck instance;"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.4 ClassLoader 破坏单例"
+          }
+        ],
+        "data": {
+          "headingId": "54-classloader-破坏单例"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "不同 ClassLoader 可能加载出不同的 Singleton 类 → 多个实例"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "反序列化：自定义 readResolve 解决"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "最佳实践：枚举 一劳永逸"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "6. 知识延展"
+          }
+        ],
+        "data": {
+          "headingId": "6-知识延展"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "6.1 Spring Bean 单例 vs 单例模式"
+          }
+        ],
+        "data": {
+          "headingId": "61-spring-bean-单例-vs-单例模式"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "范围"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "JVM 内一个类一个实例"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "容器内一个 Bean 一个实例"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "线程安全"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "自己保证"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "容器保证"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "实现"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "私有构造 + getInstance"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "@Component + @Scope(\"singleton\")"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "6.2 相关模式"
+          }
+        ],
+        "data": {
+          "headingId": "62-相关模式"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "工厂方法"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "经常用单例实现工厂"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "建造者"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内部 Builder 可以是单例"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "享元"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "多个\"逻辑\"对象共享，类似单例的扩展"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "模板方法"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "单例 + 模板方法 = 工具类"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "附录 A：Java 代码速查"
+          }
+        ],
+        "data": {
+          "headingId": "附录-ajava-代码速查"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "懒汉式（不安全）"
+          }
+        ],
+        "data": {
+          "headingId": "懒汉式不安全"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "public class LHan {\n    private static LHan instance;\n    private LHan() {}\n    public static LHan getInstance() {\n        if (instance == null) instance = new LHan();\n        return instance;\n    }\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "饿汉式"
+          }
+        ],
+        "data": {
+          "headingId": "饿汉式"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "public class EHan {\n    private static EHan instance = new EHan();\n    private EHan() {}\n    public static EHan getInstance() { return instance; }\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "双检锁"
+          }
+        ],
+        "data": {
+          "headingId": "双检锁"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "public class DoubleCheck {\n    private static volatile DoubleCheck instance;\n    private DoubleCheck() {}\n    public static DoubleCheck getInstance() {\n        if (instance == null) {\n            synchronized (DoubleCheck.class) {\n                if (instance == null) {\n                    instance = new DoubleCheck();\n                }\n            }\n        }\n        return instance;\n    }\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "静态内部类"
+          }
+        ],
+        "data": {
+          "headingId": "静态内部类"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "public class Singleton {\n    private static class SingletonHolder {\n        private static final Singleton INSTANCE = new Singleton();\n    }\n    private Singleton() {}\n    public static final Singleton getInstance() {\n        return SingletonHolder.INSTANCE;\n    }\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "枚举（推荐）"
+          }
+        ],
+        "data": {
+          "headingId": "枚举推荐"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "java",
+        "meta": null,
+        "value": "public enum Singleton {\n    INSTANCE;\n    public void anyMethod() { }\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "附录 B：原文方法选用建议（保留原文）"
+          }
+        ],
+        "data": {
+          "headingId": "附录-b原文方法选用建议保留原文"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "懒汉式（包含线程安全和线程不安全两种方式）都比较少用\n饿汉式和双检锁都可以使用，可根据具体情况自主选择\n在要明确实现 lazy loading 效果时，可以考虑静态内部类的实现方式\n若涉及到反序列化创建对象时，可以尝试使用枚举方式"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-18"
+          }
+        ]
+      }
+    ]
+  }
+}

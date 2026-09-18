@@ -1,0 +1,996 @@
+{
+  "schemaVersion": 1,
+  "id": "7e907f82",
+  "slug": "人工智能 - 深度学习的理论与应用 by 由清圳-整理版",
+  "title": "人工智能 - 深度学习的理论与应用 by 由清圳-整理版",
+  "date": "2026-08-18",
+  "updated": "2026-08-18",
+  "description": "整理自由清圳的会议分享，从人工智能基础概念出发，讲解深度学习的前向传播、梯度下降与反向传播三大核心机制，以及图像、语言、语音三类应用。",
+  "tags": [
+    "人工智能",
+    "深度学习",
+    "神经网络",
+    "前向传播",
+    "反向传播"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 3,
+    "words": 874
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "1. 什么是人工智能",
+      "slug": "1-什么是人工智能"
+    },
+    {
+      "depth": 3,
+      "text": "2. 人工智能涉及的学科",
+      "slug": "2-人工智能涉及的学科"
+    },
+    {
+      "depth": 3,
+      "text": "3. 什么是神经元",
+      "slug": "3-什么是神经元"
+    },
+    {
+      "depth": 3,
+      "text": "4. 深度学习的三个核心概念",
+      "slug": "4-深度学习的三个核心概念"
+    },
+    {
+      "depth": 4,
+      "text": "4.1 前向传播（Forward Propagation）",
+      "slug": "41-前向传播forward-propagation"
+    },
+    {
+      "depth": 4,
+      "text": "4.2 梯度下降（Gradient Descent）",
+      "slug": "42-梯度下降gradient-descent"
+    },
+    {
+      "depth": 4,
+      "text": "4.3 反向传播（Backpropagation）",
+      "slug": "43-反向传播backpropagation"
+    },
+    {
+      "depth": 3,
+      "text": "5. 应用领域",
+      "slug": "5-应用领域"
+    },
+    {
+      "depth": 4,
+      "text": "5.1 图像识别",
+      "slug": "51-图像识别"
+    },
+    {
+      "depth": 4,
+      "text": "5.2 语言模型",
+      "slug": "52-语言模型"
+    },
+    {
+      "depth": 4,
+      "text": "5.3 语音识别",
+      "slug": "53-语音识别"
+    },
+    {
+      "depth": 3,
+      "text": "6. 核心要点速查",
+      "slug": "6-核心要点速查"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：由清圳 分享 · 会议记录提炼\n主题：从 AI 基础概念到深度学习三大核心机制，再到图像/语言/语音三大应用领域"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "1. 什么是人工智能"
+          }
+        ],
+        "data": {
+          "headingId": "1-什么是人工智能"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "定义：让机器像人一样思考和行动"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "2. 人工智能涉及的学科"
+          }
+        ],
+        "data": {
+          "headingId": "2-人工智能涉及的学科"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "涉及多学科交叉：认知科学、神经科学、计算机科学、数学、统计学等"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "关键启发：1981 年诺贝尔医学奖——分层神经网络研究"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "核心思想：层数越高，抽象程度越高，语义化越明显（符合人脑思考模式）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "3. 什么是神经元"
+          }
+        ],
+        "data": {
+          "headingId": "3-什么是神经元"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "结构：输入 → 激励函数（非线性）→ 输出"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "要点：激励函数引入非线性，是神经网络能拟合复杂函数的关键"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "4. 深度学习的三个核心概念"
+          }
+        ],
+        "data": {
+          "headingId": "4-深度学习的三个核心概念"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.1 前向传播（Forward Propagation）"
+          }
+        ],
+        "data": {
+          "headingId": "41-前向传播forward-propagation"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "信息从低层向高层逐级传播"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "规则：前一层的输出 = 下一层的输入"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.2 梯度下降（Gradient Descent）"
+          }
+        ],
+        "data": {
+          "headingId": "42-梯度下降gradient-descent"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "目的：以梯度下降的方式求解极小值点（损失最小化）"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "学习率（Learning rate）的权衡："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "太大"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "容易跳过极小值目标，震荡不收敛"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "太小"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "计算量太大，训练浪费"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.3 反向传播（Backpropagation）"
+          }
+        ],
+        "data": {
+          "headingId": "43-反向传播backpropagation"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "本质：求偏导数，从输出层反向传播误差"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "作用：根据误差反向优化网络参数（权重），是训练的核心机制\n三者关系：前向传播计算输出 → 反向传播计算梯度 → 梯度下降更新参数，循环迭代"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "5. 应用领域"
+          }
+        ],
+        "data": {
+          "headingId": "5-应用领域"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.1 图像识别"
+          }
+        ],
+        "data": {
+          "headingId": "51-图像识别"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "RBM（受限玻尔兹曼机）：经典的无监督特征学习模型"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "越高层抽象程度越高、语义化越明显，符合人脑思考"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "图像预训练思想："
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "根据本质特征生成图片"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "通过生成的图片与真实图片比对"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "依据差异进行自我训练"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.2 语言模型"
+          }
+        ],
+        "data": {
+          "headingId": "52-语言模型"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "传统语言模型"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "类似 N-gram：输入一个字，预测下一个字"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "基于深度学习将单词转化为词向量；爬取数据扣词自训练，解决不了多义词"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "LSTM"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "多层循环结构：3 层单词特性、2 层句法特性、1 层语义特性"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "层次分明的特性提取，但不方便计算"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "GPT"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Transformer 注意力模型"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "适合密集计算、注意力计算；区域性注意力分配"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "BERT"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "双向神经网络模型"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "双向语义理解，弥补单向模型的上下文缺失"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "演进脉络：词向量 → LSTM（时序建模）→ Transformer 注意力（并行计算）→ BERT 双向（语义理解）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.3 语音识别"
+          }
+        ],
+        "data": {
+          "headingId": "53-语音识别"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "任务：语音信号 → 文字"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "建模要素："
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "输入：观测序列（语音信号特征）"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "输出：标注序列（文字）"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "涉及：声学模型 + 语言模型"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "流程：语音 → 解码器（声学模型 + 语言模型）→ 文字"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "经典方法：GMM（高斯混合模型）+ HMM（隐马尔可夫模型）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "6. 核心要点速查"
+          }
+        ],
+        "data": {
+          "headingId": "6-核心要点速查"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "神经元"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "输入 → 非线性激励函数 → 输出"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "前向传播"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "低层向高层传播，前层输出 = 后层输入"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "梯度下降"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "求极小值；学习率太大跳过、太小浪费"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "反向传播"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "求偏导数，反向优化结果"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "图像"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "RBM + 预训练生成比对自训练；高层更抽象"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "语言"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "词向量 → LSTM → GPT（注意力）→ BERT（双向）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "语音"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "观测序列 → 声学+语言模型解码 → 标注序列（GMM+HMM）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-18"
+          }
+        ]
+      }
+    ]
+  }
+}

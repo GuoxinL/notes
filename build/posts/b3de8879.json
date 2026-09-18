@@ -1,0 +1,2701 @@
+{
+  "schemaVersion": 1,
+  "id": "b3de8879",
+  "slug": "长安链内存溢出BugFix实践-pprof定位与Snapshot模块深拷贝问题",
+  "title": "长安链内存溢出BugFix实践-pprof定位与Snapshot模块深拷贝问题",
+  "date": "2026-08-20",
+  "updated": "2026-08-20",
+  "description": "记录长安链 2.1.0_alpha 压测 OOM 的两周排查过程：根因是 Snapshot 模块 map 的 put/get key 计算不一致，配合 protobuf 深拷贝与 pprof 定位。",
+  "tags": [
+    "长安链",
+    "ChainMaker",
+    "BugFix",
+    "内存溢出",
+    "OOM"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 9,
+    "words": 2612
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "1. 问题背景",
+      "slug": "1-问题背景"
+    },
+    {
+      "depth": 3,
+      "text": "2. 定位工具：pprof 简介",
+      "slug": "2-定位工具pprof-简介"
+    },
+    {
+      "depth": 4,
+      "text": "2.1 两种包的使用场景",
+      "slug": "21-两种包的使用场景"
+    },
+    {
+      "depth": 4,
+      "text": "2.2 三种数据获取方式",
+      "slug": "22-三种数据获取方式"
+    },
+    {
+      "depth": 4,
+      "text": "2.3 最简单的启用方式",
+      "slug": "23-最简单的启用方式"
+    },
+    {
+      "depth": 3,
+      "text": "3. 长安链模块基础（理解内存问题的前提）",
+      "slug": "3-长安链模块基础理解内存问题的前提"
+    },
+    {
+      "depth": 4,
+      "text": "3.1 产块流程总览（提案节点 + 验证节点）",
+      "slug": "31-产块流程总览提案节点-验证节点"
+    },
+    {
+      "depth": 4,
+      "text": "3.2 产块节点详细泳道图",
+      "slug": "32-产块节点详细泳道图"
+    },
+    {
+      "depth": 4,
+      "text": "3.3 数据处理过程（核心内存路径）",
+      "slug": "33-数据处理过程核心内存路径"
+    },
+    {
+      "depth": 3,
+      "text": "4. 内存溢出定位过程",
+      "slug": "4-内存溢出定位过程"
+    },
+    {
+      "depth": 4,
+      "text": "4.1 排查方向（8 类常见嫌疑）",
+      "slug": "41-排查方向8-类常见嫌疑"
+    },
+    {
+      "depth": 4,
+      "text": "4.2 排除法研究（逐步缩小嫌疑范围）",
+      "slug": "42-排除法研究逐步缩小嫌疑范围"
+    },
+    {
+      "depth": 4,
+      "text": "4.3 合约问题验证",
+      "slug": "43-合约问题验证"
+    },
+    {
+      "depth": 3,
+      "text": "5. 研究难点",
+      "slug": "5-研究难点"
+    },
+    {
+      "depth": 3,
+      "text": "6. 解决方法（6 步）",
+      "slug": "6-解决方法6-步"
+    },
+    {
+      "depth": 3,
+      "text": "7. 根因分析 & 总结",
+      "slug": "7-根因分析-总结"
+    },
+    {
+      "depth": 4,
+      "text": "7.1 根因（Snapshot 模块 key 不一致）",
+      "slug": "71-根因snapshot-模块-key-不一致"
+    },
+    {
+      "depth": 4,
+      "text": "7.2 四点经验",
+      "slug": "72-四点经验"
+    },
+    {
+      "depth": 3,
+      "text": "8. 整理后补充（关键技术点）",
+      "slug": "8-整理后补充关键技术点"
+    },
+    {
+      "depth": 4,
+      "text": "8.1 protobuf 深拷贝",
+      "slug": "81-protobuf-深拷贝"
+    },
+    {
+      "depth": 4,
+      "text": "8.2 pprof 实战套路",
+      "slug": "82-pprof-实战套路"
+    },
+    {
+      "depth": 4,
+      "text": "8.3 内存问题定位通用流程",
+      "slug": "83-内存问题定位通用流程"
+    },
+    {
+      "depth": 3,
+      "text": "9. 原文出处",
+      "slug": "9-原文出处"
+    }
+  ],
+  "references": [
+    {
+      "kind": "external",
+      "label": "http://127.0.0.1:9090/debug/pprof/heapgo",
+      "href": "http://127.0.0.1:9090/debug/pprof/heapgo"
+    },
+    {
+      "kind": "external",
+      "label": "http://127.0.0.1:9090/debug/pprof/profile",
+      "href": "http://127.0.0.1:9090/debug/pprof/profile"
+    },
+    {
+      "kind": "external",
+      "label": "https://go.dev/blog/pprof）",
+      "href": "https://go.dev/blog/pprof）"
+    }
+  ],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：2021-12-21 腾讯 · 曾毅 内部技术分享（PPT 现场笔记）\n核心议题：ChainMaker 2.1.0_alpha 压测时节点 OOM 崩溃，对比 2.0.0 无此问题，定位过程持续两周\n关键结论：根因不在交易池而在 Snapshot 模块；Snapshot 内部 map 的 put/get key 计算逻辑不一致（CalcBlockFingerPrint vs calcSnapshotFingerPrint），导致数据只入不删。配合 protobuf.Clone 显式深拷贝 + pprof 才得以定位。\n整理版本：v1.0 · 2026-08-20"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "1. 问题背景"
+          }
+        ],
+        "data": {
+          "headingId": "1-问题背景"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "现象"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2.1.0_alpha 版本压测，节点内存持续上涨，不足 2 小时即 panic（OOM）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "关键对比"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2.0.0 版本无此问题"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "定位耗时"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "持续两周"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "表面假象"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "起初通过 pprof 分析认为是 交易池 内存溢出，实际为 Snapshot 模块"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "2. 定位工具：pprof 简介"
+          }
+        ],
+        "data": {
+          "headingId": "2-定位工具pprof-简介"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "pprof 是 Go 官方提供的可视化图形性能分析工具，包含在 net/http/pprof 和 runtime/pprof 两个包中。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.1 两种包的使用场景"
+          }
+        ],
+        "data": {
+          "headingId": "21-两种包的使用场景"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "runtime/pprof"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "可结束的代码块（如一次编解码操作）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "net/http/pprof"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "不可结束的代码块（如 web 应用），对 runtime/pprof 的二次封装"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图：01-pprof获取数据.png（pprof 介绍与三种数据获取方式对照表）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.2 三种数据获取方式"
+          }
+        ],
+        "data": {
+          "headingId": "22-三种数据获取方式"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "go test"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "函数级基准测试"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-cpuprofile / -memprofile"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "HTTP"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "任意运行中的服务"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "go tool pprof "
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "http://127.0.0.1:9090/debug/pprof/heapgo",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "http://127.0.0.1:9090/debug/pprof/heapgo"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " tool pprof --seconds 10 "
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "http://127.0.0.1:9090/debug/pprof/profile",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "http://127.0.0.1:9090/debug/pprof/profile"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "输出文件"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "非常驻服务"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "pprof.StartCPUProfile / pprof.WriteHeapProfile"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图：01-pprof获取数据.png 同样展示了上表原始 PPT 排版。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.3 最简单的启用方式"
+          }
+        ],
+        "data": {
+          "headingId": "23-最简单的启用方式"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "import _ \"net/http/pprof\"\n\ngo func() {\n    http.ListenAndServe(\"0.0.0.0:6060\", nil)\n}()"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "随后通过 go tool pprof 分析："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 堆内存分析\ngo tool pprof http://localhost:6060/debug/pprof/heap\n\n# 30 秒 CPU profile\ngo tool pprof http://localhost:6060/debug/pprof/profile?seconds=30"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图：02-启用pprof.png（含官方 blog 链接 "
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://go.dev/blog/pprof）",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://go.dev/blog/pprof）"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "3. 长安链模块基础（理解内存问题的前提）"
+          }
+        ],
+        "data": {
+          "headingId": "3-长安链模块基础理解内存问题的前提"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "分析内存问题前必须熟悉长安链核心模块结构。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.1 产块流程总览（提案节点 + 验证节点）"
+          }
+        ],
+        "data": {
+          "headingId": "31-产块流程总览提案节点-验证节点"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "mermaid",
+        "meta": null,
+        "value": "flowchart TB\n  subgraph 提案节点\n    direction LR\n    P1[交易缓存模块] -->|1.1 一批交易| P2[区块提议模块]\n    P2 -->|1.2 一批交易\\n1.5 候选区块| P3[交易调度模块]\n    P2 -->|1.3 交易\\n1.4 执行结果| P4[智能合约模块]\n    P3 -->|候选区块| P5[共识算法模块]\n    P5 -->|已共识区块| P6[区块执行模块]\n    P6 --> P7[数据存储模块]\n  end\n\n  subgraph 共识消息\n    CM1[共识消息]\n  end\n\n  subgraph 验证节点\n    direction LR\n    V1[交易调度模块] -->|3.2 候选区块\\n3.5 执行结果| V2[区块验证模块]\n    V1 -->|3.3 签名\\n3.4 执行结果| V3[智能合约模块]\n    V2 -->|3.1 数据快照| V4[数据存储模块]\n    V2 -->|候选区块/验证结果| V5[共识算法模块]\n    V5 -->|已共识区块| V6[区块执行模块]\n    V6 --> V7[数据存储模块]\n  end\n\n  P5 -.->|共识消息| V5\n  V5 -.->|共识消息| P5"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "4 个阶段编号："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "提议候选区块（提案节点）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "共识候选区块"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "验证候选区块（验证节点）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "执行候选区块"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图：03-产块流程总览.png（完整模块交互原始图）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.2 产块节点详细泳道图"
+          }
+        ],
+        "data": {
+          "headingId": "32-产块节点详细泳道图"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "mermaid",
+        "meta": null,
+        "value": "flowchart LR\n  subgraph 核心引擎\n    CE1[构建空区块] --> CE2[/候选区块回至核心引擎/]\n  end\n  subgraph 交易调度\n    TS1[从交易池获取一批交易] --> TS2[构建交易执行环境]\n    TS2 --> TS3[交易冲突分析]\n    TS3 --> TS4[构建候选区块]\n  end\n  subgraph 交易池\n    TP1[根据排序方式对该批交易排序]\n  end\n  subgraph 合约引擎\n    CC1[并行执行合约，生成读写集]\n  end\n\n  CE1 --> TS1\n  TP1 --> TS1\n  TS1 --> CC1\n  CC1 --> TS2\n  TS3 --> CE2\n  TS4 --> CE2\n  CE2 --> P[/完成/]"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图：04-产块节点泳道图.png（4 泳道原始版：核心引擎 / 交易调度 / 交易池 / 合约引擎）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.3 数据处理过程（核心内存路径）"
+          }
+        ],
+        "data": {
+          "headingId": "33-数据处理过程核心内存路径"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "数据流向（最关键的内存路径）："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "前置区块"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Store 模块"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "长期持久化"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "当前区块合约执行结果"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Snapshot 模块"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "区块级"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "当前交易合约执行结果"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "TxSimContext"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "交易级"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "交易执行完毕"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "TxSimContext → Snapshot；TxSimContext 抛弃"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "—"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "区块执行完毕"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Snapshot 产出 Txs + 读写集 → 生成结果区块"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "—"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "新区块写入"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Store；SnapshotManager 删除对应 Snapshot"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "—"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "mermaid",
+        "meta": null,
+        "value": "flowchart TB\n  subgraph TxSimContext[\"TxSimContext（交易级）\"]\n    RM1[ReadMap] & WM1[WriteMap]\n  end\n  subgraph Snapshot[\"Snapshot（区块级）\"]\n    SM[SnapshotManager]\n    SS[Snapshot 链]\n    RM2[ReadMap] & RM3[ResultMap] & WM2[WriteMap]\n  end\n  subgraph BlockStore[\"BlockStore（持久化）\"]\n    CACHE\n    DB[(存储)]\n  end\n\n  TxSimContext -->|合约执行完成\\n写结果| Snapshot\n  SS -->|区块完成\\n生成读写集| BlockStore\n  BlockStore -.->|SnapshotManager\\n删除 Snapshot| Snapshot"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图：05-数据处理过程.png（UML 类图 + 文字说明原始版）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "4. 内存溢出定位过程"
+          }
+        ],
+        "data": {
+          "headingId": "4-内存溢出定位过程"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.1 排查方向（8 类常见嫌疑）"
+          }
+        ],
+        "data": {
+          "headingId": "41-排查方向8-类常见嫌疑"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内存溢出"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "OOM panic"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内存大量申请/释放"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "GC 回收慢，内存过高时静置一小时左右会逐渐恢复"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "协程泄露"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "—"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "协程数量异常"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "几万 ~ 几十万"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "5"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "对象数量异常"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "—"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "6"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "反射使用"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "GC 问题；CGO 难以定位"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "7"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "定时器使用"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内存泄露"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "8"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "业务逻辑问题"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "—"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.2 排除法研究（逐步缩小嫌疑范围）"
+          }
+        ],
+        "data": {
+          "headingId": "42-排除法研究逐步缩小嫌疑范围"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "01"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "用 系统合约 替代 wasmer 合约"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内存溢出不是 VM 模块引起"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "02"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "用 simple 版 store 替代 leveldb"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内存溢出不是 store 模块引起"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "03"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "切到 solo 共识 压测"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内存溢出不是 raft 模块引起"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "04"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "切换 raft 主节点"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内存溢出与压测节点模块无关"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "mermaid",
+        "meta": null,
+        "value": "flowchart LR\n  S1[01 系统合约代 wasmer] -->|VM?| R1{VM 模块?}\n  R1 -- 不是 --> S2[02 simple store 代 leveldb]\n  S2 -->|store?| R2{store 模块?}\n  R2 -- 不是 --> S3[03 solo 共识代 raft]\n  S3 -->|raft?| R3{raft 模块?}\n  R3 -- 不是 --> S4[04 切换 raft 主节点]\n  S4 --> R4{与节点模块有关?}\n  R4 -- 无关 --> E[其他模块嫌疑]"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图：06-研究方法排除法.png"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.3 合约问题验证"
+          }
+        ],
+        "data": {
+          "headingId": "43-合约问题验证"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "换一个合约（替换 EVM 或系统合约）是否还会触发内存溢出？"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "系统合约可以写成非常简单的形式"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "用最简单的合约方法验证是否仍会复现"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图：07-合约问题排查.png（GoLand IDE 截图：运行 TestGetGas 单测，PASS 0.00s）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "5. 研究难点"
+          }
+        ],
+        "data": {
+          "headingId": "5-研究难点"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "I"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内存溢出问题无法 Debug"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "一方面 OOM 无法通过 Debug 模式发现，另一方面 Goland 对 delve MI 支持不好，也支持常规 Debug"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "II"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "日志看上去正常"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "开启 DEBUG 日志后，对应的提交、删除等日志都有记录"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "III"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "代码不熟悉"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "核心模块本身较复杂，逻辑较多，且非本人设计与编写，很多细节不熟悉"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "IV"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "模块交错纵横"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "核心模块与共识模块通过 MessageBus 来回交互；还涉及交易池、Snapshot、TxSimContext 等，逻辑复杂，定位困难"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图：08-研究难点.png"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "6. 解决方法（6 步）"
+          }
+        ],
+        "data": {
+          "headingId": "6-解决方法6-步"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "pb 对象的 Clone"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "重新申请内存，构造独立对象"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "pprof"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "定位未释放的对象"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "大量 pb Clone + pprof"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "定位具体占用内存的模块"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "在接收指针参数的地方进行 Clone"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "切断指针引用传递导致的内存悬挂"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "5"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "增加 log"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "确保修改生效"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "6"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "启动节点 → 压测 → pprof 跟踪"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "找到 Bug，提醒相关开发修复"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "mermaid",
+        "meta": null,
+        "value": "flowchart TB\n  A[1. pb Clone 重新申请内存] --> B[2. pprof 定位未释放对象]\n  B --> C[3. 大量 pb Clone + pprof\\n定位占用模块]\n  C --> D[4. 接收指针处 Clone]\n  D --> E[5. 增加 log 验证生效]\n  E --> F[6. 启动节点 → 压测 → pprof → 修复]"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图：09-解决方法.png"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "7. 根因分析 & 总结"
+          }
+        ],
+        "data": {
+          "headingId": "7-根因分析-总结"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "7.1 根因（Snapshot 模块 key 不一致）"
+          }
+        ],
+        "data": {
+          "headingId": "71-根因snapshot-模块-key-不一致"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Snapshot 中存在一个 map："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "放入数据时使用 "
+                  },
+                  {
+                    "type": "emphasis",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "utils.CalcBlockFingerPrint"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " 计算 key"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "删除数据时使用 "
+                  },
+                  {
+                    "type": "emphasis",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "calcSnapshotFingerPrint"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " 计算 key"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "两套 key 计算逻辑不同，导致 key 不一致"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "结果：数据只放入不删除，累计占满内存 → OOM"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "7.2 四点经验"
+          }
+        ],
+        "data": {
+          "headingId": "72-四点经验"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "从 pprof 分析以为是交易池的内存溢出，实际上是 Snapshot 模块的内存溢出。只靠 pprof 完全无法定位这个问题。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "mock 或简化整个流程的各个模块，逐步缩小定位范围。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "protobuf 提供了深拷贝对象的方法（proto.Marshal / proto.Unmarshal，或 proto.Clone）：不使用对象指针而是使用新拷贝的对象，再配合 pprof 可定位真实的内存溢出点。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Snapshot 中存在一个 map，其放入数据时使用 "
+                  },
+                  {
+                    "type": "emphasis",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "utils.CalcBlockFingerPrint"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " 计算 key，删除数据时使用 "
+                  },
+                  {
+                    "type": "emphasis",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "calcSnapshotFingerPrint"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " 计算 key，因为计算逻辑不同，导致 key 不同，从而数据只放入不删除。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图：10-总结.png"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "8. 整理后补充（关键技术点）"
+          }
+        ],
+        "data": {
+          "headingId": "8-整理后补充关键技术点"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "8.1 protobuf 深拷贝"
+          }
+        ],
+        "data": {
+          "headingId": "81-protobuf-深拷贝"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "当数据通过接口层层传递时，使用 指针引用 看似节省内存，但会在以下情况下埋下隐患："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "生命周期不匹配：map put/get 跨模块时，若中间发生对象变更可能影响 key 一致性；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "模块边界：跨模块接收指针时，对方可能长期持有引用导致无法 GC；"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "map key 计算：对复杂结构体计算 fingerprint 时，同一对象的指针 vs 拷贝值 算出的 key 必须一致。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "修复模式：在模块边界或 map 存储前 proto.Clone 一份独立对象。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "8.2 pprof 实战套路"
+          }
+        ],
+        "data": {
+          "headingId": "82-pprof-实战套路"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "进程持续运行（web/服务）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "net/http/pprof + go tool pprof 远程采样"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "单次编解码/批处理"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "runtime/pprof.StartCPUProfile / WriteHeapProfile 落盘"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "函数级基准"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "go test -bench -cpuprofile -memprofile"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "分析方式"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "top / list / web（可视化火焰图）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "多轮对比"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "对比 fix 前后的 alloc_space，定位新增增长点"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "8.3 内存问题定位通用流程"
+          }
+        ],
+        "data": {
+          "headingId": "83-内存问题定位通用流程"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "mermaid",
+        "meta": null,
+        "value": "flowchart LR\n  A[现象：OOM / 内存上涨] --> B[pprof 粗筛\\n确认泄漏模块]\n  B --> C{只靠 pprof 能定位?}\n  C -- 不能 --> D[排除法：mock/简化模块]\n  D --> E[二分缩小范围]\n  E --> F{边界是否涉及\\n指针/共享对象?}\n  F -- 是 --> G[添加 proto.Clone 隔离]\n  G --> H[再次压测 + pprof 对比]\n  F -- 否 --> I[业务逻辑审计\\n定时器/协程/反射]\n  H --> J[根因定位\\n修复 + 回归]\n  I --> J\n  C -- 能 --> J"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "9. 原文出处"
+          }
+        ],
+        "data": {
+          "headingId": "9-原文出处"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "演讲：长安链内存溢出 BugFix 实践 · 腾讯 · 曾毅"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "时间：2021-12-21"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "形式：内部技术分享（PPT 17 页，截图 10 张）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "原始笔记：C:\\node\\废寝忘食\\Chainmaker\\会议记录\\2021-12-21_长安链内存溢出BugFix实践.md"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-20"
+          }
+        ]
+      }
+    ]
+  }
+}

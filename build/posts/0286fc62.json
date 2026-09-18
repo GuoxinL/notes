@@ -1,0 +1,687 @@
+{
+  "schemaVersion": 1,
+  "id": "0286fc62",
+  "slug": "dd测试磁盘读写速度-time计时与缓存参数",
+  "title": "dd测试磁盘读写速度-time计时与缓存参数",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "用 time + dd 测磁盘读写速度：借 /dev/zero 与 /dev/null 消除单侧 IO，再用 conv=fsync、oflag=dsync 与 direct 参数绕开缓存，保证结果准确。",
+  "tags": [
+    "dd",
+    "磁盘性能",
+    "读写速度",
+    "time",
+    "fsync"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 3,
+    "words": 823
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、测试写速度",
+      "slug": "一测试写速度"
+    },
+    {
+      "depth": 3,
+      "text": "二、测试读速度",
+      "slug": "二测试读速度"
+    },
+    {
+      "depth": 3,
+      "text": "三、dd 参数深入：conv=fsync vs oflag=dsync/sync",
+      "slug": "三dd-参数深入convfsync-vs-oflagdsyncsync"
+    },
+    {
+      "depth": 4,
+      "text": "参数含义对照",
+      "slug": "参数含义对照"
+    },
+    {
+      "depth": 4,
+      "text": "关键差异",
+      "slug": "关键差异"
+    },
+    {
+      "depth": 4,
+      "text": "实验验证",
+      "slug": "实验验证"
+    },
+    {
+      "depth": 4,
+      "text": "三种写法对比",
+      "slug": "三种写法对比"
+    },
+    {
+      "depth": 3,
+      "text": "四、dd 如何绕过缓存（direct I/O）",
+      "slug": "四dd-如何绕过缓存direct-io"
+    },
+    {
+      "depth": 3,
+      "text": "五、常见问题（补充）",
+      "slug": "五常见问题补充"
+    }
+  ],
+  "references": [
+    {
+      "kind": "external",
+      "label": "https://blog.csdn.net/s1070/article/details/52860073",
+      "href": "https://blog.csdn.net/s1070/article/details/52860073"
+    }
+  ],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：CSDN 整理版\n原文链接："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://blog.csdn.net/s1070/article/details/52860073",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://blog.csdn.net/s1070/article/details/52860073"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、测试写速度"
+          }
+        ],
+        "data": {
+          "headingId": "一测试写速度"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "time dd if=/dev/zero of=test.dbf bs=8k count=300000"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "原理：/dev/zero 是伪设备，只产生空字符流，不会产生 IO；IO 全部集中在 of（写入）侧，因此等价于测试磁盘写能力。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "输出示例："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "300000+0 records in\n300000+0 records out\n\nreal 0m36.669s\nuser 0m0.185s\nsys 0m9.340s"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "速度计算：8 * 300000 / 1024 / 36.669 = 63.916 M/s"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、测试读速度"
+          }
+        ],
+        "data": {
+          "headingId": "二测试读速度"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "time dd if=/dev/sda1 of=/dev/null bs=8k"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "原理：/dev/sda1 是物理分区，读取产生 IO；/dev/null 是黑洞伪设备，写入不产生 IO。IO 只发生在源设备上，等价于测试磁盘读能力。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "输出示例："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "448494+0 records in\n448494+0 records out\n\nreal 0m51.070s\nuser 0m0.054s\nsys 0m10.028s"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "速度计算：8 * 448494 / 1024 / 51.070 = 68.61 M/s"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "提示：count 越大、测试时间越长，结果越准确。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、dd 参数深入：conv=fsync vs oflag=dsync/sync"
+          }
+        ],
+        "data": {
+          "headingId": "三dd-参数深入convfsync-vs-oflagdsyncsync"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "背景：普通 dd 写文件时数据先进缓存就返回了，命令结束时数据可能并未真正落盘——结果不准确。要测\"真正写盘\"的速度，需用同步参数。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "参数含义对照"
+          }
+        ],
+        "data": {
+          "headingId": "参数含义对照"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "oflag=dsync"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Use synchronized I/O for data... forces a physical write of output data on each write"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每次写都落盘才进行下一次写（模拟数据库插入，很慢）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "oflag=sync"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "likewise, but also for metadata"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每次写同步数据和元数据"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "conv=fsync"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Synchronize output data and metadata just before finishing"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "命令结束前一次性同步数据+元数据到磁盘"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "关键差异"
+          }
+        ],
+        "data": {
+          "headingId": "关键差异"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "oflag=dsync/sync：每写一次都同步一次 → 写 100 次就同步 100 次 → 最慢但最真实"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "conv=fsync：结束时才同步 → 写 100 次只在最后同步一次 → 比 dsync 快很多"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "实验验证"
+          }
+        ],
+        "data": {
+          "headingId": "实验验证"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图内容描述（原图为两张 dd 测试结果终端截图）："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "图一（写 1 块）：oflag=sync 测得约 32.1 KB/s，conv=fsync 测得约 37.8 KB/s —— 只写一次时两者差别不大"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "图二（写 1000 块）：conv=fsync 明显比 oflag=dsync/sync 快很多 —— 印证了\"dsync 每写必同步、fsync 最后一次性同步\"的理解"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "三种写法对比"
+          }
+        ],
+        "data": {
+          "headingId": "三种写法对比"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 不准确：数据还在缓存，命令结束可能未真正落盘\ndd if=/dev/zero of=test bs=64k count=16k\n\n# 比较准确：结束前同步到磁盘\ndd if=/dev/zero of=test bs=64k count=16k conv=fsync\n\n# 最真实（最慢）：每写一次就落盘一次（能听到磁盘\"啪啪啪\"响）\ndd if=/dev/zero of=test bs=64k count=4k oflag=dsync\n# 或 oflag=sync"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "四、dd 如何绕过缓存（direct I/O）"
+          }
+        ],
+        "data": {
+          "headingId": "四dd-如何绕过缓存direct-io"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "iflag=direct,nonblock\noflag=direct,nonblock\n# 或\niflag=cio\noflag=cio"
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "direct 模式：写入请求直接封装成 IO 指令发到磁盘，绕过文件系统缓存"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "非 direct 模式：数据先写系统缓存，立即认为 IO 成功，由操作系统决定何时落盘"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "测裸盘性能用 direct；测文件系统+缓存整体表现用普通模式。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "五、常见问题（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "五常见问题补充"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Windows 下测试"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "安装 Cygwin 可使用 time 和 dd，但实测读写约 40 多 M/s，可能受平台机制影响"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "测试准确度"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "dd 只能测连续 IO，不能测随机 IO；文件规模越大越准，bs 越大测得性能越高"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "随机 IO 测试"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "推荐用 fio 工具（补充）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      }
+    ]
+  }
+}

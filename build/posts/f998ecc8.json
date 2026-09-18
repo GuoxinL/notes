@@ -1,0 +1,1711 @@
+{
+  "schemaVersion": 1,
+  "id": "f998ecc8",
+  "slug": "Golang并发机制-CSP与GMP调度模型",
+  "title": "Golang并发机制-CSP与GMP调度模型",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "本文梳理 Golang 并发机制，从 CSP 并发模型的理论基础出发，讲解 channel 与 goroutine 的特征、协程优势，并深入 N:1、1:1、M:N 线程模型与 GMP 调度器实现。",
+  "tags": [
+    "Golang",
+    "并发",
+    "CSP",
+    "Goroutine",
+    "Channel"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 5,
+    "words": 1386
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "1. CSP 并发模型",
+      "slug": "1-csp-并发模型"
+    },
+    {
+      "depth": 4,
+      "text": "1.1 核心思想",
+      "slug": "11-核心思想"
+    },
+    {
+      "depth": 3,
+      "text": "2. Golang 的 CSP 实现",
+      "slug": "2-golang-的-csp-实现"
+    },
+    {
+      "depth": 3,
+      "text": "3. Channel",
+      "slug": "3-channel"
+    },
+    {
+      "depth": 4,
+      "text": "3.1 核心特征",
+      "slug": "31-核心特征"
+    },
+    {
+      "depth": 4,
+      "text": "3.2 实现原理",
+      "slug": "32-实现原理"
+    },
+    {
+      "depth": 3,
+      "text": "4. Goroutine",
+      "slug": "4-goroutine"
+    },
+    {
+      "depth": 4,
+      "text": "4.1 coroutine 的 3 大优势",
+      "slug": "41-coroutine-的-3-大优势"
+    },
+    {
+      "depth": 4,
+      "text": "4.2 与其他语言对比",
+      "slug": "42-与其他语言对比"
+    },
+    {
+      "depth": 3,
+      "text": "5. 线程模型：N:1 / 1:1 / M:N",
+      "slug": "5-线程模型n1-11-mn"
+    },
+    {
+      "depth": 4,
+      "text": "5.1 N:1 模型（多对一）",
+      "slug": "51-n1-模型多对一"
+    },
+    {
+      "depth": 4,
+      "text": "5.2 1:1 模型（一一对应）",
+      "slug": "52-11-模型一一对应"
+    },
+    {
+      "depth": 4,
+      "text": "5.3 M:N 模型（多对多，Go 选用）",
+      "slug": "53-mn-模型多对多go-选用"
+    },
+    {
+      "depth": 3,
+      "text": "6. Goroutine 调度器：G-M-P 模型",
+      "slug": "6-goroutine-调度器g-m-p-模型"
+    },
+    {
+      "depth": 4,
+      "text": "6.1 三个核心角色",
+      "slug": "61-三个核心角色"
+    },
+    {
+      "depth": 4,
+      "text": "6.2 调度示意",
+      "slug": "62-调度示意"
+    },
+    {
+      "depth": 4,
+      "text": "6.3 Work Stealing（工作窃取）算法",
+      "slug": "63-work-stealing工作窃取算法"
+    },
+    {
+      "depth": 3,
+      "text": "7. 总结",
+      "slug": "7-总结"
+    },
+    {
+      "depth": 3,
+      "text": "附录 A：Go 并发三件套速查",
+      "slug": "附录-ago-并发三件套速查"
+    },
+    {
+      "depth": 3,
+      "text": "附录 B：经典问答",
+      "slug": "附录-b经典问答"
+    },
+    {
+      "depth": 3,
+      "text": "参考资料",
+      "slug": "参考资料"
+    }
+  ],
+  "references": [
+    {
+      "kind": "external",
+      "label": "https://www.jianshu.com/p/36e246c6153d",
+      "href": "https://www.jianshu.com/p/36e246c6153d"
+    }
+  ],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：C:\\node\\学无止境\\golang\\Golang的并发机制.md（4 张配图重绘）\n主题：Golang 并发模型的理论基础（CSP）+ 调度器实现（GMP）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "1. CSP 并发模型"
+          }
+        ],
+        "data": {
+          "headingId": "1-csp-并发模型"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "CSP（Communicating Sequential Processes）模型是 1970 年代 Tony Hoare 提出的并发理论，描述两个独立的并发实体通过共享的 channel（管道）进行通信的并发模型。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.1 核心思想"
+          }
+        ],
+        "data": {
+          "headingId": "11-核心思想"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Process"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "独立的并发实体（如 goroutine）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Channel"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "第一类对象，用于进程间消息传递"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "关注点"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "不关注是谁在发送消息，只关注用的是哪个 channel"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "关键哲学：Don't communicate by sharing memory; share memory by communicating（不要通过共享内存来通信，而要通过通信来共享内存）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "2. Golang 的 CSP 实现"
+          }
+        ],
+        "data": {
+          "headingId": "2-golang-的-csp-实现"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Golang 借鉴了 CSP 模型的部分概念实现并发，但没有完全实现 CSP 的所有理论，仅借用了 process 和 channel 这两个概念。"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Process"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "goroutine（实际并发执行的实体）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Channel"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "channel（用于 goroutine 间通信）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "数据共享"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "通过 channel 通信实现"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "3. Channel"
+          }
+        ],
+        "data": {
+          "headingId": "3-channel"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.1 核心特征"
+          }
+        ],
+        "data": {
+          "headingId": "31-核心特征"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "被单独创建，可以在 goroutine 之间传递"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "通信模式类似 boss-worker 模式"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "实体之间匿名（不感知对方身份），实现解耦"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "是同步的：消息被发送到 channel 后，最终一定会被另一个实体消费"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.2 实现原理"
+          }
+        ],
+        "data": {
+          "headingId": "32-实现原理"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "底层是一个阻塞的消息队列"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "发送时若无接收者，发送方阻塞"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "接收时若无消息，接收方阻塞"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "4. Goroutine"
+          }
+        ],
+        "data": {
+          "headingId": "4-goroutine"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Goroutine 是实际并发执行的实体，底层使用协程（coroutine）实现。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.1 coroutine 的 3 大优势"
+          }
+        ],
+        "data": {
+          "headingId": "41-coroutine-的-3-大优势"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "用户态"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "避免内核态与用户态切换的开销"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "自定义调度"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "可由语言/框架层调度"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "栈空间小"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "允许创建大量实例（几万个）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.2 与其他语言对比"
+          }
+        ],
+        "data": {
+          "headingId": "42-与其他语言对比"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Java 1.3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "JVM 统一调度（green thread）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "已改为内核线程"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Ruby Fiber"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "用户自行调度"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "半协程"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Go goroutine"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Go 运行时调度器"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内置，提供统一语法"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "5. 线程模型：N:1 / 1:1 / M:N"
+          }
+        ],
+        "data": {
+          "headingId": "5-线程模型n1-11-mn"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "用户线程与内核线程的 3 种对应关系。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.1 N:1 模型（多对一）"
+          }
+        ],
+        "data": {
+          "headingId": "51-n1-模型多对一"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "mermaid",
+        "meta": null,
+        "value": "graph TB\n    subgraph US[\"用户态 (User Space)\"]\n        G1[User Thread 1]\n        G2[User Thread 2]\n        G3[User Thread 3]\n    end\n    subgraph KS[\"内核态 (Kernel)\"]\n        LWP[调度实体 LWP<br/>唯一内核线程]\n    end\n    G1 --> LWP\n    G2 --> LWP\n    G3 --> LWP\n    LWP -.-> Kernel[Kernel]"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "特点：多个用户线程跑在一个内核线程上。无法利用多核；某用户线程阻塞会卡住所有。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.2 1:1 模型（一一对应）"
+          }
+        ],
+        "data": {
+          "headingId": "52-11-模型一一对应"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "mermaid",
+        "meta": null,
+        "value": "graph TB\n    subgraph US[\"用户态\"]\n        G1[User Thread 1]\n        G2[User Thread 2]\n    end\n    subgraph KS[\"内核态\"]\n        K1[Kernel Thread 1]\n        K2[Kernel Thread 2]\n    end\n    G1 <--> K1\n    G2 <--> K2"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "特点：Java 现在的模型。利用多核；但创建/切换成本高，线程数受限。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.3 M:N 模型（多对多，Go 选用）"
+          }
+        ],
+        "data": {
+          "headingId": "53-mn-模型多对多go-选用"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "mermaid",
+        "meta": null,
+        "value": "graph LR\n    subgraph UserT[\"用户线程 T\"]\n        T1(T1)\n        T2(T2)\n        T3(T3)\n        T4(T4)\n    end\n    subgraph K[Scheduler]\n        C{\"中心调度\"}\n    end\n    subgraph Kt[\"内核线程 K\"]\n        K1((K1))\n        K2((K2))\n        K3((K3))\n    end\n    T1 --> C\n    T2 --> C\n    T3 --> C\n    T4 --> C\n    C --> K1\n    C --> K2\n    C --> K3"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "特点：Go 的 GMP 模型基础，结合 N:1 的轻量 + 1:1 的多核优势。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "6. Goroutine 调度器：G-M-P 模型"
+          }
+        ],
+        "data": {
+          "headingId": "6-goroutine-调度器g-m-p-模型"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Go 实现了语言层面的调度器，通过 M:N 线程模型达到高效率。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "6.1 三个核心角色"
+          }
+        ],
+        "data": {
+          "headingId": "61-三个核心角色"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "G"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Goroutine"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "待执行的 goroutine，包含栈空间"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "M"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Machine"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内核线程，实际执行单元"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "P"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Processor"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "调度协调器，协调 M 和 G 的执行"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "关键规则：内核线程必须拿到 P 才能调度 goroutine。通常通过限定 P 的数量控制并发度（默认 = CPU 核数）。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "6.2 调度示意"
+          }
+        ],
+        "data": {
+          "headingId": "62-调度示意"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "mermaid",
+        "meta": null,
+        "value": "graph TB\n    M[\"M<br/>(Machine: 内核线程)\"]\n    P[\"P<br/>(Processor: 调度协调器)\"]\n    G[\"G<br/>(当前执行的 goroutine)\"]\n    subgraph Q[\"本地执行队列 (P 持有)\"]\n        G1((G1))\n        G2((G2))\n        G3((G3 灰色: 挂起中))\n        G4((G4 灰色: 挂起中))\n    end\n    M --> P\n    P --> G\n    P --> G1\n    G1 --- G2\n    G2 --- G3\n    G3 --- G4"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "说明："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "P 通过 epoll 监听网络 I/O"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "灰色 Gn 是已挂起的 goroutine（在等待 I/O）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "当 P 通过 epoll 发现对应 fd 就绪时，会重新调度对应的挂起 goroutine"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "6.3 Work Stealing（工作窃取）算法"
+          }
+        ],
+        "data": {
+          "headingId": "63-work-stealing工作窃取算法"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "为保证调度公平性，Go 调度器引入了 work stealing："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "start": 1,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "P 先处理自己的本地执行队列\n↓"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "队列空后，到全局执行队列偷 G\n↓"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "全局队列也空，再到其他 P 的队列抢 G"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "避免部分 P 饥饿 + 充分利用多核。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "7. 总结"
+          }
+        ],
+        "data": {
+          "headingId": "7-总结"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "并发基础"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "CSP 模型"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "并发实体"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "goroutine（轻量级，可创建几十万个）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "通信方式"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "channel（匿名消息传递，解耦）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "调度"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Go 运行时调度器（语言层面，自动）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "优势"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "屏蔽内部细节，对外提供简洁 go 关键字"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "附录 A：Go 并发三件套速查"
+          }
+        ],
+        "data": {
+          "headingId": "附录-ago-并发三件套速查"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "// 1. 启动 goroutine\ngo func() { /* ... */ }()\n\n// 2. 创建 channel\nch := make(chan int)       // 无缓冲（同步）\nch := make(chan int, 10)   // 有缓冲（容量 10）\n\n// 3. 通信\nch <- 42        // 发送\nv := <-ch      // 接收"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "附录 B：经典问答"
+          }
+        ],
+        "data": {
+          "headingId": "附录-b经典问答"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "goroutine 是线程吗？"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "不是，是用户态协程（coroutine）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "为什么 goroutine 轻量？"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "用户态调度 + 栈可伸缩（2KB 起步）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "GMP 中 P 的作用？"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "调度协调器，控制并发度（默认 = GOMAXPROCS）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "M 和 G 是几比几？"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "通过 P 动态映射（M:N），不是固定比"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "goroutine 切换成本？"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "纳秒级（vs 线程切换微秒级）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "参考资料"
+          }
+        ],
+        "data": {
+          "headingId": "参考资料"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "原文作者：falm"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "原文链接："
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://www.jianshu.com/p/36e246c6153d",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://www.jianshu.com/p/36e246c6153d"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "来源：简书"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19\n图片：4 张原始配图已用 Mermaid 重绘，可结构化的关系图全部内联为文本"
+          }
+        ]
+      }
+    ]
+  }
+}

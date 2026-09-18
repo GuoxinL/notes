@@ -1,0 +1,390 @@
+{
+  "schemaVersion": 1,
+  "id": "4e4db3cc",
+  "slug": "ima知识库使用指南",
+  "title": "ima知识库使用指南",
+  "date": "2026-06-17",
+  "updated": "2026-06-17",
+  "description": "ima 知识库是专属知识空间，支持个人知识库与共享知识库的知识增添、管理与检索，也能基于知识库向 ima 提问获得个性化回答。",
+  "tags": [
+    "ima",
+    "知识库",
+    "腾讯",
+    "使用指南",
+    "效率工具"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 2,
+    "words": 603
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、PC端",
+      "slug": "一pc端"
+    },
+    {
+      "depth": 3,
+      "text": "1．收藏知识，搭建你的第二大脑",
+      "slug": "1收藏知识搭建你的第二大脑"
+    },
+    {
+      "depth": 3,
+      "text": "2．管理知识，利用标签便捷分类",
+      "slug": "2管理知识利用标签便捷分类"
+    },
+    {
+      "depth": 3,
+      "text": "3．应用知识，获得个性化回答",
+      "slug": "3应用知识获得个性化回答"
+    },
+    {
+      "depth": 3,
+      "text": "4．共享知识，让知识流动起来",
+      "slug": "4共享知识让知识流动起来"
+    },
+    {
+      "depth": 3,
+      "text": "二、ima知识库小程序",
+      "slug": "二ima知识库小程序"
+    },
+    {
+      "depth": 3,
+      "text": "1．在微信中快捷导入文件",
+      "slug": "1在微信中快捷导入文件"
+    },
+    {
+      "depth": 3,
+      "text": "2．共享知识库，让知识流动起来",
+      "slug": "2共享知识库让知识流动起来"
+    },
+    {
+      "depth": 3,
+      "text": "3．问问ima，全网内容/知识库内容轻松获取",
+      "slug": "3问问ima全网内容知识库内容轻松获取"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "ima知识库是你的专属知识空间，包括个人知识库与共享知识库，支持增添、管理、检索知识资源，加入共享知识库，还可以获得多来源的知识与经验。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "基于知识库问问ima，聚焦知识库，得到更个性化的回答。从此开始，搭建一个越用越懂你的第二大脑。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "目前支持PC ima.copilot客户端，也支持ima知识库微信小程序中使用。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、PC端"
+          }
+        ],
+        "data": {
+          "headingId": "一pc端"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "1．收藏知识，搭建你的第二大脑"
+          }
+        ],
+        "data": {
+          "headingId": "1收藏知识搭建你的第二大脑"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "① 上传PDF、DOC、JPEG、PNG等格式的内容至知识库"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "② 浏览网页、进行问答、记笔记时都能随时收藏"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "2．管理知识，利用标签便捷分类"
+          }
+        ],
+        "data": {
+          "headingId": "2管理知识利用标签便捷分类"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "① 为知识打上标签，更便捷管理它们"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "② 在知识库搜索框输入关键词，即可回溯找寻知识灵感"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "3．应用知识，获得个性化回答"
+          }
+        ],
+        "data": {
+          "headingId": "3应用知识获得个性化回答"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "ima可以聚焦于知识库内容，输出更个性化的回答"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "① 提出问题，获取基于个人知识库内容的回答，温故而知新"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "② 输入#选择标签，获取基于指定标签下内容的回答"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "4．共享知识，让知识流动起来"
+          }
+        ],
+        "data": {
+          "headingId": "4共享知识让知识流动起来"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "创建不同主题的共享知识库"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "① 为你的共享知识库添加专属名称、封面和描述"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "② 从个人知识库、本地文件中导入内容，构建共享知识库"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "将共享知识库分享给更多人"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "① 通过分享链接、二维码，将共享知识库分享给他人"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "② 进行共享知识库的成员管理、设置内容查看权限等"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、ima知识库小程序"
+          }
+        ],
+        "data": {
+          "headingId": "二ima知识库小程序"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "1．在微信中快捷导入文件"
+          }
+        ],
+        "data": {
+          "headingId": "1在微信中快捷导入文件"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "收藏的内容可以在PC端、小程序中跨端查看"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "① 批量导入微信聊天中的文件、本地图片，或拍照导入图片"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "② 阅读公众号文章、文档时，在右上角\"...\"中选择使用ima知识库小程序打开，一键存入"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "2．共享知识库，让知识流动起来"
+          }
+        ],
+        "data": {
+          "headingId": "2共享知识库让知识流动起来"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "切换查看个人、共享知识库内容，将共享知识库分享给好友"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "① 查看个人知识库、已创建的和已加入的共享知识库"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "② 将已创建的、已加入的共享知识库分享给更多人"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "3．问问ima，全网内容/知识库内容轻松获取"
+          }
+        ],
+        "data": {
+          "headingId": "3问问ima全网内容知识库内容轻松获取"
+        }
+      }
+    ]
+  }
+}

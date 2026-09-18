@@ -1,0 +1,816 @@
+{
+  "schemaVersion": 1,
+  "id": "4bd03f87",
+  "slug": "Shell查看Linux系统版本-内核与发行版查询命令",
+  "title": "Shell查看Linux系统版本-内核与发行版查询命令",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "本文整理查看 Linux 系统版本的常用命令，覆盖内核版本与发行版本两大类，包括 /proc/version、uname、lsb_release、hostnamectl 等，并附命令速查对比表。",
+  "tags": [
+    "Shell",
+    "Linux",
+    "系统版本",
+    "内核",
+    "uname"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 2,
+    "words": 702
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、查看 Linux 内核版本",
+      "slug": "一查看-linux-内核版本"
+    },
+    {
+      "depth": 4,
+      "text": "1.1 cat /proc/version",
+      "slug": "11-cat-procversion"
+    },
+    {
+      "depth": 4,
+      "text": "1.2 uname -a",
+      "slug": "12-uname-a"
+    },
+    {
+      "depth": 3,
+      "text": "二、查看 Linux 发行版本",
+      "slug": "二查看-linux-发行版本"
+    },
+    {
+      "depth": 4,
+      "text": "2.1 lsb_release -a（通用）",
+      "slug": "21-lsb_release-a通用"
+    },
+    {
+      "depth": 4,
+      "text": "2.2 cat /etc/issue（通用，简略）",
+      "slug": "22-cat-etcissue通用简略"
+    },
+    {
+      "depth": 4,
+      "text": "2.3 cat /etc/redhat-release（RedHat 系）",
+      "slug": "23-cat-etcredhat-releaseredhat-系"
+    },
+    {
+      "depth": 4,
+      "text": "2.4 rpm -q redhat-release（RedHat 系）",
+      "slug": "24-rpm-q-redhat-releaseredhat-系"
+    },
+    {
+      "depth": 4,
+      "text": "2.5 hostnamectl（systemd 系统）",
+      "slug": "25-hostnamectlsystemd-系统"
+    },
+    {
+      "depth": 3,
+      "text": "三、命令速查对比表（补充）",
+      "slug": "三命令速查对比表补充"
+    }
+  ],
+  "references": [
+    {
+      "kind": "external",
+      "label": "https://blog.csdn.net/lovedingd/article/details/131249786",
+      "href": "https://blog.csdn.net/lovedingd/article/details/131249786"
+    }
+  ],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：CSDN 博主「lovedingd」《Shell 之查看Linux系统版本》整理版\n原文链接："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://blog.csdn.net/lovedingd/article/details/131249786",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://blog.csdn.net/lovedingd/article/details/131249786"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "查看 Linux 系统版本分为两大类：内核版本 与 发行版本，本文整理全部常用命令。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、查看 Linux 内核版本"
+          }
+        ],
+        "data": {
+          "headingId": "一查看-linux-内核版本"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.1 cat /proc/version"
+          }
+        ],
+        "data": {
+          "headingId": "11-cat-procversion"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "/proc 目录存储当前内核运行状态的特殊文件（内存、CPU、已安装文件系统等）。正在运行的内核信息存于 /proc/version 虚拟文件中。"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "$ cat /proc/version\nLinux version 3.10.0-1062.18.1.el7.x86_64 (mockbuild@kbuilder.bsys.centos.org) (gcc version 4.8.5 20150623 (Red Hat 4.8.5-39) (GCC) ) #1 SMP Tue Mar 17 23:49:17 UTC 2020"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.2 uname -a"
+          }
+        ],
+        "data": {
+          "headingId": "12-uname-a"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "uname 用于查看多个系统信息，包括内核体系结构、名称、版本和发行版。"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "$ uname -a\nLinux VM_0_16_centos 3.10.0-1062.18.1.el7.x86_64 #1 SMP Tue Mar 17 23:49:17 UTC 2020 x86_64 x86_64 x86_64 GNU/Linux"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "uname 常用参数（补充）"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-a"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "全部信息"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-r"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "仅内核版本（release）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-m"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "机器硬件架构（如 x86_64）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-s"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内核名称（如 Linux）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、查看 Linux 发行版本"
+          }
+        ],
+        "data": {
+          "headingId": "二查看-linux-发行版本"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.1 lsb_release -a（通用）"
+          }
+        ],
+        "data": {
+          "headingId": "21-lsb_release-a通用"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "查看完整版本信息：系统名称、版本号、代号。适用于所有发行版（Debian/Ubuntu/CentOS）。"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "$ lsb_release -a\nLSB Version:    :core-4.1-amd64:core-4.1-noarch:cxx-4.1-amd64:cxx-4.1-noarch:desktop-4.1-amd64:desktop-4.1-noarch:languages-4.1-amd64:languages-4.1-noarch:printing-4.1-amd64:printing-4.1-noarch\nDistributor ID: CentOS\nDescription:    CentOS Linux release 7.7.1908 (Core)\nRelease:        7.7.1908\nCodename:       Core"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "注：CentOS 8+ / 新版本可能默认未安装 lsb_release，需 yum install redhat-lsb-core（补充）。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.2 cat /etc/issue（通用，简略）"
+          }
+        ],
+        "data": {
+          "headingId": "22-cat-etcissue通用简略"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "仅显示系统名称和版本号。"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "$ cat /etc/issue\nCentOS Linux release 7.7.1908 (Core)\nKernel \\r on an \\m"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.3 cat /etc/redhat-release（RedHat 系）"
+          }
+        ],
+        "data": {
+          "headingId": "23-cat-etcredhat-releaseredhat-系"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "$ cat /etc/redhat-release\nCentOS Linux release 7.7.1908 (Core)"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.4 rpm -q redhat-release（RedHat 系）"
+          }
+        ],
+        "data": {
+          "headingId": "24-rpm-q-redhat-releaseredhat-系"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "$ rpm -q redhat-release\nredhat-release-4AS-3"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.5 hostnamectl（systemd 系统）"
+          }
+        ],
+        "data": {
+          "headingId": "25-hostnamectlsystemd-系统"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "systemd 的一部分，查询/更改主机名，同时显示发行版和内核版本。"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "$ hostnamectl\n   Static hostname: VM_0_16_centos\n         Icon name: computer-vm\n           Chassis: vm\n        Machine ID: f9d400c5e1e8c3a8209e990d887d4ac1\n           Boot ID: ee7e8dec79274c90be37dfbae08e6b65\n    Virtualization: kvm\n  Operating System: CentOS Linux 7 (Core)\n       CPE OS Name: cpe:/o:centos:centos:7\n            Kernel: Linux 3.10.0-1062.18.1.el7.x86_64\n      Architecture: x86-64"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "仅查内核版本："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "$ hostnamectl | grep -i kernel\n  Kernel: Linux 3.10.0-1062.18.1.el7.x86_64"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、命令速查对比表（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "三命令速查对比表补充"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "cat /proc/version"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内核"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "所有发行版"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "详细（含编译信息）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "uname -a"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内核"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "所有发行版"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "详细"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "lsb_release -a"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "发行版"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "所有发行版"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "最详细（含代号）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "cat /etc/issue"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "发行版"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "所有发行版"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "简略"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "cat /etc/redhat-release"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "发行版"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "仅 RedHat 系"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "简略"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "rpm -q redhat-release"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "发行版"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "仅 RedHat 系"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "简略"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "hostnamectl"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "发行版+内核"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "systemd 系统"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "详细（一键双查）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "⚠️ 推荐：日常排查首选 uname -r（内核）+ cat /etc/os-release（发行版，现代系统标准文件，补充）。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      }
+    ]
+  }
+}

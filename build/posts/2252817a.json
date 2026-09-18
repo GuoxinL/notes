@@ -1,0 +1,479 @@
+{
+  "schemaVersion": 1,
+  "id": "2252817a",
+  "slug": "Shell异步执行-后台任务与wait同步",
+  "title": "Shell异步执行-后台任务与wait同步",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "Shell 异步执行：在命令后加 & 将任务放到子 shell 后台运行，配合 wait 等待指定进程或全部子进程退出，实现脚本内的多线程同步。",
+  "tags": [
+    "Shell",
+    "异步",
+    "后台任务",
+    "wait",
+    "并行"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 2,
+    "words": 488
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、启动后台子任务",
+      "slug": "一启动后台子任务"
+    },
+    {
+      "depth": 3,
+      "text": "二、wait 命令",
+      "slug": "二wait-命令"
+    },
+    {
+      "depth": 3,
+      "text": "三、示例",
+      "slug": "三示例"
+    },
+    {
+      "depth": 4,
+      "text": "3.1 等待所有子任务结束",
+      "slug": "31-等待所有子任务结束"
+    },
+    {
+      "depth": 4,
+      "text": "3.2 等待指定子进程",
+      "slug": "32-等待指定子进程"
+    },
+    {
+      "depth": 4,
+      "text": "3.3 在函数中使用 wait",
+      "slug": "33-在函数中使用-wait"
+    },
+    {
+      "depth": 3,
+      "text": "四、关键变量速查（补充）",
+      "slug": "四关键变量速查补充"
+    }
+  ],
+  "references": [
+    {
+      "kind": "external",
+      "label": "https://blog.csdn.net/weixin_35852328/article/details/81508339",
+      "href": "https://blog.csdn.net/weixin_35852328/article/details/81508339"
+    }
+  ],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：CSDN 博主「weixin_35852328」《Shell 之 异步执行》整理版\n原文链接："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://blog.csdn.net/weixin_35852328/article/details/81508339",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://blog.csdn.net/weixin_35852328/article/details/81508339"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、启动后台子任务"
+          }
+        ],
+        "data": {
+          "headingId": "一启动后台子任务"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "在命令后加 & 操作符，表示将命令放在子 shell 中异步执行，可达到多线程效果："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "sleep 10      # 同步：等待 10 秒，再继续下一操作\nsleep 10 &    # 异步：当前 shell 不等待，由后台子 shell 执行"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、wait 命令"
+          }
+        ],
+        "data": {
+          "headingId": "二wait-命令"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "wait [作业指示或进程号]"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "规则："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "等待指定作业/进程退出，返回其退出状态；不指定参数则等待所有子进程退出，退出状态为 0"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "shell 顶层使用 wait 不会等待函数中启动的子任务；在函数内部使用则只等待函数内启动的后台任务"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "shell 中使用 wait 相当于高级语言里的多线程同步"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、示例"
+          }
+        ],
+        "data": {
+          "headingId": "三示例"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.1 等待所有子任务结束"
+          }
+        ],
+        "data": {
+          "headingId": "31-等待所有子任务结束"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "#!/bin/bash\nsleep 10 &\nsleep 5&\nwait   # 等待所有后台任务，约 10 秒后退出"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.2 等待指定子进程"
+          }
+        ],
+        "data": {
+          "headingId": "32-等待指定子进程"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "#!/bin/bash\nsleep 10 &\nsleep 5&\nwait $!   # $! 表示上个子进程的进程号；此例等待 sleep 5，约 5 秒后退出"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.3 在函数中使用 wait"
+          }
+        ],
+        "data": {
+          "headingId": "33-在函数中使用-wait"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "#!/bin/bash\nsource ~/.bashrc\n\nfun(){\n    echo \"fun is begin.timeNum:$timeNum\"\n    local timeNum=$1\n    sleep $timeNum &\n    wait    # 只等待本函数中 wait 前的 sleep\n    echo \"fun is end.timeNum:$timeNum\"\n}\n\nfun 10 &\nfun 20 &\n\nwait   # 若 fun 内没有 wait，整个脚本立刻退出，不会等待 fun 里面的 sleep\necho \"all is ending\""
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "输出结果："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "fun is begin.timeNum:10\nfun is begin.timeNum:20\nfun is end.timeNum:10\nfun is end.timeNum:20\nall is ending"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "两个函数并行执行，wait 使脚本等待所有子任务完成才退出。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "四、关键变量速查（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "四关键变量速查补充"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "$!"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "最近一个后台进程的 PID"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "$$"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "当前 shell 的 PID"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "$?"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "上一条命令的退出状态"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "jobs"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "列出后台任务"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "fg / bg"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "将后台任务调到前台 / 继续后台运行"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "kill %1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "按作业号杀后台任务"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,1149 @@
+{
+  "schemaVersion": 1,
+  "id": "0fff3079",
+  "slug": "Nginx配置实践-gRPC转发与双向TLS验证",
+  "title": "Nginx配置实践-gRPC转发与双向TLS验证",
+  "date": "2026-08-18",
+  "updated": "2026-08-18",
+  "description": "整理 Nginx 转发 gRPC 的两种方式（HTTP 层 grpcs 转 grpc、stream 按 SNI 分流），以及自签证书与双向 TLS 验证配置。",
+  "tags": [
+    "Nginx",
+    "gRPC",
+    "TLS",
+    "双向认证",
+    "mTLS"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 5,
+    "words": 1538
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、Nginx 转发 gRPC",
+      "slug": "一nginx-转发-grpc"
+    },
+    {
+      "depth": 4,
+      "text": "1.1 接收 grpcs 转发 grpc（HTTP 层）",
+      "slug": "11-接收-grpcs-转发-grpchttp-层"
+    },
+    {
+      "depth": 4,
+      "text": "1.2 根据 TLS Server Name（SNI）转发（stream 层）",
+      "slug": "12-根据-tls-server-namesni转发stream-层"
+    },
+    {
+      "depth": 4,
+      "text": "1.3 常见错误排查",
+      "slug": "13-常见错误排查"
+    },
+    {
+      "depth": 3,
+      "text": "二、Nginx 开启双向验证（mTLS）",
+      "slug": "二nginx-开启双向验证mtls"
+    },
+    {
+      "depth": 4,
+      "text": "2.1 生成自签名根证书（可选）",
+      "slug": "21-生成自签名根证书可选"
+    },
+    {
+      "depth": 4,
+      "text": "2.2 生成服务器私钥和证书",
+      "slug": "22-生成服务器私钥和证书"
+    },
+    {
+      "depth": 4,
+      "text": "2.3 生成客户端证书",
+      "slug": "23-生成客户端证书"
+    },
+    {
+      "depth": 4,
+      "text": "2.4 配置到 Nginx",
+      "slug": "24-配置到-nginx"
+    },
+    {
+      "depth": 4,
+      "text": "2.5 传统交互式生成证书流程（备用）",
+      "slug": "25-传统交互式生成证书流程备用"
+    },
+    {
+      "depth": 3,
+      "text": "三、速查与注意事项",
+      "slug": "三速查与注意事项"
+    },
+    {
+      "depth": 4,
+      "text": "3.1 证书文件清单（本文件夹已生成的证书）",
+      "slug": "31-证书文件清单本文件夹已生成的证书"
+    },
+    {
+      "depth": 4,
+      "text": "3.2 关键指令速查",
+      "slug": "32-关键指令速查"
+    },
+    {
+      "depth": 4,
+      "text": "3.3 注意事项",
+      "slug": "33-注意事项"
+    }
+  ],
+  "references": [
+    {
+      "kind": "external",
+      "label": "https://www.54benniao.com/a/759.html",
+      "href": "https://www.54benniao.com/a/759.html"
+    },
+    {
+      "kind": "external",
+      "label": "123@domain.com",
+      "href": "mailto:123@domain.com"
+    }
+  ],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理来源：Nginx转发gRPC.md、Nginx开启双向验证.md、错误.md\n主题：Nginx 转发 gRPC 流量（HTTP 层 + SNI 分流）+ 双向 TLS 认证证书生成与配置"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、Nginx 转发 gRPC"
+          }
+        ],
+        "data": {
+          "headingId": "一nginx-转发-grpc"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "gRPC 配置参考文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://www.54benniao.com/a/759.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://www.54benniao.com/a/759.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n证书生成参考本文「二、Nginx 开启双向验证」。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.1 接收 grpcs 转发 grpc（HTTP 层）"
+          }
+        ],
+        "data": {
+          "headingId": "11-接收-grpcs-转发-grpchttp-层"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "监听 7100 端口（SSL + HTTP/2），客户端证书验证后通过 grpc_pass 转发到上游 gRPC 服务器集群。"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "nginx",
+        "meta": null,
+        "value": "worker_processes auto;\n\nevents {\n  worker_connections  1024;\n}\n\nhttp {\n  # ===== 缓冲区（代理用户头信息）=====\n  proxy_buffer_size 1024m;          # 保存用户头信息的缓冲区大小\n  proxy_buffers 4 1024m;            # proxy_buffers 缓冲区\n  proxy_busy_buffers_size 2048m;    # 繁忙缓冲区，建议为单块 proxy_buffers 的 2 倍，满则写磁盘临时文件\n\n  # ===== 请求体/超时 =====\n  client_max_body_size 4096m;       # 请求体大小上限，超过返回 413\n  client_header_timeout 7d;         # 读取请求头超时，超过返回 408\n  client_body_timeout 7d;           # 读取请求体超时\n\n  # ===== 长连接 keepalive =====\n  keepalive_timeout 7d;             # keep-alive 连接保持时长（默认 75s，0 禁用）\n  keepalive_requests 4294967295;    # 单连接最大请求数（默认 100）\n\n  upstream grpc_servers {\n    server Proxy节点服务器1IP:7001;\n    server Proxy节点服务器2IP:7001;\n    keepalive 2000;                 # 每个 worker 进程缓存的上游空闲 keep-alive 连接数（超出按 LRU 关闭）\n  }\n\n  server {\n    listen 7100 ssl http2;\n\n    ssl_certificate      /data/app/nginx_certs/server.crt;   # 服务端证书\n    ssl_certificate_key  /data/app/nginx_certs/server.key;   # 服务端私钥\n    ssl_client_certificate /data/app/nginx_certs/root.crt;   # 根证书（验证客户端）\n    ssl_verify_client on;                                    # 启用客户端证书验证\n\n    location / {\n      grpc_pass grpc://grpc_servers;                          # 转发给 upstream 中一个\n      grpc_set_header Host $host;\n      grpc_set_header X-Real-IP $remote_addr;\n      grpc_set_header X-Forwarded-For $proxy_add_x_forwarded_for;\n\n      grpc_send_timeout 7d;         # 向 gRPC 服务器传输请求的超时（连续两次写之间）\n      grpc_read_timeout 7d;         # 从 gRPC 服务器读取响应的超时（连续两次读之间）\n      grpc_socket_keepalive on;     # 为 socket 打开 SO_KEEPALIVE\n    }\n  }\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.2 根据 TLS Server Name（SNI）转发（stream 层）"
+          }
+        ],
+        "data": {
+          "headingId": "12-根据-tls-server-namesni转发stream-层"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "不终止 TLS，基于 $ssl_preread_server_name 按域名把 grpcs 流量分流到不同上游（4 层转发，stream 模块）："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "nginx",
+        "meta": null,
+        "value": "worker_processes 1;\n\nevents {\n    worker_connections  1024;\n}\n\nstream {\n    map $ssl_preread_server_name $targetBackend {\n         GT00BDCSSM.node1.org proxy1;\n         GT00BDCSSM.node2.org proxy2;\n    }\n\n    server {\n        listen 7100;\n        ssl_preread on;             # 预读 SNI 但不终止 TLS\n        proxy_pass $targetBackend;\n    }\n\n    upstream proxy1 {\n        server 10.5.5.51:7001;\n    }\n    upstream proxy2 {\n        server 10.5.5.61:7001;\n    }\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.3 常见错误排查"
+          }
+        ],
+        "data": {
+          "headingId": "13-常见错误排查"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "upstream prematurely closed connection while reading upstream"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "上游服务已关闭连接"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "检查上游 gRPC 服务是否存活、健康检查、keepalive/超时参数是否合理"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、Nginx 开启双向验证（mTLS）"
+          }
+        ],
+        "data": {
+          "headingId": "二nginx-开启双向验证mtls"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "双向验证（mTLS）：服务端不仅要出示自己的证书，还要验证客户端证书（ssl_verify_client on）。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.1 生成自签名根证书（可选）"
+          }
+        ],
+        "data": {
+          "headingId": "21-生成自签名根证书可选"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "openssl genrsa -out root.key 2048\nopenssl req -x509 -new -nodes -key root.key -sha256 -days 3650 -out root.crt -subj \"/CN=chainamker.org\""
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.2 生成服务器私钥和证书"
+          }
+        ],
+        "data": {
+          "headingId": "22-生成服务器私钥和证书"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 1. 生成服务器私钥 + CSR\nopenssl genrsa -out server.key 2048\nopenssl req -new -key server.key -out server.csr -subj \"/CN=server.org\"\n\n# 2. 使用自签名根证书签署服务器证书\nopenssl x509 -req -in server.csr -CA root.crt -CAkey root.key -CAcreateserial -out server.crt -days 3650 -sha256"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.3 生成客户端证书"
+          }
+        ],
+        "data": {
+          "headingId": "23-生成客户端证书"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 1. 生成客户端私钥\nopenssl genrsa -out client.key 2048\n\n# 2. 生成客户端 CSR\nopenssl req -new -key client.key -out client.csr -subj \"/CN=client.org\"\n\n# 3a. 使用自签名根证书签署客户端证书\nopenssl x509 -req -in client.csr -CA root.crt -CAkey root.key -CAcreateserial -out client.crt -days 3650 -sha256\n\n# 3b. 或使用受信任的 CA 签署客户端证书\nopenssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key -out client.crt -days 3650 -sha256"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.4 配置到 Nginx"
+          }
+        ],
+        "data": {
+          "headingId": "24-配置到-nginx"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "nginx",
+        "meta": null,
+        "value": "server {\n    listen 443 ssl;\n    server_name example.com;\n\n    ssl_certificate      /path/to/server.crt;   # 服务器证书\n    ssl_certificate_key  /path/to/server.key;   # 服务器私钥\n    ssl_client_certificate /path/to/client.crt; # 客户端证书（验证客户端用）\n    ssl_verify_client on;                       # 开启客户端证书验证\n\n    # 其他 SSL 配置项（密码套件、协议等）\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "注意：/path/to/ 替换为实际证书路径。若使用受信 CA 签发的证书，ssl_client_certificate 应指向 CA 证书。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.5 传统交互式生成证书流程（备用）"
+          }
+        ],
+        "data": {
+          "headingId": "25-传统交互式生成证书流程备用"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "生成带密码的密钥 → 去掉密码 → 生成 CSR → 交互填写信息 → 自签名："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 1) 生成 RSA 密钥（需设置并记住密码）\nopenssl genrsa -des3 -out domain.key 1024\n\n# 2) 拷贝一个不需要输入密码的密钥文件\nopenssl rsa -in domain.key -out domain_nopass.key\n\n# 3) 生成证书请求\nopenssl req -new -key domain.key -out domain.csr"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "交互输入项（Common Name 必须与网站域名一致）："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Enter pass phrase for domain.key"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "之前设置的密码"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Country Name (2 letter code)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "CN"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "State or Province Name"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Jilin"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Locality Name"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Changchun"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Organization Name"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Python"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Organizational Unit Name"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Python"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Common Name"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "domain.com（必须与域名一致）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Email Address"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "mailto:123@domain.com",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "123@domain.com"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "A challenge password"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "直接回车"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "An optional company name"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "直接回车"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "自签名（不向 CA 申请，用密钥和 CSR 自行签发）："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "openssl x509 -req -days 365 -in domain.csr -signkey domain.key -out domain.crt"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、速查与注意事项"
+          }
+        ],
+        "data": {
+          "headingId": "三速查与注意事项"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.1 证书文件清单（本文件夹已生成的证书）"
+          }
+        ],
+        "data": {
+          "headingId": "31-证书文件清单本文件夹已生成的证书"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "root.key / root.crt"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "自签名根 CA 私钥 / 根证书"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "root.srl"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "OpenSSL 序列号文件（-CAcreateserial 生成）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "server.key / server.csr / server.crt"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "服务器私钥 / CSR / 签署后的服务器证书"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "client.key / client.csr / client.crt"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "客户端私钥 / CSR / 签署后的客户端证书"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.2 关键指令速查"
+          }
+        ],
+        "data": {
+          "headingId": "32-关键指令速查"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "grpc_pass grpc://upstream"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "转发 gRPC 请求到上游"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "grpc_send_timeout / grpc_read_timeout"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "gRPC 收发超时（连续读写间隔）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ssl_preread on + map $ssl_preread_server_name"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4 层按 SNI 分流，不终止 TLS"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ssl_certificate / ssl_certificate_key"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "服务器证书 / 私钥"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ssl_client_certificate"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "客户端证书（验证用）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ssl_verify_client on"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "开启双向验证（mTLS）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "keepalive 2000（upstream）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "上游空闲 keep-alive 连接缓存数"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.3 注意事项"
+          }
+        ],
+        "data": {
+          "headingId": "33-注意事项"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "自签名证书仅适用于开发/测试环境，生产环境应从受信 CA 获取证书"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "双向验证下，客户端必须持有被 ssl_client_certificate 信任的证书，否则握手失败"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "gRPC 必须走 HTTP/2（listen ... http2 或 h2c），普通 HTTP/1.1 无法转发"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "生产环境不建议把 proxy_buffer_size / client_max_body_size 等设成 GB 级，按实际业务压测确定"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "upstream prematurely closed connection 通常表示上游服务已关闭，优先排查上游存活与健康检查"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-18"
+          }
+        ]
+      }
+    ]
+  }
+}

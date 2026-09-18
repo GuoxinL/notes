@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "8755b06c",
+  "slug": "tmp_tags_test",
+  "title": "tmp_tags_test",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "本文是用于验证 ima 知识库是否解析 Markdown frontmatter 中 tags 字段的测试文档，内容极短，仅用于标签解析功能验证。",
+  "tags": [
+    "测试",
+    "golang",
+    "并发"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 1,
+    "words": 24
+  },
+  "headings": [
+    {
+      "depth": 2,
+      "text": "tags 解析测试",
+      "slug": "tags-解析测试"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "heading",
+        "depth": 2,
+        "children": [
+          {
+            "type": "text",
+            "value": "tags 解析测试"
+          }
+        ],
+        "data": {
+          "headingId": "tags-解析测试"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "这是用于验证 ima 是否解析 md frontmatter tags 的测试文档。"
+          }
+        ]
+      }
+    ]
+  }
+}

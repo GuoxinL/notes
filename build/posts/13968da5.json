@@ -1,0 +1,1146 @@
+{
+  "schemaVersion": 1,
+  "id": "13968da5",
+  "slug": "AGENT.md 与 AGENTS.md 完全指南",
+  "title": "AGENT.md 与 AGENTS.md 完全指南",
+  "date": "2026-08-22",
+  "updated": "2026-08-22",
+  "description": "AGENT.md 与 AGENTS.md 是放在项目根目录的 Markdown 配置文件，为 AI 编码助手提供上下文与行为约束。本文梳理二者定义、核心区别、典型示例、分角色定制方法与初始化 Prompt。",
+  "tags": [
+    "AGENT.md",
+    "AGENTS.md",
+    "AI 编码助手",
+    "Cursor",
+    "Claude Code"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 9,
+    "words": 2704
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、概述",
+      "slug": "一概述"
+    },
+    {
+      "depth": 3,
+      "text": "二、AGENT.md 与 AGENTS.md 的定义",
+      "slug": "二agentmd-与-agentsmd-的定义"
+    },
+    {
+      "depth": 4,
+      "text": "2.1 AGENT.md（单数）",
+      "slug": "21-agentmd单数"
+    },
+    {
+      "depth": 4,
+      "text": "2.2 AGENTS.md（复数）",
+      "slug": "22-agentsmd复数"
+    },
+    {
+      "depth": 3,
+      "text": "三、核心区别对比",
+      "slug": "三核心区别对比"
+    },
+    {
+      "depth": 3,
+      "text": "四、示例",
+      "slug": "四示例"
+    },
+    {
+      "depth": 4,
+      "text": "4.1 AGENT.md 示例（含 YAML frontmatter）",
+      "slug": "41-agentmd-示例含-yaml-frontmatter"
+    },
+    {
+      "depth": 4,
+      "text": "4.2 AGENTS.md 示例（纯 Markdown，简洁版）",
+      "slug": "42-agentsmd-示例纯-markdown简洁版"
+    },
+    {
+      "depth": 4,
+      "text": "4.3 AGENTS.md 示例（多角色定义，含 YAML frontmatter）",
+      "slug": "43-agentsmd-示例多角色定义含-yaml-frontmatter"
+    },
+    {
+      "depth": 3,
+      "text": "五、定制不同角色的 AGENTS.md",
+      "slug": "五定制不同角色的-agentsmd"
+    },
+    {
+      "depth": 4,
+      "text": "5.1 通用核心原则",
+      "slug": "51-通用核心原则"
+    },
+    {
+      "depth": 4,
+      "text": "5.2 前端项目 AGENTS.md",
+      "slug": "52-前端项目-agentsmd"
+    },
+    {
+      "depth": 4,
+      "text": "5.3 后端项目 AGENTS.md",
+      "slug": "53-后端项目-agentsmd"
+    },
+    {
+      "depth": 4,
+      "text": "5.4 产品经理 / 需求设计 AGENTS.md",
+      "slug": "54-产品经理-需求设计-agentsmd"
+    },
+    {
+      "depth": 3,
+      "text": "六、万能 Prompt 初始化 AGENTS.md",
+      "slug": "六万能-prompt-初始化-agentsmd"
+    },
+    {
+      "depth": 4,
+      "text": "使用建议",
+      "slug": "使用建议"
+    },
+    {
+      "depth": 3,
+      "text": "七、总结与最佳实践",
+      "slug": "七总结与最佳实践"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理时间：2026-08-22\n来源：ima 知识库对话整理\n适用场景：为 AI 编码助手提供项目上下文和行为指导，提升代码生成质量与一致性。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、概述"
+          }
+        ],
+        "data": {
+          "headingId": "一概述"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "AGENT.md 和 AGENTS.md 是放置在项目根目录的 Markdown 配置文件，专门为 AI 编码助手（如 Cursor、GitHub Copilot、Claude Code、Codex 等）提供项目上下文、技术栈、编码规范、构建命令和操作边界。它们的目标是让 AI 在首次接触项目时就能快速理解背景，减少重复 Prompt 和错误输出。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "两者概念相似，但命名、格式、生态和标准化路径有所不同。本文档系统梳理了它们的定义、区别、示例、定制方法及初始化 Prompt，作为一站式参考。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、AGENT.md 与 AGENTS.md 的定义"
+          }
+        ],
+        "data": {
+          "headingId": "二agentmd-与-agentsmd-的定义"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.1 AGENT.md（单数）"
+          }
+        ],
+        "data": {
+          "headingId": "21-agentmd单数"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "提出者：API Evangelist / Amp 团队"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "特点：支持 YAML frontmatter 作为结构化元数据，可定义 project、stack、conventions、instructions、avoid 等字段，并支持 JSON Schema 校验。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "核心理念：单一事实源 + 可验证 + 可派生。可通过 CLI 工具（如 agentmd generate）生成 Cursor、Claude、Copilot 等工具的专用指令文件。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "生态：需通过适配器或符号链接方式接入多数工具，社区正在逐步推广。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.2 AGENTS.md（复数）"
+          }
+        ],
+        "data": {
+          "headingId": "22-agentsmd复数"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "提出者：社区实践 → Linux 基金会 AAIF（Agentic AI Foundation）管理"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "特点：纯 Markdown 为主，YAML frontmatter 可选，形式上更自由，轻量通用。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "核心理念：开箱即用、跨工具兼容、零学习成本。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "生态：被 28+ 工具和 60,000+ 开源项目原生支持，包括 OpenAI Codex、GitHub Copilot、Cursor、Windsurf、Devin、Aider、Zed 等。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、核心区别对比"
+          }
+        ],
+        "data": {
+          "headingId": "三核心区别对比"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "表格"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "格式规范"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "支持 YAML frontmatter，结构化元数据丰富"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "纯 Markdown 为主，YAML frontmatter 可选"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "元数据设计"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "字段丰富（version, role, priorities, tech, rules, change-policy），可 JSON Schema 校验"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "通常仅 name/description，主要指令在 body 中"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "工具原生支持"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "较少，需适配器或符号链接"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "广泛，28+ 工具原生支持"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "标准化组织"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "API Evangelist / Amp 团队"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Linux 基金会 AAIF"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "适用场景"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "单一事实源 + 可验证 + 自动生成工具配置"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "开箱即用、跨工具通用、快速上手"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "学习成本"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "中等，需了解 frontmatter 规范"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "低，纯 Markdown 即可"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "四、示例"
+          }
+        ],
+        "data": {
+          "headingId": "四示例"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.1 AGENT.md 示例（含 YAML frontmatter）"
+          }
+        ],
+        "data": {
+          "headingId": "41-agentmd-示例含-yaml-frontmatter"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "yaml",
+        "meta": null,
+        "value": "\n---\nproject: \"my-api-project\"\ndescription: \"A REST API built with Node.js and Express serving mobile and web clients.\"\ninstructions:\n  - \"Follow the existing code style and patterns\"\n  - \"Write tests for all new functionality\"\n  - \"Keep functions small and focused\"\nstack:\n  language: \"JavaScript\"\n  framework: \"Express\"\n  runtime: \"Node.js 20\"\n  package_manager: \"npm\"\nconventions:\n  style: \"ESLint with Airbnb config\"\n  naming: \"camelCase for variables, PascalCase for classes\"\n  testing: \"Jest with coverage > 80%\"\n  documentation: \"JSDoc for all public functions\"\ntools:\n  - \"eslint\"\n  - \"jest\"\n  - \"prettier\"\n  - \"husky\"\navoid:\n  - \"jQuery\"\n  - \"callbacks (use async/await)\"\n  - \"var (use const/let)\"\nfocus:\n  - \"src/\"\n  - \"tests/\"\ncontext: \"This project is a microservice in a larger distributed system.\"\n---"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.2 AGENTS.md 示例（纯 Markdown，简洁版）"
+          }
+        ],
+        "data": {
+          "headingId": "42-agentsmd-示例纯-markdown简洁版"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "markdown",
+        "meta": null,
+        "value": "\n## AGENTS.md\n\n### Setup commands\n- Install deps: `pnpm install`\n- Start dev server: `pnpm dev`\n- Run tests: `pnpm test`\n\n### Code style\n- TypeScript strict mode\n- Single quotes, no semicolons\n- Use functional patterns where possible"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.3 AGENTS.md 示例（多角色定义，含 YAML frontmatter）"
+          }
+        ],
+        "data": {
+          "headingId": "43-agentsmd-示例多角色定义含-yaml-frontmatter"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "markdown",
+        "meta": null,
+        "value": "\n---\nname: docs_agent\ndescription: Expert technical writer for this project\n---\n\nYou are an expert technical writer.\n\n### Your role\n- Fluent in Markdown, can read TypeScript code\n- Write for developer audience, focus on clarity and practical examples\n\n### Project knowledge\n- **Tech Stack:** React 18, TypeScript, Vite, Tailwind CSS\n- **File Structure:**\n  - `src/` – Application code (read from here)\n  - `docs/` – All documentation (write to here)\n\n### Commands\n- Build docs: `npm run docs:build`\n- Lint markdown: `npx markdownlint docs/`\n\n### Boundaries\n- ✅ **Always do:** Write new files to `docs/`, follow style examples\n- ⚠️ **Ask first:** Before modifying existing documents in a major way\n- 🚫 **Never do:** Modify code in `src/`, edit config files, commit secrets"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "五、定制不同角色的 AGENTS.md"
+          }
+        ],
+        "data": {
+          "headingId": "五定制不同角色的-agentsmd"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.1 通用核心原则"
+          }
+        ],
+        "data": {
+          "headingId": "51-通用核心原则"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "指令命令化：提供精确的 shell 命令，而非模糊描述。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "划定红线：明确禁止事项，防止 AI 过度热心。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "保持简洁：200–500 行是实践最佳区间，前 100 行最重要。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "维护更新：在修改架构或规范时同步更新。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.2 前端项目 AGENTS.md"
+          }
+        ],
+        "data": {
+          "headingId": "52-前端项目-agentsmd"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "markdown",
+        "meta": null,
+        "value": "\n## AGENTS.md — 前端项目\n\n### 角色设定\n你是一个资深前端工程师，正在开发一个面向 C 端用户的电商平台。\n\n### 技术栈\n- 框架：React 18 + TypeScript 5.7 strict\n- 样式：Tailwind CSS 4 + shadcn/ui\n- 状态管理：Zustand（禁止引入 Redux、Jotai、MobX）\n- 路由：Next.js 15 App Router\n- 测试：Vitest + Playwright\n\n### 编码规范\n- 组件使用函数式组件 + Hooks，不使用 Class 组件\n- 文件名：kebab-case.ts；React 组件：PascalCase.tsx\n- 所有 API 请求放在 `src/services/` 目录下\n- 组件 Props 必须有明确的 TypeScript 类型定义\n- 禁止使用 `any`，使用 `unknown` 并收窄类型\n- 文件不超过 200 行，超过请拆分\n- 导入顺序：第三方库 → 内部模块 → 相对路径\n\n### 测试要求\n- 测试文件与源码同目录，命名为 `*.test.tsx`\n- 最小覆盖：happy path + 一个错误用例 + 一个边界用例\n- 覆盖率不低于 80%\n\n### 禁止事项\n- 不要引入新的第三方依赖，除非先在对话中讨论\n- 不要修改 ESLint / Prettier / tsconfig 配置\n- 不要使用内联样式（`style={{...}}`）\n- 不要修改 `package-lock.json`"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.3 后端项目 AGENTS.md"
+          }
+        ],
+        "data": {
+          "headingId": "53-后端项目-agentsmd"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "markdown",
+        "meta": null,
+        "value": "\n## AGENTS.md — 后端项目\n\n### 角色设定\n你是一个资深后端工程师，负责开发 B2B SaaS 计费平台的后端服务。\n\n### 技术栈\n- 运行时：Node 20.11（通过 .nvmrc 锁定）\n- 包管理器：pnpm 9.x（禁止使用 npm 或 yarn）\n- 框架：Fastify 4\n- 数据库：PostgreSQL 16 + Prisma 5\n- 输入验证：Zod（所有 API 边界必须使用）\n\n### 代码规范\n- 异步/等待模式，禁止使用 `.then()` 链\n- 错误处理：禁止抛异常，统一返回 `Result<T, E>` 类型\n- 所有数据库查询必须通过 service 层，禁止在路由中直接使用 Prisma\n- 写操作必须使用事务\n\n### API 路由模式\n每个路由处理器遵循以下顺序：\n1. 输入验证（Zod schema）\n2. 鉴权检查（中间件已处理，但需验证权限）\n3. 业务逻辑（调用 service 层）\n4. 返回类型化响应\n\n### 测试要求\n- 单元测试覆盖率不低于 80%（`packages/shared` 目录）\n- 集成测试覆盖所有 API 端点\n- 禁止 Mock 数据库——使用测试数据库 + 事务回滚\n\n### 禁止事项\n- 不要使用 `legacy/lib/utils/date.ts`——使用 date-fns\n- 不要添加新依赖而不更新此文件\n- 不要在任何代码中内嵌密钥——使用安全的密钥存储\n- 不要在未确认的情况下重构现有代码"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.4 产品经理 / 需求设计 AGENTS.md"
+          }
+        ],
+        "data": {
+          "headingId": "54-产品经理-需求设计-agentsmd"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "markdown",
+        "meta": null,
+        "value": "\n## AGENTS.md — 产品设计\n\n### 角色设定\n你是一个资深产品经理，负责定义产品需求和用户体验设计。你的输出将被开发团队直接使用。\n\n### 输出格式规范\n所有需求文档必须遵循以下结构：\n- **用户故事**：As a [角色], I want to [功能], so that [价值]\n- **验收标准**：Given-When-Then 格式，可测试\n- **交互说明**：包含状态流转（空状态、加载态、错误态、边界情况）\n\n### 文档规范\n- 使用 Markdown 编写，保持层次清晰\n- 包含原型图的 Figma 链接或交互示意图\n- 每个功能点必须标注优先级（P0/P1/P2）\n- 涉及 API 的需注明数据字段和接口预期\n\n### 常用工具\n- 原型设计：Figma（链接需嵌入）\n- 流程图：Mermaid 语法嵌入\n- 用户流程：泳道图表示\n\n### 禁止事项\n- 不要直接输出开发技术方案\n- 不要编写数据库 schema 或 API 实现细节\n- 不要包含机密信息或未公开的商务策略\n- 不要输出代码——这是产品设计文档，不是技术实现"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "六、万能 Prompt 初始化 AGENTS.md"
+          }
+        ],
+        "data": {
+          "headingId": "六万能-prompt-初始化-agentsmd"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "以下是一个经过验证的综合 Prompt，可直接复制给任意 LLM，根据项目信息自动生成 AGENTS.md。"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "markdown",
+        "meta": null,
+        "value": "\n你是一位资深软件架构师和技术文档专家。请根据以下项目信息，生成一份完整的 AGENTS.md 文件。\n\n### 输出要求\n- 只输出 AGENTS.md 内容，从 `# AGENTS.md` 标题开始，不要额外解释\n- 使用标准 Markdown，命令用代码块包裹\n- 若信息缺失，用 `> TODO:` 标记，不要编造\n- 保持简洁，总长度不超过 12k Token\n\n### 必须包含的章节（按顺序）\n\n#### 1. 项目概述\n一句话描述 + 项目定位（如\"面向开发者的开源 API 网关\"）\n\n#### 2. 技术栈\n- 语言/运行时（含精确版本，如 Node.js 20）\n- 框架（如 Next.js 14 App Router）\n- 数据库/ORM\n- 包管理器\n- 构建工具\n- 基础设施/CI/CD\n\n#### 3. 项目结构\n核心目录树 + 每个顶级目录的一句话说明\n\n#### 4. 开发命令\n- 安装依赖：`pnpm install`\n- 启动开发：`pnpm dev`\n- 运行测试：`pnpm test`\n- 代码检查：`pnpm lint`\n- 类型检查：`pnpm typecheck`\n- 构建：`pnpm build`\n\n#### 5. 代码规范\n- 命名约定（camelCase / PascalCase / UPPER_SNAKE_CASE）\n- 缩进与格式化\n- 导入顺序\n- 文件组织规则\n- 组件/函数编写模式\n\n#### 6. 测试策略\n- 测试框架和位置\n- 覆盖率要求\n- 运行方式（本地 + CI）\n\n#### 7. 安全与边界\n- **Always do**：必须做的事\n- **Ask first**：需要先询问的事\n- **Never do**：绝对禁止的事（如修改数据库 schema、提交密钥等）\n\n#### 8. 工作流\n- 提交信息格式\n- 分支命名\n- PR 要求\n\n### 项目信息\n[在这里粘贴你的项目信息：\n- 项目类型和功能\n- 技术栈（语言、框架、数据库、版本）\n- package.json / requirements.txt 等配置文件内容\n- 项目独有的工具和约定\n- 目录结构（可用 tree 命令输出）\n- CI/CD 配置要点\n]"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "使用建议"
+          }
+        ],
+        "data": {
+          "headingId": "使用建议"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "快速上手：将上述 Prompt 复制到 ChatGPT / Claude / Gemini，在「项目信息」处填入项目详情（最简单的方式：粘贴 package.json + tree 输出），AI 即可生成一份完整的 AGENTS.md。"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "迭代优化：不需要一开始就完美。建议路径："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "第 1 步（5 分钟）：添加构建、测试、lint 命令——最高 ROI。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "第 2 步（5 分钟）：添加技术栈和目录结构说明。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "第 3 步（5 分钟）：添加边界规则（先写 Never do，再写 Ask first）。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "第 4 步（持续）：每次 AI 犯错时，在 AGENTS.md 中加一条规则。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": []
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "维护提醒：在 AGENTS.md 末尾加上："
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "children": [
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "type": "text",
+                "value": "当代码库发生变化时，请确保 AGENTS.md 同步更新。"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "七、总结与最佳实践"
+          }
+        ],
+        "data": {
+          "headingId": "七总结与最佳实践"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "表格"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "从零开始的新项目"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "AGENTS.md（纯 Markdown，跨工具兼容，开箱即用）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "需要严格规则管理和多工具统一规则源"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "AGENT.md（YAML frontmatter + JSON Schema 校验 + CLI 派生）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "两者可以共存"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "仓库中放一个简短的 AGENTS.md 用于通用指引，同时放一个更丰富的 AGENT.md 供深度使用"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "大型 Monorepo"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "根目录放通用 AGENTS.md，各子目录放专属 AGENTS.md（AI 自动读取就近优先级最高）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "多角色协作（前端+后端+产品）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "使用多 agent 定义（YAML frontmatter 分隔多个角色块）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "核心原则：指令命令化、划定红线、保持简洁、持续迭代。有了 AGENTS.md，AI 的首次输出质量将大幅提升，团队协作效率也会显著改善。"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,845 @@
+{
+  "schemaVersion": 1,
+  "id": "73d71337",
+  "slug": "插入排序-原理与Go实现",
+  "title": "插入排序-原理与Go实现",
+  "date": "2026-08-18",
+  "updated": "2026-08-18",
+  "description": "插入排序是一种简单直观的排序算法，它将待排序元素划分为已排序与未排序两部分，每次从未排序部分取出一个元素，插入到已排序部分的正确位置。",
+  "tags": [
+    "插入排序",
+    "Insertion Sort",
+    "排序算法",
+    "Go",
+    "数据结构"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 3,
+    "words": 796
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、简介",
+      "slug": "一简介"
+    },
+    {
+      "depth": 3,
+      "text": "二、算法步骤",
+      "slug": "二算法步骤"
+    },
+    {
+      "depth": 3,
+      "text": "三、复杂度分析",
+      "slug": "三复杂度分析"
+    },
+    {
+      "depth": 3,
+      "text": "四、Go 代码实现",
+      "slug": "四go-代码实现"
+    },
+    {
+      "depth": 4,
+      "text": "4.1 原文实现（1 索引风格，对 a[1..n] 排序）",
+      "slug": "41-原文实现1-索引风格对-a1n-排序"
+    },
+    {
+      "depth": 4,
+      "text": "4.2 标准 0 索引 Go 实现",
+      "slug": "42-标准-0-索引-go-实现"
+    },
+    {
+      "depth": 3,
+      "text": "五、O(n²) 家族对比",
+      "slug": "五on²-家族对比"
+    },
+    {
+      "depth": 3,
+      "text": "六、参考文献",
+      "slug": "六参考文献"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理来源：Insertion Sort.md\n主题：插入排序（Insertion Sort）的原理、时间复杂度、Go 代码实现与适用场景"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、简介"
+          }
+        ],
+        "data": {
+          "headingId": "一简介"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "插入排序（Insertion Sort）是一种简单直观的排序算法。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "核心思想：将待排序元素划分为「已排序」和「未排序」两部分，每次从「未排序」部分取出一个元素，插入到「已排序」部分的正确位置。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "生活类比：打扑克牌时，从牌桌上抓一张牌，按牌面大小插到手牌的正确位置，再抓下一张牌 —— 就是插入排序。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、算法步骤"
+          }
+        ],
+        "data": {
+          "headingId": "二算法步骤"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "以数组 [6, 5, 3, 1, 8, 7, 2, 4] 为例："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "从第 2 个元素（下标 1）开始，假设第 1 个元素 [6] 已排序"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "取 key = 5，与已排序部分从右往左比较：6 > 5 → 6 后移，5 插入到位置 0"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "取 key = 3，6 > 3、5 > 3 依次后移，3 插入到最前"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "…直到所有元素处理完"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "初始:   [6, 5, 3, 1, 8, 7, 2, 4]\n第2轮:  [5, 6, 3, 1, 8, 7, 2, 4]\n第3轮:  [3, 5, 6, 1, 8, 7, 2, 4]\n第4轮:  [1, 3, 5, 6, 8, 7, 2, 4]\n第5轮:  [1, 3, 5, 6, 8, 7, 2, 4]   ← 8 已在正确位置\n第6轮:  [1, 3, 5, 6, 7, 8, 2, 4]\n第7轮:  [1, 2, 3, 5, 6, 7, 8, 4]\n第8轮:  [1, 2, 3, 4, 5, 6, 7, 8]   ✓ 排序完成"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、复杂度分析"
+          }
+        ],
+        "data": {
+          "headingId": "三复杂度分析"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "最优时间复杂度"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(n)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "数列几乎有序时，每个元素只需比较一次"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "平均时间复杂度"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(n²)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "两层循环"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "最坏时间复杂度"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(n²)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "逆序数列"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "空间复杂度"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(1)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "原地排序（in-place），仅用常数辅助空间"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "稳定性"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "稳定"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "相同元素的相对顺序不变"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "适用场景"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "小规模 / 基本有序"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "常数因子小，实际速度可能快于 O(n log n) 的复杂算法（小 n 时）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "四、Go 代码实现"
+          }
+        ],
+        "data": {
+          "headingId": "四go-代码实现"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.1 原文实现（1 索引风格，对 a[1..n] 排序）"
+          }
+        ],
+        "data": {
+          "headingId": "41-原文实现1-索引风格对-a1n-排序"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func insertionSort(a []int, n int) {\n\t// 对 a[1],a[2],...,a[n] 进行插入排序\n\tfor i := 2; i <= n; i++ {\n\t\tkey := a[i]\n\t\tj := i - 1\n\t\tfor ; j > 0 && a[j] > key; {\n\t\t\ta[j+1] = a[j]\n\t\t\tj--\n\t\t}\n\t\ta[j+1] = key\n\t}\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.2 标准 0 索引 Go 实现"
+          }
+        ],
+        "data": {
+          "headingId": "42-标准-0-索引-go-实现"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "func insertionSort(nums []int) {\n\tfor i := 1; i < len(nums); i++ {\n\t\tkey := nums[i]\n\t\tj := i - 1\n\t\t// 已排序部分从右往左扫描，比 key 大的元素后移\n\t\tfor j >= 0 && nums[j] > key {\n\t\t\tnums[j+1] = nums[j]\n\t\t\tj--\n\t\t}\n\t\tnums[j+1] = key\n\t}\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "五、O(n²) 家族对比"
+          }
+        ],
+        "data": {
+          "headingId": "五on²-家族对比"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "插入排序"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(n²)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(n)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(1)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "基本有序时最快；常数小"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "冒泡排序"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(n²)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(n)（优化后）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(1)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "交换次数多，一般最慢"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "选择排序"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(n²)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(n²)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(1)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "交换次数最少（最多 n-1 次），但比较次数固定"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "选型建议："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "小规模（n < 50）或基本有序：插入排序是 O(n²) 中最优选择，甚至快于部分 O(n log n) 算法（如快速排序的小数组优化段）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "大规模乱序：选快速 / 归并 / 堆排序"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "工程上（如 Go sort、Java Arrays.sort）常在快排/归并中对小数组回退到插入排序"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "六、参考文献"
+          }
+        ],
+        "data": {
+          "headingId": "六参考文献"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "原文：Insertion Sort.md（插入排序简介 + Go 实现）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-18"
+          }
+        ]
+      }
+    ]
+  }
+}

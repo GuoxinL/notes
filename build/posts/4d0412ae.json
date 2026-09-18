@@ -1,0 +1,343 @@
+{
+  "schemaVersion": 1,
+  "id": "4d0412ae",
+  "slug": "Shell之xgrep-xargs命令速查",
+  "title": "Shell之xgrep-xargs命令速查",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "xargs 把标准输入转换成命令参数，解决管道只能传文本不能传参数的问题；整理 -n、-I、-0、-P 等常用参数与批量删除、压缩等场景示例。",
+  "tags": [
+    "Shell",
+    "xargs",
+    "grep",
+    "管道",
+    "Linux"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 1,
+    "words": 388
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、xargs 是什么",
+      "slug": "一xargs-是什么"
+    },
+    {
+      "depth": 3,
+      "text": "二、核心用法",
+      "slug": "二核心用法"
+    },
+    {
+      "depth": 3,
+      "text": "三、常用参数",
+      "slug": "三常用参数"
+    },
+    {
+      "depth": 3,
+      "text": "四、典型场景（补充）",
+      "slug": "四典型场景补充"
+    },
+    {
+      "depth": 3,
+      "text": "五、xgrep 说明（补充）",
+      "slug": "五xgrep-说明补充"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：个人笔记整理版（原文为空占位，以下为补充整理）"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "⚠️ 说明：源文件 Shell 之 xargs.md 仅含标题（占位文档，无正文）。此处按目录主题整理 xargs 命令 速查，供参考。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、xargs 是什么"
+          }
+        ],
+        "data": {
+          "headingId": "一xargs-是什么"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "xargs（execute arguments）将标准输入转换为命令参数，是管道命令的\"参数传递器\"，用于解决\"管道只能传文本、不能传参数\"的问题。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、核心用法"
+          }
+        ],
+        "data": {
+          "headingId": "二核心用法"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 基本用法：把 find 结果作为参数传给 rm\nfind . -name \"*.tmp\" | xargs rm -f\n\n# 每行一个参数执行一次命令\nls *.tar.gz | xargs -n1 tar xzvf\n\n# 指定分隔符（默认空白；文件名含空格时用 \\0）\nfind . -name \"*.log\" -print0 | xargs -0 rm -f"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、常用参数"
+          }
+        ],
+        "data": {
+          "headingId": "三常用参数"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-n N"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每次执行命令使用 N 个参数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-I {}"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "用 {} 占位符替换参数（命令中间位置）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-0"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "以 \\0 分隔输入（配合 -print0 处理含空格文件名）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-P N"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "并行执行 N 个进程"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-t"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "先打印命令再执行（调试）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-p"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "执行前交互确认"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "四、典型场景（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "四典型场景补充"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 批量删除\nfind /tmp -name \"core.*\" | xargs rm -rf\n\n# 批量压缩\nfind . -name \"*.log\" | xargs -I {} gzip {}\n\n# 并行压缩（4 进程）\nfind . -name \"*.log\" | xargs -P4 -I {} gzip {}\n\n# 统计文本行数\nls *.txt | xargs wc -l\n\n# 多行转单行\ncat list.txt | xargs"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "五、xgrep 说明（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "五xgrep-说明补充"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "xgrep 并非标准命令（无此工具）；通常实现\"递归 grep\"用："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 递归搜索当前目录\ngrep -r \"关键字\" .\n\n# 按文件名过滤 + 内容搜索\nfind . -name \"*.go\" | xargs grep -l \"func main\""
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      }
+    ]
+  }
+}

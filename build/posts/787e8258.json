@@ -1,0 +1,537 @@
+{
+  "schemaVersion": 1,
+  "id": "787e8258",
+  "slug": "Shell查看CPU与内存信息-系统监控速查",
+  "title": "Shell查看CPU与内存信息-系统监控速查",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "整理 Shell 查看 CPU 与内存的常用命令：从 /proc/cpuinfo 读型号与核心数，从 /proc/meminfo 读总内存，用 dmidecode 查内存条。",
+  "tags": [
+    "Shell",
+    "CPU",
+    "内存",
+    "/proc",
+    "dmidecode"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 1,
+    "words": 298
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、查看 CPU 信息",
+      "slug": "一查看-cpu-信息"
+    },
+    {
+      "depth": 4,
+      "text": "命令",
+      "slug": "命令"
+    },
+    {
+      "depth": 4,
+      "text": "结果",
+      "slug": "结果"
+    },
+    {
+      "depth": 3,
+      "text": "二、查看内存信息",
+      "slug": "二查看内存信息"
+    },
+    {
+      "depth": 4,
+      "text": "命令",
+      "slug": "命令-2"
+    },
+    {
+      "depth": 4,
+      "text": "结果",
+      "slug": "结果-2"
+    },
+    {
+      "depth": 3,
+      "text": "三、查看简要内存信息（内存条）",
+      "slug": "三查看简要内存信息内存条"
+    },
+    {
+      "depth": 4,
+      "text": "命令",
+      "slug": "命令-3"
+    },
+    {
+      "depth": 4,
+      "text": "结果",
+      "slug": "结果-3"
+    },
+    {
+      "depth": 3,
+      "text": "四、速查命令汇总（补充）",
+      "slug": "四速查命令汇总补充"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：个人笔记整理版"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、查看 CPU 信息"
+          }
+        ],
+        "data": {
+          "headingId": "一查看-cpu-信息"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "命令"
+          }
+        ],
+        "data": {
+          "headingId": "命令"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "cat /proc/cpuinfo | grep \"model name\" && cat /proc/cpuinfo | grep \"physical id\""
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "结果"
+          }
+        ],
+        "data": {
+          "headingId": "结果"
+        }
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "model name\t: Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz\nmodel name\t: Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz\nmodel name\t: Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz\nmodel name\t: Intel(R) Xeon(R) Gold 6148 CPU @ 2.40GHz\nphysical id\t: 0\nphysical id\t: 1\nphysical id\t: 2\nphysical id\t: 3"
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "model name 行数 = 逻辑核心数（此处 4 核）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "physical id 去重数 = 物理 CPU 颗数（此处 4 颗）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、查看内存信息"
+          }
+        ],
+        "data": {
+          "headingId": "二查看内存信息"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "命令"
+          }
+        ],
+        "data": {
+          "headingId": "命令-2"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "cat /proc/meminfo | grep MemTotal"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "结果"
+          }
+        ],
+        "data": {
+          "headingId": "结果-2"
+        }
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "MemTotal:        8173720 kB"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "8173720 kB ≈ 7.8 GB。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、查看简要内存信息（内存条）"
+          }
+        ],
+        "data": {
+          "headingId": "三查看简要内存信息内存条"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "命令"
+          }
+        ],
+        "data": {
+          "headingId": "命令-3"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "/usr/sbin/dmidecode | grep -A 16 \"Memory Device\" | grep -E \"Size|Locator\" | grep -v Bank"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "结果"
+          }
+        ],
+        "data": {
+          "headingId": "结果-3"
+        }
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "Size: 8192 MB\nLocator: DIMM 0"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "需要 root 权限；Size 为单条内存容量，Locator 为插槽位置。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "四、速查命令汇总（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "四速查命令汇总补充"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "CPU 型号"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "cat /proc/cpuinfo | grep \"model name\" | uniq"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "逻辑核心数"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "nproc"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "物理 CPU 数"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "cat /proc/cpuinfo | grep \"physical id\" | sort -u | wc -l"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "总内存"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "free -h"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内存条信息"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "sudo dmidecode -t memory"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内存使用率"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "free -h | awk 'NR==2{print "
+                  },
+                  {
+                    "type": "inlineMath",
+                    "value": "3/",
+                    "data": {
+                      "hName": "code",
+                      "hProperties": {
+                        "className": [
+                          "language-math",
+                          "math-inline"
+                        ]
+                      },
+                      "hChildren": [
+                        {
+                          "type": "text",
+                          "value": "3/"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "value": "2*100\"%\"}'"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "综合概览"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "top / htop"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "推荐：日常查 CPU/内存优先用 lscpu 和 free -h，比 /proc 直读更直观（补充）。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      }
+    ]
+  }
+}

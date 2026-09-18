@@ -1,0 +1,235 @@
+---
+title: Redis原理与实现-数据类型持久化与高可用机制
+date: 2026-08-18
+tags: [Redis, 数据类型, 持久化, 主从复制, Sentinel]
+description: Redis 相比其它的 KV 数据库，其一大特点是支持丰富的数据类型，一共支持 5 种数据类型，本文逐一介绍其使用场景与持久化、高可用机制。
+---
+
+来源：整理自 学无止境/cache/Redis原理及实现.md（原文未署名，疑似博客园 2019-07 系列文章），已修复笔误（Sleve→Slave 等）、结构化成章节，并为架构/流程配图补充 Mermaid 重绘与原图对照。
+
+### 一、什么是 Redis
+
+Redis 相比其它的 KV 数据库，其一大特点是支持丰富的数据类型，一共支持 5 种数据类型。下面逐一介绍这 5 种数据类型及其使用场景。
+
+|||||
+|---|---|---|---|
+|String|二进制安全字节串|可存字符串/数字/二进制内容|JSON 对象、计数器、Session|
+|Hash|字符串↔字符串映射|可按属性读写，避免并发覆盖|结构化对象、分组|
+|List|双向链表|双向 Pop/Push、阻塞版本、可做队列/栈|消息队列、点赞、分页|
+|Set|无序不重复集合|自动去重、交并差运算|去重、关注/粉丝、标签|
+|Sorted Set|有序集合（带 score）|按分数排序|权重队列、排行榜、过期清理|
+
+
+### 二、Redis 的应用场景
+
+#### 2.1 String（KV 结构）
+
+简介：Strings 数据类型是最常用、最简单的 key-value 类型，普通的 key/value 存储都可以归为此类。value 不仅可以是字符串，也可以是数字。因为是二进制安全的，所以完全可以把一个图片文件的内容作为 string 来存储。Redis 的 string 可以完全实现 Memcached 的功能，并且效率更高。除了提供与 Memcached 一样的 get、set、incr、decr 等操作外，Redis 还额外提供了以下操作：获取字符串长度、往字符串 append 内容、设置和获取字符串的某一段内容、设置及获取字符串的某一位（bit）、批量设置一系列字符串的内容。
+
+相关命令：set、get、decr、incr、mget
+
+应用场景：
+1. 存储 JSON 类型对象
+2. 计数器
+3. 视频点赞等（如优酷视频点赞）
+4. 存储 Session
+
+#### 2.2 Hash（HashMap）
+
+Hash 存的是字符串和字符串值之间的映射。Hash 将对象的各个属性存入 Map 里，可以只读取/更新对象的某些属性。这样有些属性超长就让它"一边呆着不动"，另外不同的模块可以只更新自己关心的属性而不会互相并发导致覆盖冲突。
+
+常用命令：hget、hset、hgetall 等
+
+应用场景：
+1. 存储结构化对象，例如用户信息（名称、年龄、性别、积分等）：key 是用户 Id，value 是一个 map，map 中的 key 是属性名、value 是属性值，例如 key: name, value: 张三
+2. 分组
+
+#### 2.3 List（双向链表）
+
+List 是一个双向链表，支持双向的 Pop/Push。江湖规矩一般从左端 Push、右端 Pop（LPush/RPop），而且还有 Blocking 的版本 BLPop/BRPop，客户端可以阻塞在那里直到有消息到来。还有 RPopLPush/BRPopLPush：弹出来返回给 client 的同时，把自己又推入另一个 list；LLen 获取列表的长度。还有按值进行的操作：LRem（按值删除元素）、LInsert（插在某个值的元素的前后），复杂度是 O(N)（N 是 List 长度）——因为 List 的值不唯一，所以要遍历全部元素；而 Set 只要 O(log(N))。
+
+相关命令：lpush、rpush、lpop、rpop、lrange、lrem、linsert
+
+应用场景：
+1. 可以使用 Redis 的 list 模拟队列、堆、栈
+2. 朋友圈点赞（一条朋友圈内容语句，若干点赞语句）
+3. 各种列表，比如 Twitter 的关注列表、粉丝列表等；最新消息排行、每篇文章的评论等也可以用 Redis 的 list 结构来实现
+4. 利用 LRANGE 可以很方便地实现 list 内容分页的功能
+
+#### 2.4 Set（无序集合）
+
+是一种无序的集合，集合中的元素没有先后顺序、不重复。将重复的元素放入 Set 会自动去重。
+
+常用命令：sadd、spop、smembers、sunion、zrank 等
+
+应用场景：
+1. 某些需要去重的列表；Set 提供了判断某个成员是否在一个 set 集合内的重要接口（ZRANK key member），这也是 list 所不能提供的
+2. 存储集合性数据，例如微博应用中，可以将一个用户所有的关注人存在一个集合中，将其所有粉丝存在一个集合。Redis 还为集合提供了求交集、并集、差集等操作，可以非常方便地实现如共同关注、共同喜好、二度好友等功能。对上面的所有集合操作，还可以使用不同的命令选择将结果返回给客户端还是存到一个新的集合中。又比如 QQ 的"好友标签"社交功能，可以把每一个用户的标签都存储在一个集合之中
+3. 统计独立访客/访问量：SADD page:day1:<page_id> <user_id> 记录访问；SCARD page:day1:<page_id> 查询特定用户数量；SISMEMBER page:day1:<page_id> 测试某个特定用户是否访问了该页面
+
+#### 2.5 Sorted Set（有序集合）
+
+相比 set，元素放入集合时还要提供该元素的分数（score），可根据分数自动排序。
+
+常用命令：zadd、zrange、zrem、zcard 等
+
+应用场景：
+1. 做带权重的队列：普通消息的 score 为 1，重要消息的 score 为 2，工作线程按 score 倒序获取工作任务，让重要的任务优先执行
+2. 排行榜相关业务
+3. 过期项目处理：使用 unix 时间作为 score，用来保持列表能够按时间排序；对 current_time 和 time_to_live 进行检索完成查找过期项目的任务，另一项后台任务使用 ZRANGE ... WITHSCORES 进行查询，删除过期的条目
+
+### 三、Redis 的持久化方式
+
+Redis 可以将内存中的数据异步写入硬盘，两种方式：RDB（默认） 和 AOF。
+
+||||
+|---|---|---|
+|原理|bgsave 触发 → 父进程 fork 子进程 → 子进程根据父进程内存生成临时快照文件 → 完成后原子替换原文件（定时一次性全量快照）|每执行一个修改数据的命令，就把它追加到 AOF 文件|
+|优点|紧凑压缩的二进制文件；Redis 加载 RDB 恢复数据远快于 AOF|实时持久化，数据丢失窗口小|
+|缺点|每次生成 RDB 开销较大，非实时持久化|AOF 文件体积逐渐变大，需要定期重写压缩；加载慢|
+
+
+#### 3.1 RDB（默认）
+
+原理：通过 bgsave 命令触发，父进程执行 fork 操作创建子进程，子进程创建 RDB 文件，根据父进程内存生成临时快照文件，完成后对原有文件进行原子替换（定时一次性将所有数据进行快照，生成一份副本存储在硬盘中）。
+
+优点：紧凑压缩的二进制文件，Redis 加载 RDB 恢复数据远快于 AOF 的方式。
+
+缺点：每次生成 RDB 开销较大，非实时持久化。
+
+#### 3.2 AOF
+
+原理：开启后，Redis 每执行一个修改数据的命令，都会把这个命令追加到 AOF 文件中。
+
+优点：实时持久化。
+
+缺点：AOF 文件体积逐渐变大，需要定期执行重写操作来降低文件体积；加载慢。
+
+### 四、Redis 集群
+
+#### 4.1 Redis 主从复制模型
+
+主从复制模型中，有多个 Redis 节点，其中有且仅有一个主节点 Master。从节点 Slave 可以有多个；只要网络连接正常，Master 会一直将自己的数据更新同步给 Slaves，保持主从同步。
+
+```mermaid
+graph LR
+    M["Master 主节点<br/>可读可写"] -->|数据同步| S1["Slave 从节点<br/>只读"]
+    M -->|数据同步| S2["Slave 从节点<br/>只读"]
+    M -->|数据同步| S3["Slave 从节点<br/>只读"]
+    C1["客户端"] -->|读操作| S1
+    C2["客户端"] -->|读操作| S2
+    C3["客户端"] -->|写操作| M
+```
+
+配图内容描述：主从复制模型示意图——一个 Master 主节点（可读可写）将数据同步给多个 Slave 从节点（只读），客户端读操作分散到各从节点、写操作仅发往主节点。
+
+特点：主节点 Master 可读、可写，从节点 Slave 只读（read-only）。
+
+因此，主从模型可以提高读的能力，在一定程度上缓解了写的能力。因为能写的仍然只有 Master 节点一个，可以将读的操作全部移交到从节点上，变相提高了写能力。
+
+#### 4.2 Sentinel 哨兵模式
+
+Redis 的 Sentinel 系统用于管理多个 Redis 服务器（instance），该系统执行以下三个任务：
+
+- 监控（Monitoring）：Sentinel 会不断地检查主服务器和从服务器是否运作正常
+- 提醒（Notification）：当被监控的某个 Redis 服务器出现问题时，Sentinel 可以通过 API 向管理员或其他应用程序发送通知
+- 自动故障迁移（Automatic failover）：当一个主服务器不能正常工作时，Sentinel 会开始一次自动故障迁移操作，它会进行选举，将其中一个从服务器升级为新的主服务器，并让失效主服务器的其他从服务器改为复制新的主服务器；当客户端试图连接失效的主服务器时，集群也会向客户端返回新主服务器的地址，使得集群可以使用新主服务器代替失效服务器
+#### 4.2.1 监控（Monitoring）
+
+- Sentinel 可以监控任意多个 Master 和该 Master 下的 Slaves（即多个主从模式）
+- 同一个哨兵下的、不同主从模型，彼此之间相互独立
+- Sentinel 会不断检查 Master 和 Slaves 是否正常
+```mermaid
+graph TB
+    S["Sentinel 哨兵"] -->|监控| M1["Master A"]
+    S -->|监控| M2["Master B"]
+    M1 --> SA1["Slave A1"]
+    M1 --> SA2["Slave A2"]
+    M2 --> SB1["Slave B1"]
+    M2 --> SB2["Slave B2"]
+```
+
+配图内容描述：Sentinel 监控示意图——一个 Sentinel 可同时监控多个主从模型（Master A、Master B 及其各自 Slaves），不同主从模型之间相互独立。
+
+#### 4.2.2 自动故障切换（Automatic failover）
+
+Sentinel 网络
+
+监控同一个 Master 的 Sentinel 会自动连接，组成一个分布式的 Sentinel 网络，互相通信并交换彼此关于被监视服务器的信息。下图中，三个监控 s1 的 Sentinel，自动组成 Sentinel 网络结构。
+
+```mermaid
+graph TD
+    subgraph Sentinel网络
+        S1["Sentinel 1"] <-->|互相通信| S2["Sentinel 2"]
+        S2 <-->|互相通信| S3["Sentinel 3"]
+        S1 <-->|互相通信| S3
+    end
+    S1 -->|监控| M["Master"]
+    S2 -->|监控| M
+    S3 -->|监控| M
+    M --> A["Slave A"]
+    M --> B["Slave B"]
+```
+
+配图内容描述：Sentinel 网络结构图——三个监控同一个 Master 的 Sentinel 自动组成分布式网络，互相通信、交换被监视服务器的信息；只要网络中还有一个 Sentinel 存活，就可以实现故障切换。
+
+故障切换的过程
+
+- 投票（半数原则）
+当任何一个 Sentinel 发现被监控的 Master 下线时，会通知其它的 Sentinel "开会"，投票确定该 Master 是否下线（半数以上，所以 Sentinel 通常配奇数个）。
+
+```mermaid
+sequenceDiagram
+    participant S1 as Sentinel 1
+    participant S2 as Sentinel 2
+    participant S3 as Sentinel 3
+    participant M as Master(疑似下线)
+    S1->>S1: 心跳超时，标记主观下线
+    S1->>S2: 通知：Master 疑似下线
+    S1->>S3: 通知：Master 疑似下线
+    S2->>S1: 投票确认下线
+    S3->>S1: 投票确认下线
+    Note over S1,S2,S3: 半数以上同意 → 客观下线(sdown→odown)
+```
+
+配图内容描述：故障切换投票示意图——Sentinel 1 发现 Master 心跳超时标记主观下线，通知 Sentinel 2/3 投票，半数以上同意后判定 Master 客观下线。
+
+- 选举
+当 Sentinel 确定 Master 下线后，会在所有的 Slaves 中，选举一个新的节点升级成 Master 节点，其它 Slaves 节点转为该节点的从节点。
+
+```mermaid
+graph LR
+    M["Master 下线"] -->|选举| N["新 Master（由某 Slave 升级）<br/>可读可写"]
+    N -->|复制| S1["其他 Slave 转为从节点"]
+    N -->|复制| S2["其他 Slave 转为从节点"]
+```
+
+配图内容描述：故障切换选举示意图——Master 确认下线后，Sentinel 在所有 Slaves 中选举一个升级为新 Master，其余 Slaves 转为新 Master 的从节点。
+
+- 原 Master 重新上线
+当原 Master 节点重新上线后，自动转为当前 Master 节点的从节点。
+
+```mermaid
+graph LR
+    OLD["原 Master 重新上线"] -->|自动转为从节点| NEW["新 Master"]
+    NEW -->|数据同步| OLD
+```
+
+配图内容描述：原 Master 重新上线示意图——原主节点恢复后自动转为当前 Master 的从节点，重新加入主从复制。
+
+Sentinel 哨兵模式，确实能实现自动故障切换，提供稳定的服务。
+
+细节（心跳机制）
+
+||||
+|---|---|---|
+|每 10s|每个 Sentinel 向 Master 和 Slave 发送 info 命令|获取最新的拓扑结构|
+|每 2s|每个 Sentinel 向某频道发送自身对 Master 的判断及当前 Slave 的信息，同时订阅该频道|了解其他 Sentinel 及其对 Master 的判断（做客观下线依据）|
+|每 1s|每个 Sentinel 向 Master、Slave、其余 Sentinel 发送一条 ping 命令做心跳检测|确认节点当前是否可达；三次心跳检测之后就会进行投票，超过半数即将该节点判定为 Master 下线|
+
+
+### 参考文献
+
+- 原文（未署名，2019-07）：Redis原理及实现.md，学无止境/cache/
+
+整理版本：v1.0 · 2026-08-18

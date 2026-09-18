@@ -1,0 +1,1489 @@
+{
+  "schemaVersion": 1,
+  "id": "e8e5bb5a",
+  "slug": "算法基础-特性与复杂度分析",
+  "title": "算法基础-特性与复杂度分析",
+  "date": "2026-08-18",
+  "updated": "2026-08-18",
+  "description": "算法满足问题要求、能正确解决问题，正确性分 4 层含义；本文梳理算法的四大特性、算法分析与渐进时间复杂度（大 O）。",
+  "tags": [
+    "算法",
+    "时间复杂度",
+    "空间复杂度",
+    "大O",
+    "数据结构"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 5,
+    "words": 1545
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、算法的特性",
+      "slug": "一算法的特性"
+    },
+    {
+      "depth": 4,
+      "text": "1.1 正确性（Correctness）",
+      "slug": "11-正确性correctness"
+    },
+    {
+      "depth": 4,
+      "text": "1.2 可读性（Readability）",
+      "slug": "12-可读性readability"
+    },
+    {
+      "depth": 4,
+      "text": "1.3 健壮性 / 鲁棒性（Robustness）",
+      "slug": "13-健壮性-鲁棒性robustness"
+    },
+    {
+      "depth": 4,
+      "text": "1.4 高效性（Efficiency）",
+      "slug": "14-高效性efficiency"
+    },
+    {
+      "depth": 3,
+      "text": "二、算法分析",
+      "slug": "二算法分析"
+    },
+    {
+      "depth": 4,
+      "text": "2.1 算法好坏的衡量顺序",
+      "slug": "21-算法好坏的衡量顺序"
+    },
+    {
+      "depth": 4,
+      "text": "2.2 两个效率维度",
+      "slug": "22-两个效率维度"
+    },
+    {
+      "depth": 4,
+      "text": "2.3 时间效率的两种度量方法",
+      "slug": "23-时间效率的两种度量方法"
+    },
+    {
+      "depth": 4,
+      "text": "2.4 事前分析法",
+      "slug": "24-事前分析法"
+    },
+    {
+      "depth": 3,
+      "text": "三、渐进时间复杂度（大 O）",
+      "slug": "三渐进时间复杂度大-o"
+    },
+    {
+      "depth": 4,
+      "text": "n 的含义（问题规模）",
+      "slug": "n-的含义问题规模"
+    },
+    {
+      "depth": 4,
+      "text": "分析时间复杂度的基本方法",
+      "slug": "分析时间复杂度的基本方法"
+    },
+    {
+      "depth": 3,
+      "text": "四、分析案例",
+      "slug": "四分析案例"
+    },
+    {
+      "depth": 4,
+      "text": "案例 1：并列循环 → O(n²)",
+      "slug": "案例-1并列循环-on²"
+    },
+    {
+      "depth": 4,
+      "text": "案例 2：两层循环（m×n）→ O(mn)",
+      "slug": "案例-2两层循环mn-omn"
+    },
+    {
+      "depth": 4,
+      "text": "案例 3：三重循环 → O(n³)",
+      "slug": "案例-3三重循环-on³"
+    },
+    {
+      "depth": 4,
+      "text": "案例 4：三角循环 → O(n³)",
+      "slug": "案例-4三角循环-on³"
+    },
+    {
+      "depth": 4,
+      "text": "案例 5：循环变量倍增 → O(log₂n)",
+      "slug": "案例-5循环变量倍增-olog₂n"
+    },
+    {
+      "depth": 3,
+      "text": "五、小结",
+      "slug": "五小结"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理来源：Untitled.md\n主题：算法的四大特性、算法分析（时间/空间效率）、渐进时间复杂度（大 O）与 5 个分析案例"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、算法的特性"
+          }
+        ],
+        "data": {
+          "headingId": "一算法的特性"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.1 正确性（Correctness）"
+          }
+        ],
+        "data": {
+          "headingId": "11-正确性correctness"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "算法满足问题要求，能正确解决问题。分 4 层含义："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "程序不含语法错误"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "程序对几组输入数据能得出满足要求的结果"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "程序对精心选择的、典型、苛刻且带刁难性的几组输入数据能得出满足要求的结果"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "程序对一切合法的输入数据都能得出满足要求的结果"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "通常以第 3 层意义上的正确性作为衡量一个算法是否合格的标准。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.2 可读性（Readability）"
+          }
+        ],
+        "data": {
+          "headingId": "12-可读性readability"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "算法主要为了人的阅读和交流，其次才是计算机执行 → 应易于理解"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "晦涩难懂的算法易隐藏错误且难以调试"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.3 健壮性 / 鲁棒性（Robustness）"
+          }
+        ],
+        "data": {
+          "headingId": "13-健壮性-鲁棒性robustness"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "输入非法数据时，算法能恰当地做出反应或处理，而不是产生莫名其妙的输出"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "处理错误的方法不应是中断程序执行，而是返回一个表示错误（或错误性质）的值，以便在更高抽象层次处理"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.4 高效性（Efficiency）"
+          }
+        ],
+        "data": {
+          "headingId": "14-高效性efficiency"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "要求耗费尽量少的时间和尽量低的存储需求。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、算法分析"
+          }
+        ],
+        "data": {
+          "headingId": "二算法分析"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.1 算法好坏的衡量顺序"
+          }
+        ],
+        "data": {
+          "headingId": "21-算法好坏的衡量顺序"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "一个好的算法首先要具备正确性，其次是健壮性、可读性；在这些都满足的情况下，主要考虑算法效率，通过效率高低判断不同算法的优劣。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.2 两个效率维度"
+          }
+        ],
+        "data": {
+          "headingId": "22-两个效率维度"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "时间效率"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "算法所耗费的时间"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "时间效率和空间效率有时候是矛盾的"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "空间效率"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "算法执行过程中所耗费的存储空间"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "需在两者间做取舍"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.3 时间效率的两种度量方法"
+          }
+        ],
+        "data": {
+          "headingId": "23-时间效率的两种度量方法"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "事前分析"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "对算法所消耗资源进行估算"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 不依赖机器，可比性好"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "事后统计"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "将算法实现后测算时间/空间开销"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌ 花费较多时间精力；结果依赖软硬件环境，掩盖算法本身优劣"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.4 事前分析法"
+          }
+        ],
+        "data": {
+          "headingId": "24-事前分析法"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "算法运行时间 = 一个简单操作所需的时间 × 简单操作次数，即每条语句执行时间之和："
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "算法运行时间 = ∑ 语句的频度 × 该语句执行一次所需的时间"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "语句的频度 = 该语句的执行次数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每条语句执行一次所需时间随机器而异（指令性能、速度、编译质量），由软硬件决定，与算法无关"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "因此假设每条语句执行时间为单位时间 → 讨论算法运行时间就转化为讨论所有语句频度之和\n示例：n×n 矩阵相乘"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "c",
+        "meta": null,
+        "value": "for(i=1; i <= n; i++)                        // n+1 次\n\tfor(j=1; j <= n; j++) {                  // n(n+1) 次\n\t\tc[i][j] = 0;                          // n*n 次\n\t\tfor(k=0; k < n; k++) {                // n*n*(n+1) 次\n\t\t\tc[i][j] = c[i][j] + a[i][k]*b[k][j]; // n*n*n 次\n\t\t}\n\t}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "T(n) = 2n³ + 3n² + 2n + 1"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "但逐条统计太麻烦，只需比较它们的数量级。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、渐进时间复杂度（大 O）"
+          }
+        ],
+        "data": {
+          "headingId": "三渐进时间复杂度大-o"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "定义：若有某个辅助函数 f(n)，使得当 n 趋近于无穷大时，T(n)/f(n) 的极限值为不等于零的常数，则称 f(n) 是 T(n) 的同数量级函数，记作："
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "T(n) = O(f(n))"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "称 O(f(n)) 为算法的渐进时间复杂度（O = Order，表示数量级），简称时间复杂度。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "矩阵相乘示例：T(n) = 2n³ + 3n² + 2n + 1，当 n → ∞ 时 T(n)/n³ → 2，故 T(n) = O(n³)。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "核心思想：n 越大算法执行时间越长。它表示算法执行时间的增长率与 f(n) 的增长率相同。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "n 的含义（问题规模）"
+          }
+        ],
+        "data": {
+          "headingId": "n-的含义问题规模"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "排序"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "记录数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "矩阵"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "矩阵的阶数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "多项式"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "多项式的项数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "集合"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "元素个数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "树"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "节点的个数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "图"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "图的顶点数"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "分析时间复杂度的基本方法"
+          }
+        ],
+        "data": {
+          "headingId": "分析时间复杂度的基本方法"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "找出语句频度最大的那条语句作为基本语句"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "计算基本语句的频度，得到关于问题规模 n 的函数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "取其数量级用「O」表示"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "简化规则：忽略常数项、去掉低次项、只保留最高次项（如 2n³ + 3n² + 2n + 1 → n³）。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "四、分析案例"
+          }
+        ],
+        "data": {
+          "headingId": "四分析案例"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "案例 1：并列循环 → O(n²)"
+          }
+        ],
+        "data": {
+          "headingId": "案例-1并列循环-on²"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "c",
+        "meta": null,
+        "value": "x = 0; y = 0;\nfor (int k = 0; k < n; k++)\n    x++;                    // O(n)\nfor (int i = 0; i < n; i++)\n    for (int j = 0; j < n; j++)\n        y++;                // O(n²)，取最大"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "取频度最大的语句：O(n²)。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "案例 2：两层循环（m×n）→ O(mn)"
+          }
+        ],
+        "data": {
+          "headingId": "案例-2两层循环mn-omn"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "cpp",
+        "meta": null,
+        "value": "void exam(float x[][n], int m, int n) {\n    float sum[m];\n    for (int i = 0; i < m; i++) {\n        sum[i] = 0.0;\n        for (int j = 0; j < n; j++)\n            sum[i] += x[i][j];   // f(n) = m*n\n    }\n    for (int i = 0; i < m; i++)\n        cout << i << \":\" << sum[i] << endl;\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "基本语句频度 f(n) = m·n → O(m·n)。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "案例 3：三重循环 → O(n³)"
+          }
+        ],
+        "data": {
+          "headingId": "案例-3三重循环-on³"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "c",
+        "meta": null,
+        "value": "for (int i = 0; i < n; i++)\n    for (int j = 1; j <= n; j++) {\n        c[i][j] = 0;\n        for (int k = 1; k <= n; k++)\n            c[i][j] = c[i][j] + a[i][k] * b[k][j];  // O(n³)\n    }"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "求和推导："
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "T(n) = Σᵢ₌₁ⁿ Σⱼ₌₁ⁿ Σₖ₌₁ⁿ 1 = Σᵢ₌₁ⁿ Σⱼ₌₁ⁿ n = Σᵢ₌₁ⁿ n² = n³ = O(n³)"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "案例 4：三角循环 → O(n³)"
+          }
+        ],
+        "data": {
+          "headingId": "案例-4三角循环-on³"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "c",
+        "meta": null,
+        "value": "for (int i = 1; i <= n; i++)\n    for (int j = 1; j <= i; j++)\n        for (int k = 1; k <= j; k++)\n            x = x + 1;"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "内层次数 = 1 + (1+2) + … + (1+…+n) = O(n³)。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "案例 5：循环变量倍增 → O(log₂n)"
+          }
+        ],
+        "data": {
+          "headingId": "案例-5循环变量倍增-olog₂n"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "c",
+        "meta": null,
+        "value": "i = 1;              // （1）\nwhile (i <= n)\n    i = i * 2;      // （2）"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "关键：找出语句（2）执行次数 x 与 n 的关系："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1 次"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2 次"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2²"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3 次"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2³"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "x 次"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2ˣ"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "由循环条件 i ≤ n 得 2ˣ ≤ n，即 x ≤ log₂n，取最大值 f(n) = log₂n → T(n) = O(log₂n)。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "五、小结"
+          }
+        ],
+        "data": {
+          "headingId": "五小结"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": true,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "算法四特性：正确性 → 健壮性 → 可读性 → 高效性（前三个满足后再比效率）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "时间效率与空间效率常常矛盾，需要根据场景取舍"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "分析复杂度只需关注数量级（大 O），忽略常数和低阶项"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "常见阶：O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(n³) < O(2ⁿ) < O(n!)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "循环分析技巧："
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "并列循环 → 相加取最大"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "嵌套循环 → 相乘"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "循环变量倍增（i*=2）→ O(log n)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-18"
+          }
+        ]
+      }
+    ]
+  }
+}

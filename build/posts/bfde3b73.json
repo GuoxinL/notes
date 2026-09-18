@@ -1,0 +1,326 @@
+{
+  "schemaVersion": 1,
+  "id": "bfde3b73",
+  "slug": "Linux离线包制作-yum下载rpm与分发",
+  "title": "Linux离线包制作-yum下载rpm与分发",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "适用于内网离线环境：在联网机器上用 yum --downloadonly 下载 rpm 及依赖，打包拷贝到离线机器后用 yum localinstall 或本地 yum 源安装。",
+  "tags": [
+    "Linux",
+    "yum",
+    "rpm",
+    "离线安装",
+    "离线包"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 1,
+    "words": 400
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、查找包",
+      "slug": "一查找包"
+    },
+    {
+      "depth": 3,
+      "text": "二、下载 rpm 包（仅下载，不安装）",
+      "slug": "二下载-rpm-包仅下载不安装"
+    },
+    {
+      "depth": 3,
+      "text": "三、找到下载的 rpm 包",
+      "slug": "三找到下载的-rpm-包"
+    },
+    {
+      "depth": 3,
+      "text": "四、离线机器安装（补充）",
+      "slug": "四离线机器安装补充"
+    },
+    {
+      "depth": 3,
+      "text": "五、离线包制作完整思路（流程总结）",
+      "slug": "五离线包制作完整思路流程总结"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：个人笔记整理版"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "适用于内网/离线环境：在联网机器上用 yum 下载 rpm 包，再拷贝到离线机器安装。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、查找包"
+          }
+        ],
+        "data": {
+          "headingId": "一查找包"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "yum search [pkg]"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、下载 rpm 包（仅下载，不安装）"
+          }
+        ],
+        "data": {
+          "headingId": "二下载-rpm-包仅下载不安装"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "yum install --downloadonly --downloaddir=/data/downloads irqbalance\nyum install --downloadonly --downloaddir=/data/downloads mysql\nyum install --downloadonly --downloaddir=/data/downloads numactl\nyum install --downloadonly --downloaddir=/data/downloads java-1.8.0-openjdk\n\nyum install --downloadonly --downloaddir=/data/downloads pcre-devel\nyum install --downloadonly --downloaddir=/data/downloads zlib.x86_64\nyum install --downloadonly --downloaddir=/data/downloads libnl/libnl-3\n\n# 组件组下载（开发工具集）\nyum groupinstall \"Development Tools\" --downloadonly --downloaddir=/data/downloads/gcc9\n\n# gcc9 相关\nyum install --downloadonly --downloaddir=/data/downloads/gcc9 gcc9\nyum install -y --downloadonly --downloaddir=/data/downloads/gcc9 centos-release-scl\nyum install devtoolset-7 -y"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "--downloadonly：只下载不安装；--downloaddir=：指定下载目录。需先安装 yum-plugin-downloadonly（老版本 yum，补充）。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、找到下载的 rpm 包"
+          }
+        ],
+        "data": {
+          "headingId": "三找到下载的-rpm-包"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "find / -name [rpm_name]"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "四、离线机器安装（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "四离线机器安装补充"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 方式一：安装目录下所有 rpm（自动解决本地依赖）\nyum localinstall /data/downloads/*.rpm\n# 或\nrpm -ivh /data/downloads/*.rpm\n\n# 方式二：搭建本地 yum 源\n# 1. 生成 repodata\ncreaterepo /data/downloads\n# 2. 配置 /etc/yum.repos.d/local.repo\n# [local]\n# name=local repo\n# baseurl=file:///data/downloads\n# enabled=1\n# gpgcheck=0"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "五、离线包制作完整思路（流程总结）"
+          }
+        ],
+        "data": {
+          "headingId": "五离线包制作完整思路流程总结"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1. 查找依赖"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "yum deplist 包名 列出依赖"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2. 下载"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "yum install --downloadonly --downloaddir=目录 包名（含依赖自动下载）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3. 打包传输"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "tar czvf offline.tar.gz /data/downloads 拷贝到目标机器"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4. 离线安装"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "yum localinstall *.rpm 或搭建本地 yum 源"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "5. 验证"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "rpm -qa | grep 包名"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "⚠️ 注意架构一致（x86_64 vs aarch64）、操作系统大版本一致（CentOS 7 vs 8 rpm 不通用）。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      }
+    ]
+  }
+}

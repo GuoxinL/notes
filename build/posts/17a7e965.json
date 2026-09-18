@@ -1,0 +1,234 @@
+{
+  "schemaVersion": 1,
+  "id": "17a7e965",
+  "slug": "Shell别名alias-常用配置与语法",
+  "title": "Shell别名alias-常用配置与语法",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "本文整理 Shell 中 alias 别名的常用配置与语法速查，包含 ll、tailf 等别名示例、定义与删除别名的命令、永久生效写法及使用注意事项。",
+  "tags": [
+    "Shell",
+    "alias",
+    "别名",
+    "bash",
+    "终端"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 1,
+    "words": 272
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "常用别名配置",
+      "slug": "常用别名配置"
+    },
+    {
+      "depth": 3,
+      "text": "alias 语法速查（补充）",
+      "slug": "alias-语法速查补充"
+    },
+    {
+      "depth": 3,
+      "text": "推荐的高频别名（补充）",
+      "slug": "推荐的高频别名补充"
+    },
+    {
+      "depth": 3,
+      "text": "注意事项（补充）",
+      "slug": "注意事项补充"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：个人笔记整理版（原文仅两条别名配置，以下为结构化整理）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "常用别名配置"
+          }
+        ],
+        "data": {
+          "headingId": "常用别名配置"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "alias ll='ls -l'\nalias tailf='tail -f'"
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ll → ls -l：以长格式列出文件"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "tailf → tail -f：持续跟踪文件尾部输出（实时查看日志）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "alias 语法速查（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "alias-语法速查补充"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 定义别名（临时生效，仅当前 shell）\nalias 名称='命令'\n\n# 查看所有别名\nalias\n\n# 查看指定别名\nalias ll\n\n# 删除别名\nunalias ll\n\n# 永久生效：写入 ~/.bashrc（或 ~/.zshrc）\necho \"alias ll='ls -l'\" >> ~/.bashrc\nsource ~/.bashrc"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "推荐的高频别名（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "推荐的高频别名补充"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "alias ls='ls --color=auto'\nalias ll='ls -alF'\nalias la='ls -A'\nalias grep='grep --color=auto'\nalias rm='rm -i'          # 删除前确认，防止误删\nalias cp='cp -i'\nalias mv='mv -i'"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "注意事项（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "注意事项补充"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "优先级：命令别名 > 内部命令 > PATH 中的外部命令；可用 \\alias名 或 command 别名 临时绕过别名"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "引号：别名定义用单引号，避免 $ 变量被立即展开"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "不继承：非交互式 shell（脚本）默认不加载 alias，脚本中请直接写全命令"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      }
+    ]
+  }
+}

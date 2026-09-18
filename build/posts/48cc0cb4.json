@@ -1,0 +1,1581 @@
+{
+  "schemaVersion": 1,
+  "id": "48cc0cb4",
+  "slug": "红黑树-原理与Go实现",
+  "title": "红黑树-原理与Go实现",
+  "date": "2026-08-18",
+  "updated": "2026-08-18",
+  "description": "红黑树（Red Black Tree）是一种自平衡二叉查找树，常用于实现关联数组（如 std::map），其查找、插入、删除时间复杂度均为 O(log n)。",
+  "tags": [
+    "红黑树",
+    "Red-Black Tree",
+    "数据结构",
+    "自平衡",
+    "Go"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 8,
+    "words": 2380
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、简介",
+      "slug": "一简介"
+    },
+    {
+      "depth": 3,
+      "text": "二、5 条性质",
+      "slug": "二5-条性质"
+    },
+    {
+      "depth": 3,
+      "text": "三、配图与图解",
+      "slug": "三配图与图解"
+    },
+    {
+      "depth": 3,
+      "text": "四、平衡原理",
+      "slug": "四平衡原理"
+    },
+    {
+      "depth": 3,
+      "text": "五、Go 实现",
+      "slug": "五go-实现"
+    },
+    {
+      "depth": 3,
+      "text": "六、复杂度与对比",
+      "slug": "六复杂度与对比"
+    },
+    {
+      "depth": 3,
+      "text": "七、参考文献",
+      "slug": "七参考文献"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理来源：红黑树.md\n主题：红黑树（Red-Black Tree）的定义、5 条性质、配图解读、平衡原理与 Go 语言实现"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、简介"
+          }
+        ],
+        "data": {
+          "headingId": "一简介"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "红黑树（Red Black Tree）是一种自平衡二叉查找树，在计算机科学中用于实现关联数组（如 std::map / TreeMap）。"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "起源：1972 年由 Rudolf Bayer 发明，最初称「平衡二叉 B 树（symmetric binary B-trees）」；1978 年由 Leo J. Guibas 和 Robert Sedgewick 修改为现今的「红黑树」。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "与 AVL 关系：红黑树是 AVL 树（严格平衡二叉树）的特化 —— 通过在插入/删除时做特定旋转和着色保持平衡。"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "复杂度：查找、插入、删除最坏时间均为 O(log n)（n = 节点数），是实践中高效的平衡树方案。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、5 条性质"
+          }
+        ],
+        "data": {
+          "headingId": "二5-条性质"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "节点颜色"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "节点是红色或黑色"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "根节点"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "根节点是黑色"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "叶子"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "所有叶子（NIL 节点）都是黑色"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "红色节点的子节点"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每个红色节点的两个子节点都是黑色（从任一叶子到根的路径上不能有两个连续的红色节点）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "5"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "黑色高度"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "从任一节点到其每个叶子的所有路径包含相同数目的黑色节点"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "关键推论："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "由性质 4 + 5 可得：从根到叶子的最长可能路径 ≤ 最短可能路径的 2 倍"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "最短路径：全黑节点；最长路径：红黑交替"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "树大致平衡 → 查找/插入/删除的高度上限可控 → 最坏情况也高效"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "红黑树的只读操作（查找）与普通二叉查找树完全相同；插入和删除需要额外的旋转 + 着色来恢复性质。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、配图与图解"
+          }
+        ],
+        "data": {
+          "headingId": "三配图与图解"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "图内容文字描述（节点 = 值(颜色)，NIL 视为黑色叶子）："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "                13(B)\n              /       \\\n           8(R)       17(R)\n          /   \\       /    \\\n        1(B) 11(B) 15(B)  25(B)\n              /              \\\n           6(R)             22(R)\n                              \\\n                             27(R)"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "层级与性质验证："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "13 → 8 → 1 → NIL"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "13 → 8 → 1 → NIL"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "13 → 8 → 11 → NIL"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "13 → 8 → 11 → 6 → NIL"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "13 → 17 → 15 → NIL"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "13 → 17 → 25 → NIL"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "13 → 17 → 25 → 22 → NIL"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "13 → 17 → 25 → 22 → 27 → NIL"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "所有路径黑色高度一致 = 3 ✓"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "四、平衡原理"
+          }
+        ],
+        "data": {
+          "headingId": "四平衡原理"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "保持平衡的两类操作："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "旋转（左旋 / 右旋）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "改变局部结构，转移子树归属"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "插入/删除后父子链方向不满足红黑性质"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "着色 / 变色"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "改变节点颜色，满足性质 4、5"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "父与叔都为红 → 父叔变黑、祖父变红，向上递归修复"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "经典修复分支（删除时最复杂）："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Case 1（兄弟为红）：父染红、兄染黑，旋转到兄弟侧 → 转 Case 4/5/6"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Case 2/3（父黑、兄黑、子全黑）：兄染红，修复点上移（黑高减一向上传递）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Case 4（父红、兄黑、兄子全黑）：父染黑、兄染红，结束"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Case 5（兄黑、远侄红）：转为 Case 6"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Case 6（兄黑、远侄红）：旋转 + 重新染色，一轮结束"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "推荐阅读：红黑树是如何保持平衡的 — zzt-lovelinlin"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "五、Go 实现"
+          }
+        ],
+        "data": {
+          "headingId": "五go-实现"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "以下实现转载自 freedbg — CSDN 博客，并修复了原文中两处 b.br() typo（应为 n.br()），保证代码可编译。整体结构如下："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "node.l / r / p"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "左 / 右 / 父指针"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "node.v"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "节点值"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "node.c"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "颜色（false = 红，true = 黑）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Tree.root / last / size"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "树根、最近插入节点、节点数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "rotateL / rotateR"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "左 / 右旋"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Insert / insertB / inserCase"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "插入（BST 插入 + 插入后修复）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "tdelete / deleteR / fix2"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "删除（替换为前驱/后继 + 删除后修复）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "printT / printTree"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "控制台按层打印（带颜色）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "go",
+        "meta": null,
+        "value": "package main\n\nimport \"fmt\"\n\nvar data = []int{6, 5, 3, 1, 8, 7, 2, 4, 9, 0, 3}\n\nfunc main() {\n\tfmt.Println(\"red-black-tree\")\n\ttree := NewTree()\n\tfor _, v := range data {\n\t\ttree.insertB(v)\n\t}\n\ttree.tdelete(tree.root, 2)\n\tprintT(tree.root)\n}\n\ntype node struct {\n\tl, r, p *node\n\tv       int\n\tc       bool // false = red, true = black\n}\n\ntype Tree struct {\n\troot *node\n\tlast *node\n\tsize int\n}\n\nfunc NewTree() *Tree { return &Tree{} }\n\n// ===== 辅助：祖父 / 叔父 / 兄弟 =====\n\nfunc (n *node) getGp() *node {\n\tif n.p == nil {\n\t\treturn nil\n\t}\n\tif n.p.p == nil {\n\t\treturn nil\n\t}\n\treturn n.p.p\n}\n\nfunc (n *node) getUn() *node {\n\tif n.getGp() == nil {\n\t\treturn nil\n\t}\n\tif n.p == n.getGp().l {\n\t\treturn n.getGp().r\n\t}\n\treturn n.getGp().l\n}\n\nfunc (n *node) br() *node {\n\tif n.p.l == n {\n\t\treturn n.r\n\t}\n\treturn n.l\n}\n\n// ===== 旋转 =====\n\nfunc (tree *Tree) rotateR(n *node) {\n\tgp := n.getGp()\n\tp := n.p\n\tr := n.r\n\n\tn.r = p\n\tn.p = gp\n\n\tif p != nil {\n\t\tp.p = n\n\t\tp.l = r\n\t\tif r != nil {\n\t\t\tr.p = p\n\t\t}\n\t}\n\tif tree.root == p {\n\t\ttree.root = n\n\t}\n\tif gp != nil {\n\t\tif gp.l == p {\n\t\t\tgp.l = n\n\t\t} else {\n\t\t\tgp.r = n\n\t\t}\n\t}\n}\n\nfunc (tree *Tree) rotateL(n *node) {\n\tgp := n.getGp()\n\tp := n.p\n\tl := n.l\n\n\tn.l = p\n\tn.p = gp\n\n\tif p != nil {\n\t\tp.p = n\n\t\tp.r = l\n\t\tif l != nil {\n\t\t\tl.p = p\n\t\t}\n\t}\n\tif tree.root == p {\n\t\ttree.root = n\n\t}\n\tif gp != nil {\n\t\tif gp.l == p {\n\t\t\tgp.l = n\n\t\t} else {\n\t\t\tgp.r = n\n\t\t}\n\t}\n}\n\n// ===== 插入 =====\n\nfunc (tree *Tree) insertB(v int) {\n\tif tree.root == nil {\n\t\ttree.root = &node{v: v, c: true}\n\t\ttree.size++\n\t\treturn\n\t}\n\n\tif v < tree.root.v {\n\t\tif tree.Insert(&tree.root.l, v, tree.root) {\n\t\t\ttree.size++\n\t\t\ttree.inserCase(tree.last)\n\t\t}\n\t}\n\tif v > tree.root.v {\n\t\tif tree.Insert(&tree.root.r, v, tree.root) {\n\t\t\ttree.size++\n\t\t\ttree.inserCase(tree.last)\n\t\t}\n\t}\n\tprintT(tree.root)\n}\n\nfunc (tree *Tree) Insert(n **node, v int, fa *node) bool {\n\tpn := *n\n\tif pn == nil {\n\t\t*n = &node{v: v, p: fa}\n\t\ttree.last = *n\n\t\treturn true\n\t}\n\tif v > pn.v {\n\t\treturn tree.Insert(&pn.r, v, pn)\n\t}\n\tif v < pn.v {\n\t\treturn tree.Insert(&pn.l, v, pn)\n\t}\n\treturn false // equal: not inserted\n}\n\nfunc (tree *Tree) inserCase(n *node) {\n\tif n.p == nil { // 根节点染黑\n\t\tn.c = true\n\t\ttree.root = n\n\t\treturn\n\t}\n\tif n.p.c == false { // 父为红才需要修复\n\t\tif n.getUn() != nil && n.getUn().c == false {\n\t\t\t// 叔为红：父叔染黑，祖父染红，向上递归\n\t\t\tn.p.c = true\n\t\t\tn.getUn().c = true\n\t\t\tn.getGp().c = false\n\t\t\ttree.inserCase(n.getGp())\n\t\t\treturn\n\t\t}\n\t\t// 叔为黑或 NIL：通过旋转 + 染色修复\n\t\tif n == n.p.r && n.p == n.getGp().l {\n\t\t\ttree.rotateL(n)\n\t\t\ttree.rotateR(n)\n\t\t\tn.c = true\n\t\t\tn.l.c, n.r.c = false, false\n\t\t} else if n == n.p.l && n.p == n.getGp().r {\n\t\t\ttree.rotateR(n)\n\t\t\ttree.rotateL(n)\n\t\t\tn.c = true\n\t\t\tn.l.c, n.r.c = false, false\n\t\t} else if n == n.p.l && n.p == n.getGp().l {\n\t\t\tn.p.c = true\n\t\t\tn.getGp().c = false\n\t\t\ttree.rotateR(n.p)\n\t\t} else if n == n.p.r && n.p == n.getGp().r {\n\t\t\tn.p.c = true\n\t\t\tn.getGp().c = false\n\t\t\ttree.rotateL(n.p)\n\t\t}\n\t}\n}\n\n// ===== 删除 =====\n\nfunc (tree *Tree) tdelete(n *node, v int) {\n\tif n == nil {\n\t\treturn\n\t}\n\tif v < n.v {\n\t\ttree.tdelete(n.l, v)\n\t\treturn\n\t}\n\tif v > n.v {\n\t\ttree.tdelete(n.r, v)\n\t\treturn\n\t}\n\t// v == n.v\n\tif n.l != nil && n.r != nil {\n\t\tmn := tree.findMax(n.l) // 左子树最大节点作为替换\n\t\tn.v = mn.v\n\t\tif tree.deleteR(mn) {\n\t\t\ttree.size--\n\t\t}\n\t\treturn\n\t}\n\tif tree.deleteR(n) {\n\t\ttree.size--\n\t}\n}\n\nfunc (tree *Tree) findMax(n *node) *node {\n\tfor n.r != nil {\n\t\tn = n.r\n\t}\n\treturn n\n}\n\nfunc (tree *Tree) deleteR(n *node) bool {\n\tred, black := false, true\n\n\t// case 1: 删除的是根（无父 + 无子）\n\tif n.l == nil && n.r == nil && n.p == nil {\n\t\ttree.root = nil\n\t\treturn true\n\t}\n\n\tvar child *node\n\tif n.l != nil {\n\t\tchild = n.l\n\t} else {\n\t\tchild = n.r\n\t}\n\n\t// case 2: 删除后 child 升为新根\n\tif n.p == nil {\n\t\tchild.p = nil\n\t\ttree.root = child\n\t\tchild.c = black\n\t\treturn true\n\t}\n\n\tif n.p.l == n {\n\t\tn.p.l = child\n\t} else {\n\t\tn.p.r = child\n\t}\n\tif child != nil {\n\t\tchild.p = n.p\n\t}\n\n\t// 删除黑色节点才需要修复（少了一个黑高）\n\tif n.c == black {\n\t\tif child != nil && child.c == red {\n\t\t\tchild.c = black // case: 红孩子顶替黑色被删节点\n\t\t} else {\n\t\t\ttree.fix2(n) // n 作为「双重黑」位置继续修复\n\t\t}\n\t}\n\t_ = red\n\treturn true\n}\n\n// n 作为「双重黑」位置（黑高不平衡）的修复\nfunc (tree *Tree) fix2(n *node) {\n\tblack := true\n\n\t// case 1: 已到根\n\tif n.p == nil {\n\t\tn.c = black\n\t\treturn\n\t}\n\n\t// case 2: 兄弟为红（旋转后转为 case 4/5/6）\n\tif n.br().c == false && n.p.c == black {\n\t\tn.p.c = false\n\t\tn.br().c = black\n\t\tif n == n.p.l {\n\t\t\ttree.rotateL(n.br())\n\t\t} else {\n\t\t\ttree.rotateR(n.br())\n\t\t}\n\t}\n\n\t// case 3: 父黑 + 兄黑 + 兄子全黑（黑高上移）\n\tif n.p.c == black && n.br().c == black && n.br().l == nil && n.br().r == nil {\n\t\tn.br().c = false\n\t\ttree.fix2(n.p)\n\t\treturn\n\t}\n\n\t// case 4: 父红 + 兄黑 + 兄子全黑\n\tif n.p.c == false && n.br().c == black && n.br().l == nil && n.br().r == nil {\n\t\tn.p.c = black\n\t\tn.br().c = false\n\t\treturn\n\t}\n\n\t// case 5: 兄黑 + 「近侄」红（先转成 case 6）\n\tif n.br().c == black {\n\t\tif n.br().l != nil && n.br().r == nil && n == n.p.l {\n\t\t\tn.br().c = false\n\t\t\tn.br().l.c = black\n\t\t\ttree.rotateR(n.br().l)\n\t\t} else if n.br().r != nil && n.br().l == nil && n == n.p.r {\n\t\t\tn.br().c = false\n\t\t\tn.br().r.c = black\n\t\t\ttree.rotateL(n.br().r)\n\t\t}\n\t}\n\n\t// case 6: 兄黑 + 「远侄」红（一轮修复结束）\n\tif n.br().c == black && n.br().r != nil && n == n.p.l {\n\t\tn.br().c = n.p.c\n\t\ttree.rotateL(n.br())\n\t\tn.p.c = black\n\t\tn.getGp().r.c = black\n\t\treturn\n\t}\n\tif n.br().c == black && n.br().l != nil && n == n.p.r {\n\t\tn.br().c = n.p.c\n\t\ttree.rotateR(n.br())\n\t\tn.p.c = black\n\t\tn.getGp().l.c = black\n\t\treturn\n\t}\n}\n\n// ===== 打印（按层） =====\n\nvar fstr = make([]string, 8, 8)\n\nfunc printT(tree *node) {\n\tif tree == nil {\n\t\treturn\n\t}\n\tfstr = make([]string, 8, 8)\n\tprintTree(tree, 0, \"\")\n\tfor i, s := range fstr {\n\t\tfmt.Println(\"L\", i, s)\n\t}\n}\n\nfunc printTree(tree *node, i int, n string) {\n\ti++\n\tstr := \" \"\n\tfor k := i; k < 9; k++ {\n\t\tstr += \"-\"\n\t}\n\tcolor := \"\\033[41;37m\" // 红底白字\n\tif tree.c {\n\t\tcolor = \"\\033[40;37m\" // 黑底白字\n\t}\n\ttmp := fmt.Sprintf(\"%s [%d] %s%s%s\", str, tree.v, color, n, \"\\033[0m\")\n\tfstr[i] += tmp\n\tif tree.l != nil {\n\t\tprintTree(tree.l, i, \"L\"+itoa(tree.v))\n\t}\n\tif tree.r != nil {\n\t\tprintTree(tree.r, i, \"R\"+itoa(tree.v))\n\t}\n}\n\nfunc itoa(v int) string {\n\treturn fmt.Sprintf(\"%d\", v)\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理说明：原文 fix2 中 b.br() / b 为未定义变量 typo，已修正为 n.br()；getMin/getMax 空函数与 inserCase 末尾冗余赋值已清理；其余旋转/修复逻辑保持原文思路。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "六、复杂度与对比"
+          }
+        ],
+        "data": {
+          "headingId": "六复杂度与对比"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "查找"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(log n)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(log n)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "插入"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(log n)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(log n)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "删除"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(log n)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "O(log n)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "旋转次数（插入/删除）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "≤ 2 / ≤ 3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "较多"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "平衡严格度"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "大致平衡（黑高约束）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "严格平衡（"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "h"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "≤ 1）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "适用场景"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "通用关联容器（Java TreeMap、C++ std::map、Linux CFS）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "读多写少、对查询延迟极敏感"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "选择建议："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "读写都多：选红黑树（综合性能更稳定，旋转少）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "查询极多、插入删除少：选 AVL 树（更严格的平衡 → 更短的查找路径）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "七、参考文献"
+          }
+        ],
+        "data": {
+          "headingId": "七参考文献"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "计算机 — 百度百科"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "关联数组 — 百度百科"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "红黑树 — 百度百科（性质与约束来源）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "红黑树是如何保持平衡的 — zzt-lovelinlin"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "二叉查找树 / AVL / 红黑树 Go 实现 — freedbg"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "平衡二叉树 — 百度百科"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Rudolf Bayer — 百度百科"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-18"
+          }
+        ]
+      }
+    ]
+  }
+}

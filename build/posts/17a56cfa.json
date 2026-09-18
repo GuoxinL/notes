@@ -1,0 +1,2318 @@
+{
+  "schemaVersion": 1,
+  "id": "17a56cfa",
+  "slug": "MCP协议技术文档",
+  "title": "MCP协议技术文档",
+  "date": "2026-08-21",
+  "updated": "2026-08-21",
+  "description": "MCP 是 Anthropic 发布的开放协议，用于标准化大语言模型与外部数据源、工具的连接。本文梳理其核心架构、JSON-RPC 消息格式、stdio 与 Streamable HTTP 传输、连接生命周期与开发示例。",
+  "tags": [
+    "MCP",
+    "Model-Context-Protocol",
+    "AI-Agent",
+    "LLM",
+    "JSON-RPC"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 6,
+    "words": 1875
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "目录",
+      "slug": "目录"
+    },
+    {
+      "depth": 3,
+      "text": "1. 协议概述",
+      "slug": "1-协议概述"
+    },
+    {
+      "depth": 4,
+      "text": "1.1 什么是 MCP",
+      "slug": "11-什么是-mcp"
+    },
+    {
+      "depth": 4,
+      "text": "1.2 解决的问题：M×N 问题",
+      "slug": "12-解决的问题mn-问题"
+    },
+    {
+      "depth": 4,
+      "text": "1.3 三大核心能力",
+      "slug": "13-三大核心能力"
+    },
+    {
+      "depth": 4,
+      "text": "1.4 典型应用场景",
+      "slug": "14-典型应用场景"
+    },
+    {
+      "depth": 4,
+      "text": "1.5 生态发展",
+      "slug": "15-生态发展"
+    },
+    {
+      "depth": 3,
+      "text": "2. 核心架构",
+      "slug": "2-核心架构"
+    },
+    {
+      "depth": 3,
+      "text": "3. 传输协议",
+      "slug": "3-传输协议"
+    },
+    {
+      "depth": 4,
+      "text": "3.1 消息格式：JSON-RPC 2.0",
+      "slug": "31-消息格式json-rpc-20"
+    },
+    {
+      "depth": 4,
+      "text": "3.2 两种传输方式",
+      "slug": "32-两种传输方式"
+    },
+    {
+      "depth": 4,
+      "text": "（1）stdio（标准输入输出）—— 本地场景",
+      "slug": "1stdio标准输入输出-本地场景"
+    },
+    {
+      "depth": 4,
+      "text": "（2）Streamable HTTP —— 远程场景（2025年新规范）",
+      "slug": "2streamable-http-远程场景2025年新规范"
+    },
+    {
+      "depth": 4,
+      "text": "3.3 与 REST API 的对比",
+      "slug": "33-与-rest-api-的对比"
+    },
+    {
+      "depth": 3,
+      "text": "4. 连接生命周期",
+      "slug": "4-连接生命周期"
+    },
+    {
+      "depth": 3,
+      "text": "5. 完整调用示例",
+      "slug": "5-完整调用示例"
+    },
+    {
+      "depth": 4,
+      "text": "步骤一：Initialize 握手",
+      "slug": "步骤一initialize-握手"
+    },
+    {
+      "depth": 4,
+      "text": "步骤二：发现可用工具",
+      "slug": "步骤二发现可用工具"
+    },
+    {
+      "depth": 4,
+      "text": "步骤三：调用工具",
+      "slug": "步骤三调用工具"
+    },
+    {
+      "depth": 4,
+      "text": "步骤四：LLM 生成最终回答",
+      "slug": "步骤四llm-生成最终回答"
+    },
+    {
+      "depth": 3,
+      "text": "6. Server 开发示例",
+      "slug": "6-server-开发示例"
+    },
+    {
+      "depth": 4,
+      "text": "Python 最小可运行实现（基于 FastMCP SDK）",
+      "slug": "python-最小可运行实现基于-fastmcp-sdk"
+    },
+    {
+      "depth": 3,
+      "text": "7. 客户端配置",
+      "slug": "7-客户端配置"
+    },
+    {
+      "depth": 3,
+      "text": "8. 附录",
+      "slug": "8-附录"
+    },
+    {
+      "depth": 4,
+      "text": "8.1 常用 JSON-RPC 方法速查",
+      "slug": "81-常用-json-rpc-方法速查"
+    },
+    {
+      "depth": 4,
+      "text": "8.2 关键要点总结",
+      "slug": "82-关键要点总结"
+    },
+    {
+      "depth": 4,
+      "text": "8.3 参考资料",
+      "slug": "83-参考资料"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "blockquote",
+        "children": [
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "type": "text",
+                "value": "版本：1.0\n日期：2026-08-21\n主题：Model Context Protocol（模型上下文协议）原理与实践"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "目录"
+          }
+        ],
+        "data": {
+          "headingId": "目录"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "start": 1,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "协议概述"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "核心架构"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "传输协议"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "连接生命周期"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "完整调用示例"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Server 开发示例"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "客户端配置"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "附录"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "1. 协议概述"
+          }
+        ],
+        "data": {
+          "headingId": "1-协议概述"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.1 什么是 MCP"
+          }
+        ],
+        "data": {
+          "headingId": "11-什么是-mcp"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "MCP（Model Context Protocol，模型上下文协议） 是由 Anthropic 于 2024 年 11 月发布的开放协议，旨在标准化大语言模型（LLM）与外部数据源、工具之间的连接方式。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "MCP 常被比喻为 \"AI 应用的 USB-C 接口\"——如同 USB-C 统一了设备连接方式，MCP 统一了 AI 模型与外部世界的交互标准。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.2 解决的问题：M×N 问题"
+          }
+        ],
+        "data": {
+          "headingId": "12-解决的问题mn-问题"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "阶段"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "集成方式"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "复杂度"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MCP 之前"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "M 个 AI 应用 × N 个数据源，各自定制集成"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "M × N"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MCP 之后"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "数据源实现一次 MCP 协议，所有兼容客户端均可使用"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "M + N"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.3 三大核心能力"
+          }
+        ],
+        "data": {
+          "headingId": "13-三大核心能力"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "能力"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "说明"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "典型用途"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Resources（资源）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "向模型暴露数据和内容"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "文件、数据库记录"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Tools（工具）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "让模型执行操作"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "查询 API、发送消息"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Prompts（提示）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "提供预定义的提示模板"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "标准化工作流"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.4 典型应用场景"
+          }
+        ],
+        "data": {
+          "headingId": "14-典型应用场景"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "连接本地文件系统和数据库"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "集成 GitHub、Slack、Google Workspace 等工具"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "让 AI 助手操作浏览器、执行代码"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "企业内部知识库检索"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.5 生态发展"
+          }
+        ],
+        "data": {
+          "headingId": "15-生态发展"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "MCP 已获得业界广泛支持，OpenAI、Google、Microsoft 等主要 AI 厂商均宣布支持或兼容该协议，正在成为 AI 工具生态的事实标准之一。"
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "2. 核心架构"
+          }
+        ],
+        "data": {
+          "headingId": "2-核心架构"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "MCP 采用客户端-服务器架构，包含三个核心角色："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "┌─────────────────┐    stdio / Streamable HTTP    ┌──────────────────────┐\n│  MCP Host（宿主） │ ◄────── JSON-RPC 消息 ──────► │  MCP Server（服务器）  │\n│  如 Claude Desktop│                               │  提供工具与数据        │\n│  ┌─────────────┐ │                               └──────────┬───────────┘\n│  │ MCP Client  │ │                                          │\n│  └─────────────┘ │                                          ▼\n└─────────────────┘                                   调用真实外部资源\n        ▲                                              （API/数据库/文件）\n        │ 工具结果回传\n        ▼\n     LLM 决策"
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "角色"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "职责"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MCP Host"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "AI 应用本体（Claude Desktop、IDE、CLI 工具等）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MCP Client"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "宿主内负责与服务器保持连接、转发消息的组件"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MCP Server"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "提供具体工具、资源和提示模板的服务进程"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "关键点：LLM 不直接连接 MCP Server。LLM 只负责\"决定\"调用什么工具，实际执行由 MCP Client 与 Server 完成，结果再回传给 LLM 生成最终回答。"
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "3. 传输协议"
+          }
+        ],
+        "data": {
+          "headingId": "3-传输协议"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.1 消息格式：JSON-RPC 2.0"
+          }
+        ],
+        "data": {
+          "headingId": "31-消息格式json-rpc-20"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "MCP 不是基于普通 HTTP REST，所有通信统一采用 JSON-RPC 2.0 消息格式。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "请求示例："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "json",
+        "meta": null,
+        "value": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 1,\n  \"method\": \"tools/list\",\n  \"params\": {}\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "响应示例："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "json",
+        "meta": null,
+        "value": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 1,\n  \"result\": { \"...\": \"...\" }\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "通知（无需响应）示例："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "json",
+        "meta": null,
+        "value": "{\n  \"jsonrpc\": \"2.0\",\n  \"method\": \"notifications/initialized\"\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.2 两种传输方式"
+          }
+        ],
+        "data": {
+          "headingId": "32-两种传输方式"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "（1）stdio（标准输入输出）—— 本地场景"
+          }
+        ],
+        "data": {
+          "headingId": "1stdio标准输入输出-本地场景"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "服务器作为本地子进程运行"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "通过进程的 stdin/stdout 交换 JSON-RPC 消息"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "优点：性能好、无需网络、数据不出本机（安全性高）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "（2）Streamable HTTP —— 远程场景（2025年新规范）"
+          }
+        ],
+        "data": {
+          "headingId": "2streamable-http-远程场景2025年新规范"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "基于 HTTP，用于连接远程服务器"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "客户端通过 HTTP POST 发送请求"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "响应可以是普通 JSON，或升级为 SSE（Server-Sent Events）流，支持流式输出和服务端主动推送"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "取代旧规范中的 \"HTTP + SSE\" 双端点设计"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "http",
+        "meta": null,
+        "value": "POST /mcp\nContent-Type: application/json\n\n{\"jsonrpc\": \"2.0\", \"id\": 1, \"method\": \"tools/call\", \"...\": \"...\"}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.3 与 REST API 的对比"
+          }
+        ],
+        "data": {
+          "headingId": "33-与-rest-api-的对比"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "特性"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "REST API"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MCP"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "消息格式"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "自由定义"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "标准化 JSON-RPC"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "交互模式"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "多为单向请求"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "双向通信，服务器也可发起请求"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "状态管理"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "无状态"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "有状态会话"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "能力发现"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "需要文档"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "协议内置 tools/list、resources/list 动态发现"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "4. 连接生命周期"
+          }
+        ],
+        "data": {
+          "headingId": "4-连接生命周期"
+        }
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "┌──────────────┐   ┌──────────────┐   ┌──────────────────┐   ┌────────────┐\n│  initialize  │ → │  initialized │ → │    正常通信        │ → │ disconnect │\n│  握手+能力协商│   │   确认通知    │   │ 调用工具/读取资源  │   │   断开连接  │\n└──────────────┘   └──────────────┘   └──────────────────┘   └────────────┘"
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "start": 1,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "initialize：客户端发起握手，交换协议版本与双方能力"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "initialized：客户端发送确认通知"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "正常通信：发现工具、调用工具、读取资源等"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "disconnect：会话结束，断开连接"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "5. 完整调用示例"
+          }
+        ],
+        "data": {
+          "headingId": "5-完整调用示例"
+        }
+      },
+      {
+        "type": "blockquote",
+        "children": [
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "type": "text",
+                "value": "场景：本机 CLI 客户端调用一个\"天气查询\"MCP Server"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "┌─────────────────┐    stdio (stdin/stdout)    ┌──────────────────────┐\n│  本机 CLI 客户端  │ ◄──────JSON-RPC消息──────► │  MCP Server (本地进程) │\n│  (MCP Host)      │                            │  weather-server      │\n└─────────────────┘                            └──────────┬───────────┘\n                                                          │\n                                                          ▼\n                                                  调用真实天气API"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "步骤一：Initialize 握手"
+          }
+        ],
+        "data": {
+          "headingId": "步骤一initialize-握手"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "客户端 → 服务器（stdin 写入）："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "json",
+        "meta": null,
+        "value": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 1,\n  \"method\": \"initialize\",\n  \"params\": {\n    \"protocolVersion\": \"2025-03-26\",\n    \"capabilities\": {},\n    \"clientInfo\": { \"name\": \"my-cli\", \"version\": \"1.0.0\" }\n  }\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "服务器响应（stdout 返回）："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "json",
+        "meta": null,
+        "value": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 1,\n  \"result\": {\n    \"protocolVersion\": \"2025-03-26\",\n    \"capabilities\": {\n      \"tools\": {}\n    },\n    \"serverInfo\": { \"name\": \"weather-server\", \"version\": \"1.2.0\" }\n  }\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "客户端发送确认通知："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "json",
+        "meta": null,
+        "value": "{ \"jsonrpc\": \"2.0\", \"method\": \"notifications/initialized\" }"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "步骤二：发现可用工具"
+          }
+        ],
+        "data": {
+          "headingId": "步骤二发现可用工具"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "请求："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "json",
+        "meta": null,
+        "value": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 2,\n  \"method\": \"tools/list\"\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "响应："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "json",
+        "meta": null,
+        "value": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 2,\n  \"result\": {\n    \"tools\": [\n      {\n        \"name\": \"get_weather\",\n        \"description\": \"查询指定城市的当前天气\",\n        \"inputSchema\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"city\": { \"type\": \"string\", \"description\": \"城市名称，如 Beijing\" }\n          },\n          \"required\": [\"city\"]\n        }\n      }\n    ]\n  }\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "步骤三：调用工具"
+          }
+        ],
+        "data": {
+          "headingId": "步骤三调用工具"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "用户输入\"北京今天天气怎么样？\"，LLM 决定调用 get_weather："
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "请求："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "json",
+        "meta": null,
+        "value": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"method\": \"tools/call\",\n  \"params\": {\n    \"name\": \"get_weather\",\n    \"arguments\": {\n      \"city\": \"Beijing\"\n    }\n  }\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "服务器内部处理：收到消息 → 调用真实天气 API → 封装结果返回"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "响应："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "json",
+        "meta": null,
+        "value": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": 3,\n  \"result\": {\n    \"content\": [\n      {\n        \"type\": \"text\",\n        \"text\": \"北京当前天气：晴，气温 28°C，湿度 45%，东南风 2级\"\n      }\n    ]\n  }\n}"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "步骤四：LLM 生成最终回答"
+          }
+        ],
+        "data": {
+          "headingId": "步骤四llm-生成最终回答"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "CLI 将工具结果作为上下文交给 LLM，输出给用户："
+          }
+        ]
+      },
+      {
+        "type": "blockquote",
+        "children": [
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "type": "text",
+                "value": "\"北京今天天气晴朗，气温 28 度，比较舒适，湿度适中，微风，适合外出活动 🌤️\""
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "6. Server 开发示例"
+          }
+        ],
+        "data": {
+          "headingId": "6-server-开发示例"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "Python 最小可运行实现（基于 FastMCP SDK）"
+          }
+        ],
+        "data": {
+          "headingId": "python-最小可运行实现基于-fastmcp-sdk"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "python",
+        "meta": null,
+        "value": "from mcp.server.fastmcp import FastMCP\n\nmcp = FastMCP(\"weather-server\")\n\n@mcp.tool()\ndef get_weather(city: str) -> str:\n    \"\"\"查询指定城市的当前天气\"\"\"\n    # 实际项目中这里调用真实天气API\n    return f\"{city}当前天气：晴，气温 28°C\"\n\nif __name__ == \"__main__\":\n    mcp.run(transport=\"stdio\")  # 以 stdio 方式运行"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "说明："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "@mcp.tool() 装饰器自动从函数签名生成 JSON Schema"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "transport=\"stdio\" 适合本地部署；远程部署可改为 Streamable HTTP，消息格式完全一致"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "docstring 会自动作为工具的 description 暴露给 LLM"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "7. 客户端配置"
+          }
+        ],
+        "data": {
+          "headingId": "7-客户端配置"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "以 Claude Desktop 为例，在配置文件中注册本地 MCP Server："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "json",
+        "meta": null,
+        "value": "{\n  \"mcpServers\": {\n    \"weather\": {\n      \"command\": \"python\",\n      \"args\": [\"/path/to/weather_server.py\"]\n    }\n  }\n}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "远程服务器（Streamable HTTP）的配置形式："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "json",
+        "meta": null,
+        "value": "{\n  \"mcpServers\": {\n    \"weather-remote\": {\n      \"url\": \"https://api.example.com/mcp\"\n    }\n  }\n}"
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "8. 附录"
+          }
+        ],
+        "data": {
+          "headingId": "8-附录"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "8.1 常用 JSON-RPC 方法速查"
+          }
+        ],
+        "data": {
+          "headingId": "81-常用-json-rpc-方法速查"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "方法"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "方向"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "说明"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "initialize"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "客户端→服务器"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "握手，交换版本与能力"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "notifications/initialized"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "客户端→服务器"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "确认初始化完成"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "tools/list"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "客户端→服务器"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "获取工具列表"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "tools/call"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "客户端→服务器"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "调用指定工具"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "resources/list"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "客户端→服务器"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "获取资源列表"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "resources/read"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "客户端→服务器"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "读取指定资源"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "prompts/list"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "客户端→服务器"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "获取提示模板列表"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "sampling/createMessage"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "服务器→客户端"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "服务器请求 LLM 采样（双向通信的体现）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "8.2 关键要点总结"
+          }
+        ],
+        "data": {
+          "headingId": "82-关键要点总结"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "start": 1,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "消息层统一：所有通信基于 JSON-RPC 2.0"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "传输层灵活：本地用 stdio（安全、高性能），远程用 Streamable HTTP（支持 SSE 流式）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "动态发现：客户端无需预知工具清单，运行时通过 tools/list 动态获取"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "双向有状态：服务器也能向客户端发起请求，区别于传统无状态 REST"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "LLM 解耦：LLM 只做决策，MCP 负责执行，结果回传后由 LLM 生成最终回答"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "8.3 参考资料"
+          }
+        ],
+        "data": {
+          "headingId": "83-参考资料"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MCP 官方规范与文档：modelcontextprotocol.io"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MCP 官方 SDK：Python、TypeScript 等多语言实现"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "JSON-RPC 2.0 规范：jsonrpc.org"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "thematicBreak"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "本文档基于 MCP 协议 2025-03-26 版规范整理，如有协议更新请以官方文档为准。"
+          }
+        ]
+      }
+    ]
+  }
+}

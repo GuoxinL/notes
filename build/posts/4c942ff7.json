@@ -1,0 +1,284 @@
+{
+  "schemaVersion": 1,
+  "id": "4c942ff7",
+  "slug": "Shell压缩解压-tar与zip批量操作",
+  "title": "Shell压缩解压-tar与zip批量操作",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "Shell 压缩解压速查：用 ls *.tar.gz | xargs -n1 tar xzvf 批量解压，并整理 tar 的 czvf/cjvf/xzvf 与 zip、unzip 常用命令及指定目录解压。",
+  "tags": [
+    "Shell",
+    "tar",
+    "zip",
+    "压缩",
+    "解压"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 1,
+    "words": 341
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、批量解压缩",
+      "slug": "一批量解压缩"
+    },
+    {
+      "depth": 3,
+      "text": "二、tar 常用命令速查（补充）",
+      "slug": "二tar-常用命令速查补充"
+    },
+    {
+      "depth": 4,
+      "text": "压缩",
+      "slug": "压缩"
+    },
+    {
+      "depth": 4,
+      "text": "解压",
+      "slug": "解压"
+    },
+    {
+      "depth": 4,
+      "text": "查看不解压",
+      "slug": "查看不解压"
+    },
+    {
+      "depth": 3,
+      "text": "三、zip 常用命令速查（补充）",
+      "slug": "三zip-常用命令速查补充"
+    },
+    {
+      "depth": 3,
+      "text": "四、批量解压完整示例（补充）",
+      "slug": "四批量解压完整示例补充"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：个人笔记整理版（原文仅批量解压一行，以下为结构化扩展）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、批量解压缩"
+          }
+        ],
+        "data": {
+          "headingId": "一批量解压缩"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "ls *.tar.gz | xargs -n1 tar xzvf"
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ls *.tar.gz：列出当前目录所有 .tar.gz 文件"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "xargs -n1：每次传 1 个文件名给 tar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "tar xzvf：解压（x 解包、z gzip、v 显示、f 指定文件）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "适用于目录下有多个 tar.gz 包需逐个解压的场景。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、tar 常用命令速查（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "二tar-常用命令速查补充"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "压缩"
+          }
+        ],
+        "data": {
+          "headingId": "压缩"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 打包 + gzip 压缩\ntar czvf archive.tar.gz /path/to/dir\n\n# 打包 + bzip2 压缩（体积更小，更慢）\ntar cjvf archive.tar.bz2 /path/to/dir\n\n# 仅打包不压缩\ntar cvf archive.tar /path/to/dir"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "解压"
+          }
+        ],
+        "data": {
+          "headingId": "解压"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 解压 .tar.gz\ntar xzvf archive.tar.gz\n\n# 解压 .tar.bz2\ntar xjvf archive.tar.bz2\n\n# 解压 .tar（自动识别格式）\ntar xvf archive.tar\n\n# 解压到指定目录\ntar xzvf archive.tar.gz -C /target/dir"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "查看不解压"
+          }
+        ],
+        "data": {
+          "headingId": "查看不解压"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "tar tzvf archive.tar.gz"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、zip 常用命令速查（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "三zip-常用命令速查补充"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 压缩\nzip -r archive.zip /path/to/dir\n\n# 解压\nunzip archive.zip\n\n# 解压到指定目录\nunzip archive.zip -d /target/dir\n\n# 查看内容\nunzip -l archive.zip"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "四、批量解压完整示例（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "四批量解压完整示例补充"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 批量解压所有 .tar.gz\nfor f in *.tar.gz; do tar xzvf \"$f\"; done\n\n# 批量解压所有 .zip\nfor f in *.zip; do unzip -o \"$f\"; done"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "⚠️ -o 覆盖已存在文件；脚本中使用 \"$f\" 引号防止文件名含空格出错。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      }
+    ]
+  }
+}

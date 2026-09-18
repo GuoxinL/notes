@@ -1,0 +1,409 @@
+{
+  "schemaVersion": 1,
+  "id": "3e55ba60",
+  "slug": "Shell多分支case语句-语法与示例",
+  "title": "Shell多分支case语句-语法与示例",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "介绍 Shell case in 多分支语句的语法结构、与多分支 if 的区别，并结合 yes/no 选择与 uname 系统判断给出完整示例。",
+  "tags": [
+    "Shell",
+    "case",
+    "条件判断",
+    "多分支",
+    "bash"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 2,
+    "words": 475
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、case 与多分支 if 的区别",
+      "slug": "一case-与多分支-if-的区别"
+    },
+    {
+      "depth": 3,
+      "text": "二、case 语法结构",
+      "slug": "二case-语法结构"
+    },
+    {
+      "depth": 3,
+      "text": "三、完整示例：选择 yes/no",
+      "slug": "三完整示例选择-yesno"
+    },
+    {
+      "depth": 3,
+      "text": "四、经典用法：uname 分支判断",
+      "slug": "四经典用法uname-分支判断"
+    },
+    {
+      "depth": 3,
+      "text": "五、适用场景总结（补充）",
+      "slug": "五适用场景总结补充"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：C 语言中文网（c.biancheng.net/view/1003.html）整理版"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、case 与多分支 if 的区别"
+          }
+        ],
+        "data": {
+          "headingId": "一case-与多分支-if-的区别"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "case 语句和 if...elif...else 一样都是多分支条件语句。区别在于："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "case：只能判断一种条件关系（变量值等于什么），适合\"单条件多分支\""
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "if：可以判断多种条件关系（大于/小于/组合等）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、case 语法结构"
+          }
+        ],
+        "data": {
+          "headingId": "二case-语法结构"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "case $变量名 in\n\"值 1\")\n    如果变量的值等于值1，则执行程序1\n    ;;\n\"值 2\")\n    如果变量的值等于值2，则执行程序2\n    ;;\n…省略其他分支…\n*)\n    如果变量的值都不是以上的值，则执行此程序\n    ;;\nesac"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "语法要点："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "以 case 开头，以 esac 结尾（case 倒写）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每个分支以 ;;（双分号）结尾，代表该程序段结束——千万不要忘记"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "*) 为兜底分支，匹配所有其他值"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "case 会取出变量值逐一与各分支比较，符合则执行对应程序"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、完整示例：选择 yes/no"
+          }
+        ],
+        "data": {
+          "headingId": "三完整示例选择-yesno"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "#!/bin/bash\n# 判断用户输入\nread -p \"Please choose yes/no: \" -t 30 cho\n# 在屏幕上输出\"请选择yes/no\"，然后把用户选择赋予变量cho\ncase $cho in\n# 判断变量cho的值\n    \"yes\")\n    # 如果是yes\n        echo \"Your choose is yes!\"\n        # 则执行程序1\n        ;;\n    \"no\")\n    # 如果是no\n        echo \"Your choose is no!\"\n        # 则执行程序2\n        ;;\n    *)\n    # 如果既不是yes,也不是no\n    echo \"Your choose is error!\"\n    # 则执行此程序\n    ;;\nesac"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "四、经典用法：uname 分支判断"
+          }
+        ],
+        "data": {
+          "headingId": "四经典用法uname-分支判断"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "os400=false\ncase \"`uname`\" in\nOS400*) os400=true;;\nesac"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "该写法常见于跨平台脚本：通过 uname 输出判断当前系统类型（如 AIX 的 OS400），进而选择不同的命令分支。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "五、适用场景总结（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "五适用场景总结补充"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "菜单选择（yes/no、1/2/3）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 非常适合"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "fdisk 等交互式命令输出解析"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 适合"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "判断数字大小/范围"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌ 用 if"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "多条件组合判断"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌ 用 if"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      }
+    ]
+  }
+}

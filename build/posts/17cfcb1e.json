@@ -1,0 +1,2770 @@
+{
+  "schemaVersion": 1,
+  "id": "17cfcb1e",
+  "slug": "GitHubPages自定义域名配置-腾讯云DNSPod实战指南",
+  "title": "GitHubPages自定义域名配置-腾讯云DNSPod实战指南",
+  "date": "2026-08-24",
+  "updated": "2026-08-24",
+  "description": "本文以 example.com 与 GitHub 用户名 username 为例，给出腾讯云 DNSPod 解析、GitHub 仓库绑定自定义域名、TXT 所有权验证与 Enforce HTTPS 签发的完整步骤、填写值与预期输出。",
+  "tags": [
+    "GitHub Pages",
+    "自定义域名",
+    "DNS",
+    "DNSPod",
+    "腾讯云"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 9,
+    "words": 2639
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "〇、配置前准备与参数速查",
+      "slug": "〇配置前准备与参数速查"
+    },
+    {
+      "depth": 4,
+      "text": "需要准备的东西",
+      "slug": "需要准备的东西"
+    },
+    {
+      "depth": 4,
+      "text": "全部配置参数速查表(本文所有需要填的值汇总)",
+      "slug": "全部配置参数速查表本文所有需要填的值汇总"
+    },
+    {
+      "depth": 4,
+      "text": "配置完成后的目标状态",
+      "slug": "配置完成后的目标状态"
+    },
+    {
+      "depth": 3,
+      "text": "一、腾讯云 DNS 解析配置(带实际内容)",
+      "slug": "一腾讯云-dns-解析配置带实际内容"
+    },
+    {
+      "depth": 4,
+      "text": "1.1 登录控制台",
+      "slug": "11-登录控制台"
+    },
+    {
+      "depth": 4,
+      "text": "1.2 添加顶级域名 A 记录(4 条)",
+      "slug": "12-添加顶级域名-a-记录4-条"
+    },
+    {
+      "depth": 4,
+      "text": "1.3 添加 www 子域名 CNAME 记录(1 条)",
+      "slug": "13-添加-www-子域名-cname-记录1-条"
+    },
+    {
+      "depth": 4,
+      "text": "1.4 添加 TXT 验证记录(仅域名提示\"已被占用\"时)",
+      "slug": "14-添加-txt-验证记录仅域名提示已被占用时"
+    },
+    {
+      "depth": 4,
+      "text": "1.5 验证 DNS 是否生效",
+      "slug": "15-验证-dns-是否生效"
+    },
+    {
+      "depth": 3,
+      "text": "二、GitHub 配置(带实际内容)",
+      "slug": "二github-配置带实际内容"
+    },
+    {
+      "depth": 4,
+      "text": "2.1 验证域名所有权(释放\"已占用\"域名)",
+      "slug": "21-验证域名所有权释放已占用域名"
+    },
+    {
+      "depth": 4,
+      "text": "2.2 仓库绑定自定义域名",
+      "slug": "22-仓库绑定自定义域名"
+    },
+    {
+      "depth": 4,
+      "text": "2.3 启用 Enforce HTTPS",
+      "slug": "23-启用-enforce-https"
+    },
+    {
+      "depth": 4,
+      "text": "2.4 最终验证",
+      "slug": "24-最终验证"
+    },
+    {
+      "depth": 3,
+      "text": "三、常见问题速查",
+      "slug": "三常见问题速查"
+    },
+    {
+      "depth": 3,
+      "text": "附:完整访问链路",
+      "slug": "附完整访问链路"
+    }
+  ],
+  "references": [
+    {
+      "kind": "external",
+      "label": "https://example.com",
+      "href": "https://example.com"
+    },
+    {
+      "kind": "external",
+      "label": "https://www.example.com",
+      "href": "https://www.example.com"
+    },
+    {
+      "kind": "external",
+      "label": "https://example.com",
+      "href": "https://example.com"
+    },
+    {
+      "kind": "external",
+      "label": "www.example.com",
+      "href": "http://www.example.com"
+    },
+    {
+      "kind": "external",
+      "label": "www.example.com",
+      "href": "http://www.example.com"
+    },
+    {
+      "kind": "external",
+      "label": "https://example.com\"*。",
+      "href": "https://example.com\"*。"
+    },
+    {
+      "kind": "external",
+      "label": "https://example.com",
+      "href": "https://example.com"
+    },
+    {
+      "kind": "external",
+      "label": "https://example.com",
+      "href": "https://example.com"
+    },
+    {
+      "kind": "external",
+      "label": "https://example.com",
+      "href": "https://example.com"
+    },
+    {
+      "kind": "external",
+      "label": "www.example.com",
+      "href": "http://www.example.com"
+    }
+  ],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "本文以示例域名 example.com、GitHub 用户名 username 为例(实际操作时请替换为你的真实域名和用户名),给出每一步的操作步骤 + 界面说明 + 填写值 + 预期输出,跟着做即可完成。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "〇、配置前准备与参数速查"
+          }
+        ],
+        "data": {
+          "headingId": "〇配置前准备与参数速查"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "需要准备的东西"
+          }
+        ],
+        "data": {
+          "headingId": "需要准备的东西"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "域名"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "example.com,已注册"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 已有"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "DNS 托管"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "腾讯云 DNSPod(权威 NS 以你的域名实际 NS 记录为准)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 已有"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "GitHub 账号"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "username,已开通 Pages"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 已有"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Pages 仓库"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "username.github.io(或项目仓库,发布源已配置)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 已有"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "全部配置参数速查表(本文所有需要填的值汇总)"
+          }
+        ],
+        "data": {
+          "headingId": "全部配置参数速查表本文所有需要填的值汇总"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "顶级域解析"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "@"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "A"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "185.199.108.153"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "腾讯云 DNSPod"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "顶级域解析"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "@"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "A"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "185.199.109.153"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "腾讯云 DNSPod"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "顶级域解析"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "@"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "A"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "185.199.110.153"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "腾讯云 DNSPod"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "顶级域解析"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "@"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "A"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "185.199.111.153"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "腾讯云 DNSPod"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "www 解析"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "www"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "CNAME"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "username.github.io"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "腾讯云 DNSPod"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "域名所有权验证"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "_github-pages-challenge-username"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "TXT"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "腾讯云 DNSPod(GitHub 生成)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "配置完成后的目标状态"
+          }
+        ],
+        "data": {
+          "headingId": "配置完成后的目标状态"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "浏览器访问 "
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://example.com",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://example.com"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " → 显示你的站点,地址栏出现 🔒 锁"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "访问 "
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://www.example.com",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://www.example.com"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " → 自动重定向到 example.com"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "curl -I "
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://example.com",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://example.com"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " → 返回 HTTP/2 200"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、腾讯云 DNS 解析配置(带实际内容)"
+          }
+        ],
+        "data": {
+          "headingId": "一腾讯云-dns-解析配置带实际内容"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.1 登录控制台"
+          }
+        ],
+        "data": {
+          "headingId": "11-登录控制台"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "操作:浏览器打开 cloud.tencent.com,顶部搜索框输入 DNS 解析 DNSPod,回车,进入控制台。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "界面:控制台首页是域名列表,每行一个域名,字段包括「域名 / 状态 / 到期时间」,右侧有「解析」「更多」按钮。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "操作:找到 example.com 这一行 → 点击 解析,进入记录列表页。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "记录列表页的样子(参考):"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "主机记录 | 记录类型 | 线路类型 | 记录值 | 权重 | 优先级 | TTL | 备注 | 最后操作时间 | 操作"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "右上角有蓝色 添加记录 按钮。后续所有记录都通过它添加。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.2 添加顶级域名 A 记录(4 条)"
+          }
+        ],
+        "data": {
+          "headingId": "12-添加顶级域名-a-记录4-条"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "为什么要配:顶级域名 example.com 必须解析到 GitHub Pages 的服务器 IP。GitHub Pages 在全球有 4 个 IP,配 4 条 A 记录可实现轮询负载均衡 + 容灾(某个 IP 故障时自动换下一个)。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "注意:根域不能用 CNAME 指向 github.io(这需要 DNS 服务商支持 CNAME 拉平,腾讯云 DNSPod 不支持),所以必须用 A 记录。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "操作:点击 添加记录,按下表填,共操作 4 次(每次只填一个 IP):"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "@"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "A"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "185.199.108.153"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "600"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "@"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "A"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "185.199.109.153"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "600"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "@"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "A"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "185.199.110.153"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "600"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "@"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "A"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "185.199.111.153"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "600"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "表单字段说明:"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "主机记录:填 @ 表示根域本身(不带 example.com,控制台会自动拼接)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "记录类型:下拉选 A(IPv4 地址)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "记录值:填 IP,一次只填一个"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "线路类型、TTL:保持默认(默认线路 / 600)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "完成后的列表样子:"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "@  A  默认  185.199.108.153  600  Github\n@  A  默认  185.199.109.153  600  Github\n@  A  默认  185.199.110.153  600  Github\n@  A  默认  185.199.111.153  600  Github"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "✅ 判断标准:列表里出现 4 行主机记录都是 @ 的 A 记录即为正确。如果 @ 下原来有指向别处的旧 A 记录(比如指向旧服务器),先删除旧的再添加,避免冲突。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.3 添加 www 子域名 CNAME 记录(1 条)"
+          }
+        ],
+        "data": {
+          "headingId": "13-添加-www-子域名-cname-记录1-条"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "为什么要配:让 "
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "http://www.example.com",
+            "children": [
+              {
+                "type": "text",
+                "value": "www.example.com"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " 也能访问。GitHub Pages 会自动在 example.com 和 "
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "http://www.example.com",
+            "children": [
+              {
+                "type": "text",
+                "value": "www.example.com"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " 之间做重定向,用户输哪个都能进。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "操作:点击 添加记录,填:"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "www"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "CNAME"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "username.github.io"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "600"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "表单字段说明:"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "主机记录填 www(同样不带域名后缀)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "记录值填 username.github.io(你的 GitHub Pages 默认域名;DNS 解析不区分大小写)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "末尾带不带点都行(控制台会自动规范化)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "⚠️ 特别注意:添加时表单里如果出现 CNAME 加速 选项,不要勾选。CNAME 加速会把解析结果替换成加速节点 IP,GitHub 检测 DNS 时会认为记录不对,导致证书无法签发。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "✅ 判断标准:列表里出现 www  CNAME  默认  username.github.io  600 一行。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.4 添加 TXT 验证记录(仅域名提示\"已被占用\"时)"
+          }
+        ],
+        "data": {
+          "headingId": "14-添加-txt-验证记录仅域名提示已被占用时"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "什么时候需要:在 GitHub 仓库填自定义域名时,如果提示 \"The custom domain example.com is already taken\",说明该域名在 GitHub 内部被登记占用,需要先验证所有权才能释放。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "前置:验证码必须先由 GitHub 生成(见 2.1 的第 1~3 步),拿到后回来填。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "操作:点击 添加记录,填:"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "_github-pages-challenge-username"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "TXT"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d(以 GitHub 页面显示的为准)"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "表单字段说明:"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "主机记录 = 下划线前缀 _github-pages-challenge- + 你的 GitHub 用户名,不要带 example.com 后缀(控制台自动拼接,带了会变成 .example.com.example.com 导致查不到)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "记录值 = GitHub 显示的 32 位十六进制验证码,原样复制粘贴,一个字符都不能差"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "✅ 判断标准:列表里出现 _github-pages-challenge-username  TXT  默认  4a5b6c7d...  600 一行。\n📌 验证成功后不要删除这条 TXT 记录,避免域名再次被标记占用。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.5 验证 DNS 是否生效"
+          }
+        ],
+        "data": {
+          "headingId": "15-验证-dns-是否生效"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "为什么要验证:DNS 配置完成后,必须在解析层面确认记录真实存在,才能去 GitHub 点 Verify / 绑域名。这一步能区分\"记录没配好\"和\"GitHub 那边的问题\"。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "操作:在 Ubuntu 终端执行(Windows 可把 dig 换成 nslookup):"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "## ① 验证 A 记录——预期输出 4 个 IP 中的若干\ndig example.com +noall +answer -t A\n\n## ② 验证 www CNAME——预期输出 username.github.io.\ndig www.example.com +noall +answer -t CNAME\n\n## ③ 验证 TXT 验证记录(直接查 DNSPod 权威服务器,不受缓存影响)\ndig TXT _github-pages-challenge-username.example.com @<你的NS服务器> +short"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "示例输出:"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "$ dig TXT _github-pages-challenge-username.example.com @<你的NS服务器> +short\n\"4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d\""
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "输出解读:"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "dig A"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "返回 4 个 185.199.* IP 中的若干"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "NXDOMAIN 或无输出 = 记录未生效"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "dig CNAME"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "返回 username.github.io."
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "NXDOMAIN = 记录未添加"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "dig TXT"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "返回 \"4a5b6c7d...\"(带引号)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "无输出 = 记录没填对或还没生效"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "生效时间:DNSPod 一般秒级~几分钟生效;全球 DNS 传播最长 24 小时。本地查不到但公共 DNS(8.8.8.8)能查到时,清本地缓存:sudo resolvectl flush-caches(Ubuntu)。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、GitHub 配置(带实际内容)"
+          }
+        ],
+        "data": {
+          "headingId": "二github-配置带实际内容"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.1 验证域名所有权(释放\"已占用\"域名)"
+          }
+        ],
+        "data": {
+          "headingId": "21-验证域名所有权释放已占用域名"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "什么时候需要:只有遇到 \"domain is already taken\" 报错才做这步;没报错直接跳到 2.2。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "操作步骤:"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "右上角头像 → Settings(个人设置,不是仓库设置)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "左侧栏 Pages(在 \"Code, planning, and automation\" 分组下)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "右侧 Verified domains 区域 → 点 Add a domain"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "输入框填 example.com → 点 Add domain"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "GitHub 会显示一条 DNS TXT 记录要求,类似:"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "_github-pages-challenge-username   TXT   4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "把这个值抄下来,去腾讯云按 1.4 添加记录。"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "添加并确认 DNS 生效(1.5 的命令)后,回到本页面,域名右侧会显示 Verify(或 Continue verifying)按钮 → 点击"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "显示 Verified 标记 = 验证成功,域名立即从占用方释放"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "✅ 判断标准:example.com 出现在 Verified domains 列表且状态为 Verified。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.2 仓库绑定自定义域名"
+          }
+        ],
+        "data": {
+          "headingId": "22-仓库绑定自定义域名"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "操作步骤:"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "进入你的 Pages 仓库(如 username/username.github.io)→ Settings → Pages"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "找到 Custom domain 输入框 → 填 example.com(不要带 www,绑定根域 GitHub 会自动处理 www 重定向)→ 点 Save"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "保存后 GitHub 会在仓库根目录自动生成 CNAME 文件,内容为一行 example.com\n界面提示:保存后页面可能出现黄色提示 \"DNS check successful\"(说明 GitHub 已验证 DNS 正确),或 *\"Site is available at "
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://example.com\"*。",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://example.com\"*。"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "📌 仓库根目录的 CNAME 文件是 GitHub Pages 识别自定义域名的关键,不要删除,也不要手动改内容(应以 GitHub 设置页为准)。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "✅ 判断标准:仓库根目录出现 CNAME 文件,内容为 example.com。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.3 启用 Enforce HTTPS"
+          }
+        ],
+        "data": {
+          "headingId": "23-启用-enforce-https"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "操作步骤:"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "在仓库 Settings → Pages 页面,找到 Enforce HTTPS 勾选框,勾上"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "GitHub 自动通过 Let's Encrypt 为 example.com 签发证书(含自动续期,无需任何操作)\n关于灰色不可勾选:这是正常的。GitHub 需要先检测到正确 DNS 并完成证书签发,过程最长 24 小时,通常几分钟~半小时。不要急,等 DNS 生效和证书签发即可。"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "长时间灰色时的重试步骤:"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "清空 Custom domain 输入框 → 点 Save"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "重新填入 example.com → 点 Save"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "浏览器访问 "
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://example.com",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://example.com"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " 看能否加载"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "刷新设置页,可勾选了就勾上"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "若仍提示 \"Not yet available for your site because the certificate has not finished being issued\" → 证书还在签发,继续等"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "✅ 判断标准:Enforce HTTPS 处于勾选状态,且页面不再显示证书错误提示。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.4 最终验证"
+          }
+        ],
+        "data": {
+          "headingId": "24-最终验证"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "命令行验证:"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "curl -I "
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://example.com",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://example.com"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "预期输出(证书签发完成后):"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "HTTP/2 200\nserver: GitHub.com\n..."
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "证书签发中会出现(属正常,等待即可):"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "curl: (60) SSL: no alternative certificate subject name matches target host name 'example.com'"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "这句报错含义:HTTP 已通、但服务器证书里还没有 example.com 这个域名 —— 说明 GitHub 正在为它签发证书,等 5~30 分钟后再试。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "浏览器验证:"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "地址栏输入 "
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "https://example.com",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "https://example.com"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " → 站点正常显示 + 地址栏出现 🔒 锁 = 全部完成"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "输入 "
+                  },
+                  {
+                    "type": "link",
+                    "title": null,
+                    "url": "http://www.example.com",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "www.example.com"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": " → 自动跳到 example.com"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、常见问题速查"
+          }
+        ],
+        "data": {
+          "headingId": "三常见问题速查"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "填域名提示 \"already taken\""
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "域名在 GitHub 内部有登记记录"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "走 2.1 TXT 验证释放;若域名已被其他账号验证过,验证会失败,需联系对方或 GitHub Support"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "dig 查 TXT 返回 NXDOMAIN"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "记录未添加 / 主机记录填错 / NS 不在腾讯云"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "核对 1.4 的字段;dig NS example.com +short 确认权威 NS 是 DNSPod"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "证书报 subject name 不匹配"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "证书签发中,或绑定的是 www 而非根域"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "等 5~30 分钟;确认 Custom domain 填的是 example.com"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "浏览器无 🔒 锁"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "混合内容:页面引用了 http 资源"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "把页面里图片/JS/CSS 的 http 链接全部改成 https"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Enforce HTTPS 长期灰色"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "DNS 未生效或证书签发中"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "按 2.3 的重试步骤;先 dig 确认 DNS"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "根域能访问、www 404"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "少了 www 的 CNAME"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "补 1.3 的 CNAME 记录"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "附:完整访问链路"
+          }
+        ],
+        "data": {
+          "headingId": "附完整访问链路"
+        }
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "浏览器输入 https://example.com\n        ↓\n腾讯云 DNSPod 解析(A 记录)→ GitHub Pages 四个 IP(185.199.108~111.153)\n        ↓\nGitHub Pages 用自动签发的 Let's Encrypt 证书完成 TLS 握手\n        ↓\n静态网站内容返回给用户(全程无需自己的服务器和 Certbot)"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "进阶提醒:后续若在中国大陆想更稳定,可在腾讯云接入 CDN/COS 加速,但那时 HTTPS 证书需在 CDN/COS 侧单独配置,不再由 GitHub Pages 管理。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本:v1.0 · 2026-08-24"
+          }
+        ]
+      }
+    ]
+  }
+}

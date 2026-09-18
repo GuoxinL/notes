@@ -1,0 +1,1238 @@
+{
+  "schemaVersion": 1,
+  "id": "af2fcf6b",
+  "slug": "SSH免密登录原理与批量多机互信配置",
+  "title": "SSH免密登录原理与批量多机互信配置",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "围绕 SSH 讲解 sshd 配置、ssh-keygen 生成密钥对与 ssh-copy-id 免密登录原理，并给出用 expect 脚本汇总公钥批量配置多机互信的完整方案。",
+  "tags": [
+    "SSH",
+    "ssh-copy-id",
+    "免密登录",
+    "批量互信",
+    "expect"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 4,
+    "words": 1303
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、sshd 服务",
+      "slug": "一sshd-服务"
+    },
+    {
+      "depth": 4,
+      "text": "1.1 两种安全验证方式",
+      "slug": "11-两种安全验证方式"
+    },
+    {
+      "depth": 4,
+      "text": "1.2 sshd 常用配置（/etc/ssh/sshd_config）",
+      "slug": "12-sshd-常用配置etcsshsshd_config"
+    },
+    {
+      "depth": 4,
+      "text": "1.3 ssh 客户端常用选项",
+      "slug": "13-ssh-客户端常用选项"
+    },
+    {
+      "depth": 3,
+      "text": "二、ssh-copy-id 命令的使用与原理",
+      "slug": "二ssh-copy-id-命令的使用与原理"
+    },
+    {
+      "depth": 4,
+      "text": "2.1 生成密钥对：ssh-keygen",
+      "slug": "21-生成密钥对ssh-keygen"
+    },
+    {
+      "depth": 4,
+      "text": "2.2 ssh-copy-id 将公钥上传到远程主机",
+      "slug": "22-ssh-copy-id-将公钥上传到远程主机"
+    },
+    {
+      "depth": 4,
+      "text": "2.3 ssh-copy-id 到底做了什么？",
+      "slug": "23-ssh-copy-id-到底做了什么"
+    },
+    {
+      "depth": 4,
+      "text": "2.4 跳过首次主机确认",
+      "slug": "24-跳过首次主机确认"
+    },
+    {
+      "depth": 3,
+      "text": "三、批量多机互相信任",
+      "slug": "三批量多机互相信任"
+    },
+    {
+      "depth": 4,
+      "text": "3.1 hosts 文件（IP:密码，冒号分隔）",
+      "slug": "31-hosts-文件ip密码冒号分隔"
+    },
+    {
+      "depth": 4,
+      "text": "3.2 believe.sh（主脚本）",
+      "slug": "32-believesh主脚本"
+    },
+    {
+      "depth": 4,
+      "text": "3.3 sshcopy.exp（将本地公钥上传到远程主机，需可执行权限）",
+      "slug": "33-sshcopyexp将本地公钥上传到远程主机需可执行权限"
+    },
+    {
+      "depth": 4,
+      "text": "3.4 sshkeygen.exp（判断是否有密钥，无则创建，权限 755）",
+      "slug": "34-sshkeygenexp判断是否有密钥无则创建权限-755"
+    },
+    {
+      "depth": 4,
+      "text": "3.5 使用流程",
+      "slug": "35-使用流程"
+    },
+    {
+      "depth": 3,
+      "text": "四、两种批量方案对比（补充）",
+      "slug": "四两种批量方案对比补充"
+    }
+  ],
+  "references": [
+    {
+      "kind": "external",
+      "label": "https://github.com/tobewithyou1996/ssh-batch-believe.git",
+      "href": "https://github.com/tobewithyou1996/ssh-batch-believe.git"
+    }
+  ],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：CSDN 整理版（原文含 GitHub 配套脚本）\n脚本仓库："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://github.com/tobewithyou1996/ssh-batch-believe.git",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://github.com/tobewithyou1996/ssh-batch-believe.git"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "本文围绕 SSH 服务，讲解如何通过 ssh-copy-id 实现无密码登录：① sshd 服务及配置；② ssh-copy-id 的使用与原理；③ 批量多机互相信任。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、sshd 服务"
+          }
+        ],
+        "data": {
+          "headingId": "一sshd-服务"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "SSH（Secure Shell）是当前远程管理 Linux 系统的首选协议（替代不安全的 FTP/Telnet——明文传输，易受中间人攻击）。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.1 两种安全验证方式"
+          }
+        ],
+        "data": {
+          "headingId": "11-两种安全验证方式"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "基于口令"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "账户 + 密码验证登录"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "较低"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "基于密钥"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "本地生成密钥对，公钥上传服务器比对"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "更高（推荐）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.2 sshd 常用配置（/etc/ssh/sshd_config）"
+          }
+        ],
+        "data": {
+          "headingId": "12-sshd-常用配置etcsshsshd_config"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Port"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "22"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "sshd 服务端口"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ListenAddress"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "0.0.0.0"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "sshd 监听 IP 地址"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "HostKey"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "/etc/ssh/ssh_host_rsa_key 等"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "RSA/ECDSA/ed25519 私钥存放位置"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "PermitRootLogin"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "yes"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "是否允许 root 直接登录"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "StrictModes"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "yes"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "远程用户私钥改变时拒绝连接"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MaxAuthTries"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "6"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "最大密码尝试次数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "MaxSessions"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "10"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "最大终端数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "PasswordAuthentication"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "yes"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "是否允许密码验证"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "PermitEmptyPasswords"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "no"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "是否允许空密码登录（很不安全）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "1.3 ssh 客户端常用选项"
+          }
+        ],
+        "data": {
+          "headingId": "13-ssh-客户端常用选项"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-p"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "指定远程主机端口"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-i"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "指定认证文件（私钥）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-o ConnectionAttempts=NUM"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "连接失败后重试次数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-o ConnectTimeout=SEC"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "连接超时时间"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-o StrictHostKeyChecking=no"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "自动拉取主机 key 文件（跳过首次确认）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-o PasswordAuthentication=no"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "禁止密码认证"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "示例："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "ssh root@ip -p 端口号"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、ssh-copy-id 命令的使用与原理"
+          }
+        ],
+        "data": {
+          "headingId": "二ssh-copy-id-命令的使用与原理"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.1 生成密钥对：ssh-keygen"
+          }
+        ],
+        "data": {
+          "headingId": "21-生成密钥对ssh-keygen"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "ssh-keygen -t ecdsa\n# 常用参数：-t dsa | ecdsa | ed25519 | rsa | rsa1，指定加密方式"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "执行过程与产物："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "[root@localhost .ssh]# ssh-keygen  -t ecdsa\nGenerating public/private ecdsa key pair.\nEnter file in which to save the key (/root/.ssh/id_ecdsa): 按回车或设置存储路径\nEnter passphrase (empty for no passphrase): 直接回车或设置密钥密码\n...\nYour identification has been saved in /root/.ssh/id_ecdsa.\nYour public key has been saved in /root/.ssh/id_ecdsa.pub."
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "产物权限：私钥 -rw-------（600）、公钥 -rw-r--r--（644）。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.2 ssh-copy-id 将公钥上传到远程主机"
+          }
+        ],
+        "data": {
+          "headingId": "22-ssh-copy-id-将公钥上传到远程主机"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "ssh-copy-id -i /root/.ssh/id_ecdsa.pub root@192.168.123.218"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "执行过程："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "/usr/bin/ssh-copy-id: INFO: Source of key(s) to be installed: \"/root/.ssh/id_ecdsa.pub\"\nThe authenticity of host '192.168.123.218 (192.168.123.218)' can't be established.\nECDSA key fingerprint is SHA256:Qh+4R5mpwlU6kK3bf0k53ngm+WpKKnfvL1ZJo+YM3ic.\nAre you sure you want to continue connecting (yes/no)? yes   #输入yes\n...\nroot@192.168.123.218's password:   #填入密码\nNumber of key(s) added: 1"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.3 ssh-copy-id 到底做了什么？"
+          }
+        ],
+        "data": {
+          "headingId": "23-ssh-copy-id-到底做了什么"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "将本地主机的公钥添加到远程主机的 ~/.ssh/authorized_keys 文件里"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "在本机 ~/.ssh/ 下新建 known_hosts 文件（记录远程主机连接信息）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "解除信任实验：清除远程主机 authorized_keys 里本地密钥后，再次登录需要密码；但因本地 known_hosts 仍存有远程主机信息，无需再输 yes。若清除 known_hosts 中的对应记录，则需重新 yes + 密码。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.4 跳过首次主机确认"
+          }
+        ],
+        "data": {
+          "headingId": "24-跳过首次主机确认"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "修改 /etc/ssh/ssh_config："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "ini",
+        "meta": null,
+        "value": "# 找到：\n# StrictHostKeyChecking ask\n# 修改为：\nStrictHostKeyChecking no"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、批量多机互相信任"
+          }
+        ],
+        "data": {
+          "headingId": "三批量多机互相信任"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "思路：每台主机生成密钥后，把所有主机的公钥汇总到一台主机的 authorized_keys，再将该文件分发到所有主机，即可实现全互信。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "核心文件：believe.sh、sshcopy.exp、sshkeygen.exp、hosts"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.1 hosts 文件（IP:密码，冒号分隔）"
+          }
+        ],
+        "data": {
+          "headingId": "31-hosts-文件ip密码冒号分隔"
+        }
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "149.28.244.75:*p8V1xG{7)%sQV!\n149.28.245.101:K(1q@jsvM@UVZtk"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.2 believe.sh（主脚本）"
+          }
+        ],
+        "data": {
+          "headingId": "32-believesh主脚本"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "#!/bin/bash\n# 检查本地是否有密钥文件，没有则添加。\n./sshkeygen.exp\n# 循环取出ip和密码\nfor i in $(cat ./hosts )\ndo\n    # 取出ip和密码\n    IP=$(echo \"${i}\" |awk -F\":\" '{print $1}')\n    PW=$(echo \"${i}\" |awk -F\":\" '{print $2}')\n    # 将本地的公钥复制到远程主机\n    ./sshcopy.exp $IP  $PW\n    # 将脚本sshkeygen.exp复制到远程主机\n    scp -p ./sshkeygen.exp   $IP:/root/\n    # 远程主机安装expect\n    ssh root@$IP \"yum install expect -y \"\n    # 远程主机创建密钥文件\n    ssh root@$IP \"/root/sshkeygen.exp&\"\n    # 将远程主机的公钥添加到本地authorized_keys文件\n    ssh root@$IP \"cat ~/.ssh/*.pub\" >>./authorized_keys\ndone\n# 将本地的公钥复制到远程主机\nfor i in $(cat ./hosts)\ndo\n     IP=$(echo \"${i}\" |awk -F\":\" '{print $1}')\n     # 将本地主机的公钥文件添加到authorized_keys文件\n     cat ~/.ssh/*.pub >>./authorized_keys\n     scp ./authorized_keys $IP:~/.ssh/authorized_keys\ndone"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.3 sshcopy.exp（将本地公钥上传到远程主机，需可执行权限）"
+          }
+        ],
+        "data": {
+          "headingId": "33-sshcopyexp将本地公钥上传到远程主机需可执行权限"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "#!/usr/bin/expect -d\nset ip [lindex $argv 0]\nset pw [lindex $argv 1]\nset timeout 60\nspawn ssh-copy-id $ip\nexpect {\n#\"*yes/no\" {send \"yes\\r\"; exp_continue}\n# 若注释上面这行，需在 /etc/ssh/ssh_config 将 # StrictHostKeyChecking ask 改为 StrictHostKeyChecking no\n\"password:\" {send \"$pw\\r\"}\n}\nexpect eof"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.4 sshkeygen.exp（判断是否有密钥，无则创建，权限 755）"
+          }
+        ],
+        "data": {
+          "headingId": "34-sshkeygenexp判断是否有密钥无则创建权限-755"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "#!/usr/bin/expect -d\nset timeout 90\nspawn ssh-keygen\nexpect {\n\".ssh/id_rsa\" {send \"\\r\";exp_continue}\n\"Overwrite (y/n)?\" exit\n\"Enter passphrase\" {send \"\\r\";exp_continue}\n\"Enter same passphrase again:\" {send \"\\r\"}\n}\nexpect eof"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.5 使用流程"
+          }
+        ],
+        "data": {
+          "headingId": "35-使用流程"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 脚本放同目录，赋予执行权限\nchmod 755 believe.sh sshcopy.exp sshkeygen.exp\n./believe.sh"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "⚠️ 依赖 expect：yum install expect -y。执行后所有主机即可互相免密登录。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "四、两种批量方案对比（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "四两种批量方案对比补充"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "统一密钥分发"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "一台生成密钥后分发到所有主机"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "简单"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "私钥泄露 = 全军覆没，不推荐"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "汇总 authorized_keys（本文）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "各机独立密钥 + 汇总公钥分发"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "每机密钥独立，安全"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "配置步骤多，依赖 expect"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      }
+    ]
+  }
+}

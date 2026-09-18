@@ -1,0 +1,387 @@
+{
+  "schemaVersion": 1,
+  "id": "8fbb75e8",
+  "slug": "SSH免密登录与config主机配置",
+  "title": "SSH免密登录与config主机配置",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "整理 SSH 密钥生成、ssh-copy-id 推送公钥实现免密登录，以及 ~/.ssh/config 多主机别名配置的完整步骤与常用参数说明。",
+  "tags": [
+    "SSH",
+    "ssh-keygen",
+    "ssh-copy-id",
+    "免密登录",
+    "Linux"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 1,
+    "words": 280
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "一、生成密钥",
+      "slug": "一生成密钥"
+    },
+    {
+      "depth": 3,
+      "text": "二、免密登录",
+      "slug": "二免密登录"
+    },
+    {
+      "depth": 3,
+      "text": "三、config 文件：为多台主机配置快捷登录",
+      "slug": "三config-文件为多台主机配置快捷登录"
+    },
+    {
+      "depth": 3,
+      "text": "config 常用参数说明（补充）",
+      "slug": "config-常用参数说明补充"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：个人笔记整理版"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "一、生成密钥"
+          }
+        ],
+        "data": {
+          "headingId": "一生成密钥"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "ssh-keygen -t rsa"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "生成 RSA 密钥对：~/.ssh/id_rsa（私钥）+ ~/.ssh/id_rsa.pub（公钥）。现代系统也常用 -t ed25519（补充）。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "二、免密登录"
+          }
+        ],
+        "data": {
+          "headingId": "二免密登录"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "ssh-copy-id user@ip"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "将本地公钥推送到远程主机 ~/.ssh/authorized_keys，之后 ssh user@ip 免密登录（需先输入一次密码完成推送）。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三、config 文件：为多台主机配置快捷登录"
+          }
+        ],
+        "data": {
+          "headingId": "三config-文件为多台主机配置快捷登录"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "打开配置文件："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "vim ~/.ssh/config"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "示例配置："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "ini",
+        "meta": null,
+        "value": "Host wotoken\n    HostName 192.168.2.18\n    IdentityFile ~/.ssh/id_rsa\n    User root\n    Port 22\n    IdentitiesOnly yes\n\nHost bobaotest\n    HostName 192.168.2.1\n    IdentityFile ~/.ssh/id_rsa\n    User root\n    Port 22\n    IdentitiesOnly yes\n\nHost dev02\n    HostName dev02.senses-ai.com\n    Port        22\n    User        yangqing"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "登录（直接用别名）："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "ssh wotoken\nssh bobaotest\nssh dev02"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "config 常用参数说明（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "config-常用参数说明补充"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Host"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "别名（后续 ssh 别名 使用）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "HostName"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "实际主机名或 IP"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "User"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "登录用户名"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Port"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "SSH 端口（默认 22）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "IdentityFile"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "指定私钥文件"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "IdentitiesOnly yes"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "只使用指定的私钥，不尝试其他密钥"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ProxyJump"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "跳板机配置（补充）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "技巧（补充）：多个配置可用 Host * 写公共默认项，如 IdentityFile、User，减少重复。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      }
+    ]
+  }
+}

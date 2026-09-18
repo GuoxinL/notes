@@ -1,0 +1,3871 @@
+{
+  "schemaVersion": 1,
+  "id": "6ee1576d",
+  "slug": "KubeKey离线部署KubeSphere与Kubernetes实战",
+  "title": "KubeKey离线部署KubeSphere与Kubernetes实战",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "本文是使用 KubeKey 在离线环境部署 KubeSphere v3.4.1 与 Kubernetes v1.26 的完整实战记录，涵盖 manifest 与 artifact 制作、Harbor 安装、集群部署及 9 大常见问题排查。",
+  "tags": [
+    "Kubernetes",
+    "KubeSphere",
+    "KubeKey",
+    "离线部署",
+    "Harbor"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 11,
+    "words": 3362
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "0. 实战环境",
+      "slug": "0-实战环境"
+    },
+    {
+      "depth": 4,
+      "text": "0.1 服务器规划",
+      "slug": "01-服务器规划"
+    },
+    {
+      "depth": 4,
+      "text": "0.2 软件版本",
+      "slug": "02-软件版本"
+    },
+    {
+      "depth": 3,
+      "text": "1. 简介：manifest 与 artifact",
+      "slug": "1-简介manifest-与-artifact"
+    },
+    {
+      "depth": 3,
+      "text": "2. 离线部署资源制作",
+      "slug": "2-离线部署资源制作"
+    },
+    {
+      "depth": 4,
+      "text": "2.1 准备联网制作节点",
+      "slug": "21-准备联网制作节点"
+    },
+    {
+      "depth": 4,
+      "text": "2.2 下载 KubeKey",
+      "slug": "22-下载-kubekey"
+    },
+    {
+      "depth": 4,
+      "text": "2.3 获取 images-list",
+      "slug": "23-获取-images-list"
+    },
+    {
+      "depth": 4,
+      "text": "2.4 获取操作系统依赖包",
+      "slug": "24-获取操作系统依赖包"
+    },
+    {
+      "depth": 4,
+      "text": "2.5 生成 manifest 文件（ksp-v3.4.1-manifest.yaml）",
+      "slug": "25-生成-manifest-文件ksp-v341-manifestyaml"
+    },
+    {
+      "depth": 4,
+      "text": "2.6 导出制品 artifact",
+      "slug": "26-导出制品-artifact"
+    },
+    {
+      "depth": 4,
+      "text": "2.7 打包 Kubekey",
+      "slug": "27-打包-kubekey"
+    },
+    {
+      "depth": 4,
+      "text": "2.8 升级包（可选）",
+      "slug": "28-升级包可选"
+    },
+    {
+      "depth": 4,
+      "text": "2.9 准备 3 个离线资源包",
+      "slug": "29-准备-3-个离线资源包"
+    },
+    {
+      "depth": 3,
+      "text": "3. K8S 集群服务器初始化",
+      "slug": "3-k8s-集群服务器初始化"
+    },
+    {
+      "depth": 4,
+      "text": "3.1 操作系统基础配置",
+      "slug": "31-操作系统基础配置"
+    },
+    {
+      "depth": 4,
+      "text": "3.2 数据盘配置（所有节点执行）",
+      "slug": "32-数据盘配置所有节点执行"
+    },
+    {
+      "depth": 4,
+      "text": "3.3 升级系统内核（生产建议）",
+      "slug": "33-升级系统内核生产建议"
+    },
+    {
+      "depth": 3,
+      "text": "4. 离线部署前置准备",
+      "slug": "4-离线部署前置准备"
+    },
+    {
+      "depth": 4,
+      "text": "4.1 上传离线资源包到部署节点",
+      "slug": "41-上传离线资源包到部署节点"
+    },
+    {
+      "depth": 4,
+      "text": "4.2 创建离线集群配置文件",
+      "slug": "42-创建离线集群配置文件"
+    },
+    {
+      "depth": 4,
+      "text": "4.3 修改 Cluster 配置",
+      "slug": "43-修改-cluster-配置"
+    },
+    {
+      "depth": 4,
+      "text": "4.4 修改 ClusterConfiguration 配置",
+      "slug": "44-修改-clusterconfiguration-配置"
+    },
+    {
+      "depth": 3,
+      "text": "5. 安装配置 Harbor",
+      "slug": "5-安装配置-harbor"
+    },
+    {
+      "depth": 4,
+      "text": "5.1 安装 Harbor",
+      "slug": "51-安装-harbor"
+    },
+    {
+      "depth": 4,
+      "text": "5.2 在 Harbor 中创建项目",
+      "slug": "52-在-harbor-中创建项目"
+    },
+    {
+      "depth": 4,
+      "text": "5.3 推送离线镜像到 Harbor（可选）",
+      "slug": "53-推送离线镜像到-harbor可选"
+    },
+    {
+      "depth": 3,
+      "text": "6. 安装 KubeSphere + Kubernetes 集群",
+      "slug": "6-安装-kubesphere-kubernetes-集群"
+    },
+    {
+      "depth": 4,
+      "text": "6.1 部署集群",
+      "slug": "61-部署集群"
+    },
+    {
+      "depth": 4,
+      "text": "6.2 验证部署结果",
+      "slug": "62-验证部署结果"
+    },
+    {
+      "depth": 3,
+      "text": "7. 常见问题排查（9 大问题）",
+      "slug": "7-常见问题排查9-大问题"
+    },
+    {
+      "depth": 4,
+      "text": "7.1 重点：containerd 证书配置（问题 3 修复）",
+      "slug": "71-重点containerd-证书配置问题-3-修复"
+    },
+    {
+      "depth": 3,
+      "text": "8. 总结",
+      "slug": "8-总结"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：C:\\node\\学无止境\\k8s\\安装文档.md（3 张控制台截图 + 完整操作文档）\n主题：使用 KubeKey 在离线环境部署 KubeSphere + Kubernetes 集群的完整流程"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "0. 实战环境"
+          }
+        ],
+        "data": {
+          "headingId": "0-实战环境"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "0.1 服务器规划"
+          }
+        ],
+        "data": {
+          "headingId": "01-服务器规划"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ksp-master-1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "192.168.9.91"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "8"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "16"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "40"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "100"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "KubeSphere/k8s-master"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ksp-master-2"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "192.168.9.92"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "8"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "16"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "40"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "100"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "KubeSphere/k8s-master"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ksp-master-3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "192.168.9.93"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "8"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "16"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "40"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "100"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "KubeSphere/k8s-master"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ksp-registry"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "192.168.9.90"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "8"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "40"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "100"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "镜像仓库节点（Harbor）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ksp-deploy"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "192.168.9.89"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "8"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "40"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "100"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "联网主机用于制作离线包"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "合计"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "5 台"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "32"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "64"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "200"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "500"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "0.2 软件版本"
+          }
+        ],
+        "data": {
+          "headingId": "02-软件版本"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "操作系统"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "CentOS 7.9 x86_64"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "KubeSphere"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "v3.4.1"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Kubernetes"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "v1.26.5"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Containerd"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1.6.4"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "KubeKey"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "v3.0.13"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Harbor"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2.5.3"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "1. 简介：manifest 与 artifact"
+          }
+        ],
+        "data": {
+          "headingId": "1-简介manifest-与-artifact"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "KubeKey v2.1.0+ 引入 清单 (manifest) 和 制品 (artifact) 概念，让离线部署 KubeSphere/K8s 集群变得简单。"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "manifest"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "描述集群信息 + 定义 artifact 应包含内容的文本文件"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "artifact"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "根据 manifest 导出的包含镜像 tar 包 + 二进制文件的 tgz 包"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "部署流程："
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "KubeKey + manifest  ──→  artifact  ──→  离线部署 Harbor\n+ KubeSphere\n+ Kubernetes"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "生成 manifest 的两种方式："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "现有运行集群生成"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1:1 镜像集群"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "依赖已有集群"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "手写 manifest 模板（本文采用）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "不依赖现有集群"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "需理解每项配置"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "2. 离线部署资源制作"
+          }
+        ],
+        "data": {
+          "headingId": "2-离线部署资源制作"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.1 准备联网制作节点"
+          }
+        ],
+        "data": {
+          "headingId": "21-准备联网制作节点"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "使用 ksp-deploy 节点制作离线包。该节点需联网下载 KK、依赖、镜像等。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.2 下载 KubeKey"
+          }
+        ],
+        "data": {
+          "headingId": "22-下载-kubekey"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "cd ~\nmkdir kubekey\ncd kubekey/\n\n# 选择中文区下载（GitHub 受限时使用）\nexport KKZONE=cn\n\n# 下载最新版 kk\ncurl -sfL https://get-kk.kubesphere.io | sh -\n\n# 或指定版本\ncurl -sfL https://get-kk.kubesphere.io | VERSION=v3.0.13 sh -"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.3 获取 images-list"
+          }
+        ],
+        "data": {
+          "headingId": "23-获取-images-list"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "wget https://github.com/kubesphere/ks-installer/releases/download/v3.4.1/images-list.txt"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "官方 images-list 组成（136 个镜像）："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "kubesphere-images"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "18"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌ 不可裁剪"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "kubeedge-images"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 取决于是否启用"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "gatekeeper-images"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 建议保留"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "openpitrix-images"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 建议保留"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "kubesphere-devops-images"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "45"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 带 builder-、tomcat85-、java-、nodejs-、python- 前缀的可以裁剪"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "kubesphere-monitoring-images"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "14"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌ 不可裁剪"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "kubesphere-logging-images"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "15"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ elasticsearch- 和 opensearch- 开头的可裁剪"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "istio-images"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "9"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 建议保留"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "example-images"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "13"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 可裁剪"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "weave-scope-images"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 取决于是否启用"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "官方列表缺失的核心 images"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "12"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌ 缺则部署报错"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "官方列表缺失的必要 images"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌ 缺则部署报错"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "重点：官方 images-list 缺失 16 个必要镜像（如 pause:3.8/3.9、kubectl:v1.22.0 等），必须手工补充！否则部署时各种 NotFound 报错。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.4 获取操作系统依赖包"
+          }
+        ],
+        "data": {
+          "headingId": "24-获取操作系统依赖包"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# centos7 操作系统依赖包\nwget https://github.com/kubesphere/kubekey/releases/download/v3.0.12/centos7-rpms-amd64.iso"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "注意：KK v3.0.13 release 中没包，只能在 v3.0.12 release 中下载。"
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 验证文件\nll -h centos7-rpms-amd64.iso\n# -rw-r--r--. 1 root root 315M  centos7-rpms-amd64.iso\n\n# 验证 sha256sum（确保下载过程没出错）\nsha256sum centos7-rpms-amd64.iso\n# 2588fbc12acc9f3b95766a0c20382988f2a21da2a36e444b7e1a0f523e75f858"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.5 生成 manifest 文件（ksp-v3.4.1-manifest.yaml）"
+          }
+        ],
+        "data": {
+          "headingId": "25-生成-manifest-文件ksp-v341-manifestyaml"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "yaml",
+        "meta": null,
+        "value": "apiVersion: kubekey.kubesphere.io/v1alpha2\nkind: Manifest\nmetadata:\n  name: sample\nspec:\n  arches:\n  - amd64\n  operatingSystems:\n  - arch: amd64\n    type: linux\n    id: centos\n    version: \"7\"\n    osImage: CentOS Linux 7 (Core)\n    repository:\n      iso:\n        localPath: \"/root/kubekey/centos7-rpms-amd64.iso\"\n        url:\n  kubernetesDistributions:\n  - type: kubernetes\n    version: v1.26.5\n  components:\n    helm:       { version: v3.9.0 }\n    cni:        { version: v1.2.0 }\n    etcd:       { version: v3.4.13 }\n    calicoctl:  { version: v3.26.1 }\n  containerRuntimes:\n  - type: docker\n    version: 20.10.23\n  - type: containerd\n    version: 1.6.4\n  crictl:           { version: v1.24.0 }\n  docker-registry:  { version: \"2\" }\n  harbor:           { version: v2.5.3 }\n  docker-compose:   { version: v2.2.2 }\n  images:\n  # 136 个镜像（见原文完整列表）\n  # 关键补充镜像（官方缺失 16 个）：\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/pause:3.8\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/pause:3.9\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/kubectl:v1.22.0\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-apiserver:v1.26.5\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-controller-manager:v1.26.5\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-scheduler:v1.26.5\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-proxy:v1.26.5\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/k8s-dns-node-cache:1.15.12\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/coredns:1.9.3\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/kube-controllers:v3.26.1\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/cni:v3.26.1\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/node:v3.26.1\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/pod2daemon-flexvol:v3.26.1\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/haproxy:2.3\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/provisioner-localpv:3.3.0\n  - registry.cn-beijing.aliyuncs.com/kubesphereio/linux-utils:3.3.0\n  registry:\n    auths: {}"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "manifest 修改说明："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "镜像前缀"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "默认从 docker.io 拉取，本文替换为 registry.cn-beijing.aliyuncs.com/kubesphereio"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "harbor / docker-compose"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "必须开启（用 KK 自建 Harbor 推送镜像）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ISO localPath"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "填写提前下载的 centos7-rpms-amd64.iso 路径"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ISO url"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "设为空（使用 localPath）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "补充 16 个缺失镜像"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "缺则部署报错"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.6 导出制品 artifact"
+          }
+        ],
+        "data": {
+          "headingId": "26-导出制品-artifact"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "export KKZONE=cn\n./kk artifact export -m ksp-v3.4.1-manifest.yaml -o ksp-v3.4.1-artifact.tar.gz"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "导出后目录（总大小约 14G）："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "-rw-r--r--. 1 root root 315M  centos7-rpms-amd64.iso\n-rwxr-xr-x. 1 root root  76M  kk\n-rw-r--r--. 1 root root  13G   ksp-v3.4.1-artifact.tar.gz   ← 制品\n-rw-r--r--. 1 root root  11K  ksp-v3.4.1-manifest.yaml\ndrwxr-xr-x. 3 root root  18   kubekey\n-rw-r--r--. 1 root root  35M  kubekey-v3.0.13-linux-amd64.tar.gz"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "制品内部分布："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "images"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "12G（主占比）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "kube"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "207M"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "registry"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "660M"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "repository（OS 依赖）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "315M"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "docker"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "130M"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "cni"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "102M"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "helm"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "45M"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "etcd"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "17M"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "containerd"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "43M"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "crictl"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "14M"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "runc"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "9M"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "⚠️ 完整制品 13G，生产环境建议按需裁剪。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.7 打包 Kubekey"
+          }
+        ],
+        "data": {
+          "headingId": "27-打包-kubekey"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "tar zcvf kubekey-v3.0.13.tar.gz kk kubekey-v3.0.13-linux-amd64.tar.gz"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.8 升级包（可选）"
+          }
+        ],
+        "data": {
+          "headingId": "28-升级包可选"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "wget https://mirrors.tuna.tsinghua.edu.cn/elrepo/kernel/el7/x86_64/RPMS/kernel-lt-5.4.263-1.el7.elrepo.x86_64.rpm\nwget https://mirrors.tuna.tsinghua.edu.cn/elrepo/kernel/el7/x86_64/RPMS/kernel-lt-tools-libs-5.4.263-1.el7.elrepo.x86_64.rpm\nwget https://mirrors.tuna.tsinghua.edu.cn/elrepo/kernel/el7/x86_64/RPMS/kernel-lt-tools-5.4.263-1.el7.elrepo.x86_64.rpm\ntar zcvf kernel-lt-5.4.263-1-upgrade.tar.gz kernel-lt-*"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "2.9 准备 3 个离线资源包"
+          }
+        ],
+        "data": {
+          "headingId": "29-准备-3-个离线资源包"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Kubekey"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "kubekey-v3.0.13.tar.gz"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "69M"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "制品"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ksp-v3.4.1-artifact.tar.gz"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "13G"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "内核升级包（可选）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "kernel-lt-5.4.263-1-upgrade.tar.gz"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "50M"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "3. K8S 集群服务器初始化"
+          }
+        ],
+        "data": {
+          "headingId": "3-k8s-集群服务器初始化"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.1 操作系统基础配置"
+          }
+        ],
+        "data": {
+          "headingId": "31-操作系统基础配置"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "KubeKey 可自动配置；生产环境建议手工按部署实战系列配置。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.2 数据盘配置（所有节点执行）"
+          }
+        ],
+        "data": {
+          "headingId": "32-数据盘配置所有节点执行"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 创建 PV\npvcreate /dev/sdb\n\n# 创建 VG\nvgcreate data /dev/sdb\n\n# 创建 LV（使用全部空间）\nlvcreate -l 100%VG data -n lvdata\n\n# 格式化\nmkfs.xfs /dev/mapper/data-lvdata\n\n# 挂载\nmkdir /data\nmount /dev/mapper/data-lvdata /data/\n\n# 配置开机自动挂载\ntail -1 /etc/mtab >> /etc/fstab\n\n# 创建 openebs 本地数据根目录\nmkdir -p /data/openebs/local\n\n# 创建 Containerd 数据目录 + 软连接\nmkdir -p /data/containerd\nln -s /data/containerd /var/lib/containerd"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "说明：KubeKey 不支持部署时改 Containerd 数据目录，只能用软连接变通（也建议提前手工安装 Containerd）。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "3.3 升级系统内核（生产建议）"
+          }
+        ],
+        "data": {
+          "headingId": "33-升级系统内核生产建议"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "cd /root\ntar xvf kernel-lt-5.4.263-1-upgrade.tar.gz\n\n# 安装新内核（只装内核，不装其他包，否则会冲突）\nyum install kernel-lt-5.4.263-1.el7.elrepo.x86_64.rpm\n\n# 修改默认内核\ngrubby --set-default \"/boot/vmlinuz-5.4.263-1.el7.elrepo.x86_64\"\n\n# 重启\nreboot\n\n# 验证\nuname -r   # 5.4.263-1.el7.elrepo.x86_64"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "更新 kernel-tools（解决依赖冲突）："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 卸载旧版本\nyum remove kernel-tools-3.10.0-1160.71.1.el7.x86_64 \\\n              kernel-tools-libs-3.10.0-1160.71.1.el7.x86_64\n\n# 安装新版本\nyum install kernel-lt-tools-5.4.263-1.el7.elrepo.x86_64.rpm \\\n             kernel-lt-tools-libs-5.4.263-1.el7.elrepo.x86_64.rpm\n\n# 清理\nrm -rf kernel-lt-*.rpm"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "4. 离线部署前置准备"
+          }
+        ],
+        "data": {
+          "headingId": "4-离线部署前置准备"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.1 上传离线资源包到部署节点"
+          }
+        ],
+        "data": {
+          "headingId": "41-上传离线资源包到部署节点"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 通常上传到 Master-1 的 /data/ 目录\nmkdir /data/kubekey\nmv /data/ksp-v3.4.1-artifact.tar.gz /data/kubekey/\ntar xvf /data/kubekey-v3.0.13.tar.gz -C /data/kubekey\ncd /data/kubekey"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.2 创建离线集群配置文件"
+          }
+        ],
+        "data": {
+          "headingId": "42-创建离线集群配置文件"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "./kk create config --with-kubesphere v3.4.1 --with-kubernetes v1.26.5 \\\n  -f ksp-v341-v1265-offline.yaml"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.3 修改 Cluster 配置"
+          }
+        ],
+        "data": {
+          "headingId": "43-修改-cluster-配置"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "yaml",
+        "meta": null,
+        "value": "apiVersion: kubekey.kubesphere.io/v1alpha2\nkind: Cluster\nmetadata:\n  name: sample\nspec:\n  hosts:\n  - {name: ksp-master-1, address: 192.168.9.91, internalAddress: 192.168.9.91, port:22, user: root, password: \"P@88w0rd\"}\n  - {name: ksp-master-2, address: 192.168.9.92, internalAddress: 192.168.9.92, user: root, password: \"P@88w0rd\"}\n  - {name: ksp-master-3, address: 192.168.9.93, internalAddress: 192.168.9.93, user: root, password: \"P@88w0rd\"}\n  - {name: ksp-registry, address: 192.168.9.90, internalAddress: 192.168.9.90, user: root, password: \"P@88w0rd\"}\n  roleGroups:\n    etcd:          [ksp-master-1, ksp-master-2, ksp-master-3]\n    control-plane: [ksp-master-1, ksp-master-2, ksp-master-3]\n    worker:        [ksp-master-1, ksp-master-2, ksp-master-3]\n    registry:      [ksp-registry]\n  controlPlaneEndpoint:\n    internalLoadbalancer: haproxy\n    domain: lb.opsman.top\n    address: \"\"\n    port: 6443\n  kubernetes:\n    version: v1.26.5\n    clusterName: opsman.top\n    autoRenewCerts: true\n  containerManager: containerd\n  etcd: { type: kubekey }\n  network:\n    plugin: calico\n    kubePodsCIDR: 10.233.64.0/18\n    kubeServiceCIDR: 10.233.0.0/18\n    multusCNI: { enabled: false }\n  storage:\n    openebs:\n      basePath: /data/openebs/local\n  registry:\n    type: harbor\n    auths:\n      \"registry.opsman.top\":\n        username: admin\n        password: Harbor12345\n    certsPath: \"/etc/docker/certs.d/registry.opsman.top\"\n    privateRegistry: \"registry.opsman.top\"\n    namespaceOverride: \"kubesphereio\"\n    registryMirrors: []\n    insecureRegistries: []\n  addons: []"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "关键配置说明："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "hosts"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "节点 IP/SSH 端口/用户/密码"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "roleGroups"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3 节点同时作为 etcd/control-plane/worker"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "registry"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "必须指定为 Harbor 类型"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "internalLoadbalancer: haproxy"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "启用内置 HAProxy"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "storage.openebs.basePath"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "新增配置，指定 openebs 存储路径"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "namespaceOverride: kubesphereio"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "必须（否则命名空间不匹配）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "4.4 修改 ClusterConfiguration 配置"
+          }
+        ],
+        "data": {
+          "headingId": "44-修改-clusterconfiguration-配置"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "yaml",
+        "meta": null,
+        "value": "spec:\n  etcd:        { monitoring: true, endpointIps: localhost, port: 2379, tlsEnable: true }\n  openpitrix:  { store: { enabled: true } }                # 启用应用商店\n  devops:      { enabled: true }                          # 启用 DevOps\n  logging:     { enabled: true }                          # 启用日志（v3.4.0 默认 OpenSearch）\n  events:      { enabled: true }                          # 启用事件系统\n  alerting:    { enabled: true }                          # 启用告警\n  auditing:    { enabled: true }                          # 启用审计\n  servicemesh: { enabled: true }                          # 启用服务网格（Istio）\n    istio:\n      components:\n        ingressGateways:\n        - { name: istio-ingressgateway, enabled: false }\n        cni: { enabled: false }\n  metrics_server: { enabled: true }                      # 启用 Metrics Server\n  network:                                             # 网络策略\n    networkpolicy: { enabled: true }\n    ippool:        { type: calico }\n    topology:      { type: weave-scope }\n  namespace_override: kubesphereio                       # 关键参数（防止 namespace 不匹配）"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "5. 安装配置 Harbor"
+          }
+        ],
+        "data": {
+          "headingId": "5-安装配置-harbor"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.1 安装 Harbor"
+          }
+        ],
+        "data": {
+          "headingId": "51-安装-harbor"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "cd /root/kubekey\n./kk init registry -f ksp-v341-v1265-offline.yaml -a ksp-v3.4.1-artifact.tar.gz"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "部署完成后 SSH 到 Registry 节点验证："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 查看安装结果\nls -lh /opt/harbor/\n\n# 查看运行镜像\ndocker images"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Harbor v2.5.3 默认账号："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "密码"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Harbor12345（生产必须改）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "安装目录"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "/opt/harbor"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "自动同步自签名证书：KK 部署 Harbor 时自动复制证书到所有节点（InitRegistryModule 步骤）。自建 Harbor 必须手动复制证书。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.2 在 Harbor 中创建项目"
+          }
+        ],
+        "data": {
+          "headingId": "52-在-harbor-中创建项目"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "由于 Harbor RBAC 限制，未创建项目则镜像不能推送。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "项目类型："
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Public（公开）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "任何用户"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Private（私有）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "仅项目成员"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "自动创建脚本（create_project_harbor.sh）："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "#!/usr/bin/env bash\nurl=\"https://registry.opsman.top\"\nuser=\"admin\"\npasswd=\"Harbor12345\"\n\n# 必须包含 kubesphereio（默认没有）\nharbor_projects=(library kubesphere calico coredns openebs csiplugin minio \\\n    mirrorgooglecontainers osixia prom thanosio jimmidyson grafana elastic \\\n    istio jaegertracing jenkins weaveworks openpitrix joosthofman nginxdemos \\\n    fluent kubeedge kubesphereio)\n\nfor project in \"${harbor_projects[@]}\"; do\n  echo \"creating $project\"\n  curl -k -u \"${user}:${passwd}\" -X POST -H \"Content-Type: application/json\" \\\n    \"${url}/api/v2.0/projects\" \\\n    -d \"{ \\\"project_name\\\": \\\"${project}\\\", \\\"public\\\": true}\"\ndone\n\n# 执行\nsh create_project_harbor.sh"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "⚠️ harbor_projects 中一定要新增 kubesphereio，默认没有，不加后面报错（问题 2）。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图内容描述：Harbor 管理页面 → 项目列表，显示 24 个公开项目（calico/coredns/openebs/kubesphereio 等），kubesphereio 包含 118 个镜像仓库，使用存储 11.45 GiB。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.3 推送离线镜像到 Harbor（可选）"
+          }
+        ],
+        "data": {
+          "headingId": "53-推送离线镜像到-harbor可选"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "./kk artifact image push -f ksp-v341-v1265-offline.yaml -a ksp-v3.4.1-artifact.tar.gz"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "配图内容描述：Harbor 仓库的 kubesphereio 项目下，已推送全部 118 个 KubeSphere 相关镜像。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "6. 安装 KubeSphere + Kubernetes 集群"
+          }
+        ],
+        "data": {
+          "headingId": "6-安装-kubesphere-kubernetes-集群"
+        }
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "6.1 部署集群"
+          }
+        ],
+        "data": {
+          "headingId": "61-部署集群"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "./kk create cluster \\\n  -f ksp-v341-v1265-offline.yaml \\\n  -a ksp-v3.4.1-artifact.tar.gz \\\n  --with-packages \\\n  --skip-push-images"
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-f"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "离线集群配置文件"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "-a"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "制品包 tar"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "--with-packages"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "安装 OS 依赖"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "--skip-push-images"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "跳过镜像推送（前面已推送）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "检查合格后会提示确认安装 → 输入 yes 继续。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "⚠️ 启用日志插件（opensearch）时必须按\"问题 6\"手工介入处理，否则安装失败。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "部署完成约 10-30 分钟（取决于网速、机器配置、启用插件数）。"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "成功输出："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "########################################################\n              Welcome to KubeSphere!\n########################################################\nConsole: http://192.168.9.91:30880\nAccount: admin\nPassword: P@88w0rd\n########################################################\nInstallation is complete."
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "实时监控命令（另开终端）："
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 查看所有 pod\nkubectl get pod -A\n# 查看非 Running 的 pod\nkubectl get pod -A | grep -v Running\n# 查看详细部署日志\nkubectl logs -n kubesphere-system $(kubectl get pod -n kubesphere-system \\\n  -l 'app in (ks-install, ks-installer)' -o jsonpath='{.items[0].metadata.name}') -f"
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "6.2 验证部署结果"
+          }
+        ],
+        "data": {
+          "headingId": "62-验证部署结果"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": true,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "登录 Web 控制台：http://"
+                  },
+                  {
+                    "type": "html",
+                    "value": "<IP>"
+                  },
+                  {
+                    "type": "text",
+                    "value": ":30880，默认账户 admin/P@88w0rd"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "首次登录后请修改默认密码\n配图内容描述："
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "集群节点状态：3 个 master 节点全部 Ready，角色 control-plane/etcd/worker"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "系统组件状态：KubeSphere 核心组件（apiserver/console/controller-manager）全部 Running"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "7. 常见问题排查（9 大问题）"
+          }
+        ],
+        "data": {
+          "headingId": "7-常见问题排查9-大问题"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "create_project_harbor.sh 报 curl 证书验证失败"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Harbor HTTPS + 自签名证书"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "curl 命令加 -k 参数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "2"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "推镜像报 get manifest list failed by module cache"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "未创建 kubesphereio 项目"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "在 Harbor 创建 kubesphereio 项目"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "3"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "部署时 x509: certificate signed by unknown authority"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "containerd 不认 Harbor 证书"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "certsPath 字段配置 + containerd 配置中加 TLS 段"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "4"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "no such file or directory: registry.opsman.top.cert"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "官方 images-list 缺 pause:3.8/3.9 等"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "手动补充 16 个缺失镜像到 manifest"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "5"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "metrics-server ImagePullBackOff (not found)"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "namespace 不匹配 bug"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ClusterConfiguration 加 namespace_override: kubesphereio"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "6"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "opensearch 拉 busybox:latest 失败（DNS 解析超时）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "配置写死 busybox 镜像地址"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "kubectl edit sts 把 busybox 改成本地镜像"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "7"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "pause:3.9: not found"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "缺镜像"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "同问题 4"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "8"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "拉镜像报 no space left on device"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Master-1 系统盘满了（40G）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "离线资源包放数据盘，不要放系统盘"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "9"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "argocd-dex-server 反复重启"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "探活失败（未深究）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "临时方案：kubectl delete pod 自动重建"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "7.1 重点：containerd 证书配置（问题 3 修复）"
+          }
+        ],
+        "data": {
+          "headingId": "71-重点containerd-证书配置问题-3-修复"
+        }
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "# /etc/containerd/config.toml\n[plugins.\"io.containerd.grpc.v1.cri\".registry.configs.\"registry.opsman.top\".tls]\n  ca_file = \"/etc/docker/certs.d/registry.opsman.top/ca.crt\"\n  cert_file = \"/etc/docker/certs.d/registry.opsman.top/registry.opsman.top.cert\"\n  key_file = \"/etc/docker/certs.d/registry.opsman.top/registry.opsman.top.key\"\n  insecure_skip_verify = false\n\nsystemctl restart containerd"
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "8. 总结"
+          }
+        ],
+        "data": {
+          "headingId": "8-总结"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "关键收获："
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": true,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 理解 KubeKey 的 manifest 和 artifact 概念"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 掌握 manifest + images-list 资源的获取方法"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 了解 images-list 组成（136 个镜像 + 16 个补充）+ 裁剪方案"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 手工编写完整 manifest 清单"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 制作 artifact 制品包（13G）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 离线部署 Harbor（含自签名证书同步）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ Harbor 仓库自动创建 24 个项目"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 离线部署完整 KubeSphere + Kubernetes 集群"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 掌握 9 大常见问题的根因与解决方案\n最关键的 3 个坑："
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "官方 images-list 缺失 16 个镜像（尤其 pause:3.8/3.9）→ 必须手动补"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Harbor 缺 kubesphereio 项目 → 必创建"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "ClusterConfiguration 缺 namespace_override → 必加"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19\n配图：4 张 Harbor/KubeSphere 控制台截图已转化为文字描述嵌入正文"
+          }
+        ]
+      }
+    ]
+  }
+}

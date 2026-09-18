@@ -1,0 +1,393 @@
+{
+  "schemaVersion": 1,
+  "id": "313f6805",
+  "slug": "lsof命令-查看端口占用与进程关联",
+  "title": "lsof命令-查看端口占用与进程关联",
+  "date": "2026-08-19",
+  "updated": "2026-08-19",
+  "description": "介绍 lsof -i:端口 查看端口被哪个进程占用的用法与输出字段含义，并补充常用变体命令以及与 netstat 的对比。",
+  "tags": [
+    "lsof",
+    "端口",
+    "进程",
+    "Linux",
+    "Shell"
+  ],
+  "status": "evergreen",
+  "readingTime": {
+    "minutes": 1,
+    "words": 272
+  },
+  "headings": [
+    {
+      "depth": 3,
+      "text": "核心用法",
+      "slug": "核心用法"
+    },
+    {
+      "depth": 3,
+      "text": "输出示例（补充）",
+      "slug": "输出示例补充"
+    },
+    {
+      "depth": 3,
+      "text": "常用变体（补充）",
+      "slug": "常用变体补充"
+    },
+    {
+      "depth": 3,
+      "text": "lsof 与 netstat 对比（补充）",
+      "slug": "lsof-与-netstat-对比补充"
+    }
+  ],
+  "references": [],
+  "history": [],
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "来源：个人笔记整理版（原文仅一行命令，以下为结构化扩展）"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "核心用法"
+          }
+        ],
+        "data": {
+          "headingId": "核心用法"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "lsof -i:8888"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "查看 8888 端口被哪个进程占用。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "输出示例（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "输出示例补充"
+        }
+      },
+      {
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "$ lsof -i:8888\nCOMMAND   PID  USER   FD   TYPE DEVICE SIZE/OFF NODE NAME\njava    12345 root   32u  IPv6 123456      0t0  TCP *:8888 (LISTEN)"
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "COMMAND"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "进程名（java）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "PID"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "进程号（12345）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "USER"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "属主（root）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "NAME"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "监听地址与状态（TCP *:8888 LISTEN）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "常用变体（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "常用变体补充"
+        }
+      },
+      {
+        "type": "code",
+        "lang": "bash",
+        "meta": null,
+        "value": "# 查看某端口（TCP+UDP 都显示）\nlsof -i:8888\n\n# 仅查看 TCP\nlsof -iTCP:8888\n\n# 查看某个进程占用的所有端口\nlsof -i -P | grep 12345\n\n# 查看某个程序的所有打开文件\nlsof -p 12345\n\n# 指定用户名过滤\nlsof -i -u root"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "使用建议：lsof -i:端口 是排查端口占用最直接的方式；-P 关闭端口名解析（如 8888 不显示为服务名），输出更快更清晰。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "lsof 与 netstat 对比（补充）"
+          }
+        ],
+        "data": {
+          "headingId": "lsof-与-netstat-对比补充"
+        }
+      },
+      {
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
+        "children": [
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              },
+              {
+                "type": "tableCell",
+                "children": []
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "查看端口占用"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "lsof -i:端口"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "netstat -nltp | grep 端口"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "查看进程打开的文件"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "✅ 强项"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "❌"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "需要 root"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "建议（否则 PID 可能隐藏）"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "需要（-p 参数）"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "整理版本：v1.0 · 2026-08-19"
+          }
+        ]
+      }
+    ]
+  }
+}
