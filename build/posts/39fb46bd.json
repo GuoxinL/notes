@@ -23,13 +23,38 @@
   },
   "readingTime": {
     "minutes": 2,
-    "words": 515
+    "words": 694
   },
   "headings": [
     {
       "depth": 2,
       "text": "基础文本样式",
       "slug": "基础文本样式"
+    },
+    {
+      "depth": 2,
+      "text": "多级标题",
+      "slug": "多级标题"
+    },
+    {
+      "depth": 3,
+      "text": "三级标题：左侧紫色竖条",
+      "slug": "三级标题左侧紫色竖条"
+    },
+    {
+      "depth": 4,
+      "text": "四级标题：紫色文字",
+      "slug": "四级标题紫色文字"
+    },
+    {
+      "depth": 4,
+      "text": "五级标题：石板灰文字",
+      "slug": "五级标题石板灰文字"
+    },
+    {
+      "depth": 4,
+      "text": "六级标题：大写小灰字",
+      "slug": "六级标题大写小灰字"
     },
     {
       "depth": 2,
@@ -271,6 +296,116 @@
           {
             "type": "text",
             "value": "。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 2,
+        "children": [
+          {
+            "type": "text",
+            "value": "多级标题"
+          }
+        ],
+        "data": {
+          "headingId": "多级标题"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "站点支持六级标题渲染：级别越深，视觉签名越轻。一级标题即文章标题（由页面渲染），正文内从二级起使用。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "三级标题：左侧紫色竖条"
+          }
+        ],
+        "data": {
+          "headingId": "三级标题左侧紫色竖条"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "三级标题正文——用于观察标题与正文的间距，以及左侧的紫色竖条装饰。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 4,
+        "children": [
+          {
+            "type": "text",
+            "value": "四级标题：紫色文字"
+          }
+        ],
+        "data": {
+          "headingId": "四级标题紫色文字"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "四级标题正文——文字改用站点主色紫，不再有竖条装饰。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 5,
+        "children": [
+          {
+            "type": "text",
+            "value": "五级标题：石板灰文字"
+          }
+        ],
+        "data": {
+          "headingId": "五级标题石板灰文字"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "五级标题正文——转为灰阶文字，层级进一步弱化。"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 6,
+        "children": [
+          {
+            "type": "text",
+            "value": "六级标题：大写小灰字"
+          }
+        ],
+        "data": {
+          "headingId": "六级标题大写小灰字"
+        }
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "六级标题正文——大写字母配合轻微字距，是视觉最轻的一级标题。"
           }
         ]
       },
