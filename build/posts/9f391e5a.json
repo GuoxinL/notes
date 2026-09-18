@@ -4,7 +4,7 @@
   "slug": "Redis原理与实现-数据类型持久化与高可用机制",
   "title": "Redis原理与实现-数据类型持久化与高可用机制",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "Redis 相比其它的 KV 数据库，其一大特点是支持丰富的数据类型，一共支持 5 种数据类型，本文逐一介绍其使用场景与持久化、高可用机制。",
   "tags": [
     "Redis",
@@ -101,7 +101,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

@@ -4,7 +4,7 @@
   "slug": "MySQL索引与B+Tree底层实现好处",
   "title": "MySQL索引与B+Tree底层实现好处",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "索引（Index）是存储在磁盘上的、对数据库表中一列或多列进行排序的数据结构，其核心目的是加快数据的查询与更新。",
   "tags": [
     "MySQL",
@@ -96,7 +96,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

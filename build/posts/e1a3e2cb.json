@@ -4,7 +4,7 @@
   "slug": "TCP 与 UDP",
   "title": "TCP 与 UDP",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "整理 TCP 与 UDP 协议，涵盖报文标志位、三次握手与四次挥手、TCP 可靠性机制，以及两者在速度与可靠性上的核心区别与应用场景。",
   "tags": [
     "TCP",
@@ -86,7 +86,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

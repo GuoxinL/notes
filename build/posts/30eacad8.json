@@ -4,7 +4,7 @@
   "slug": "网络压测-conntrack连接跟踪排查",
   "title": "网络压测-conntrack连接跟踪排查",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "整理压测场景下用 conntrack -L 查看连接跟踪表的用法：排查连接数异常增长、连接来源与状态，以及 conntrack 表满丢包的处理方式。",
   "tags": [
     "conntrack",
@@ -41,7 +41,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

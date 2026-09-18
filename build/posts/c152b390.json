@@ -4,7 +4,7 @@
   "slug": "docker命令权限-用户添加到docker组",
   "title": "docker命令权限-用户添加到docker组",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "docker 默认使用属主为 root 的 Unix Socket，普通用户直接执行会报权限不足；将用户加入 docker 组并用 newgrp 刷新组信息后即可免 sudo 运行。",
   "tags": [
     "docker",
@@ -46,7 +46,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

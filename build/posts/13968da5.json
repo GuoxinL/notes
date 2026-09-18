@@ -4,7 +4,7 @@
   "slug": "AGENT.md 与 AGENTS.md 完全指南",
   "title": "AGENT.md 与 AGENTS.md 完全指南",
   "date": "2026-08-22",
-  "updated": "2026-08-22",
+  "updated": "2026-09-18",
   "description": "AGENT.md 与 AGENTS.md 是放在项目根目录的 Markdown 配置文件，为 AI 编码助手提供上下文与行为约束。本文梳理二者定义、核心区别、典型示例、分角色定制方法与初始化 Prompt。",
   "tags": [
     "AGENT.md",
@@ -106,7 +106,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

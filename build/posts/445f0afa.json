@@ -4,7 +4,7 @@
   "slug": "JVM调优调研-内存模型与GC参数详解",
   "title": "JVM调优调研-内存模型与GC参数详解",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "本文调研 JVM 调优，涵盖 Java 8 内存模型（堆、Metaspace、线程私有区）、四类垃圾收集器选型，以及堆内存、元空间与 GC 日志等关键参数。",
   "tags": [
     "JVM",
@@ -91,7 +91,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

@@ -4,7 +4,7 @@
   "slug": "椭圆曲线公私钥应用基础-整理版",
   "title": "椭圆曲线公私钥应用基础-整理版",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "整理椭圆曲线的数学基础，以及私钥、公钥、签名、地址的各种编码格式，并给出密码机、SM2 加解密与 libp2p 节点 ID 等实际应用。",
   "tags": [
     "密码学",
@@ -206,7 +206,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

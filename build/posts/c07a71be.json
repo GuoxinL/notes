@@ -4,7 +4,7 @@
   "slug": "JSON-RPC协议详解-错误码体系与调用示例",
   "title": "JSON-RPC协议详解-错误码体系与调用示例",
   "date": "2026-08-22",
-  "updated": "2026-08-22",
+  "updated": "2026-09-18",
   "description": "本文梳理 JSON-RPC 2.0 的通信流程、请求与响应消息结构、标准错误码与自定义错误码区间划分，并给出成功、各类报错、通知与批量调用的完整示例。",
   "tags": [
     "JSON-RPC",
@@ -187,7 +187,12 @@
       "href": "https://pkg.go.dev/net/rpc/jsonrpc"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

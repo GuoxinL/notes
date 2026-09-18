@@ -4,7 +4,7 @@
   "slug": "SQL Join图解-七种连接方式与韦恩图",
   "title": "SQL Join图解-七种连接方式与韦恩图",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "假设有下面两张表（表 A 在左边、表 B 在右边，各四条记录），通过 name 字段用七种不同方式连接，看是否与韦恩图概念匹配。",
   "tags": [
     "SQL",
@@ -66,7 +66,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

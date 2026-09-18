@@ -4,7 +4,7 @@
   "slug": "tmp_tags_test",
   "title": "tmp_tags_test",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "本文是用于验证 ima 知识库是否解析 Markdown frontmatter 中 tags 字段的测试文档，内容极短，仅用于标签解析功能验证。",
   "tags": [
     "测试",
@@ -24,7 +24,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

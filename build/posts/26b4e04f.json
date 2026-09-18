@@ -4,7 +4,7 @@
   "slug": "面试笔记-整理版",
   "title": "面试笔记-整理版",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "整合后端开发笔试题、银行系统数据库设计、编程算法题与 Go 实战编程题，并附有面试知识点总结、Offer 记录与速查表。",
   "tags": [
     "面试",
@@ -256,7 +256,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

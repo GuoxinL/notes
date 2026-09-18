@@ -4,7 +4,7 @@
   "slug": "Nginx配置实践-gRPC转发与双向TLS验证",
   "title": "Nginx配置实践-gRPC转发与双向TLS验证",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "整理 Nginx 转发 gRPC 的两种方式（HTTP 层 grpcs 转 grpc、stream 按 SNI 分流），以及自签证书与双向 TLS 验证配置。",
   "tags": [
     "Nginx",
@@ -102,7 +102,12 @@
       "href": "mailto:123@domain.com"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

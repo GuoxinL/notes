@@ -4,7 +4,7 @@
   "slug": "Shell权限管理chmod-文字与数字设定法",
   "title": "Shell权限管理chmod-文字与数字设定法",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "介绍 chmod 改变文件或目录访问权限的文字设定法与数字设定法，含操作对象、操作符、mode 字母、八进制权限速查表及常用示例。",
   "tags": [
     "Shell",
@@ -71,7 +71,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

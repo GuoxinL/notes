@@ -4,7 +4,7 @@
   "slug": "Apache RocketMQ MeetUp 会议整理",
   "title": "Apache RocketMQ MeetUp 会议整理",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "整理 RocketMQ MeetUp 的 7 场演讲：Pulsar 多租户、RocketMQ 5.0、OpenMessage、k8s 运维与 Kafka 实践。",
   "tags": [
     "RocketMQ",
@@ -257,7 +257,12 @@
       "href": "https://github.com/huanwei/rocketmq-operator"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

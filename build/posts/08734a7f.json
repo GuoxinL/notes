@@ -4,7 +4,7 @@
   "slug": "knowledge-base-skill-guide",
   "title": "knowledge-base-skill-guide",
   "date": "2026-08-22",
-  "updated": "2026-08-22",
+  "updated": "2026-09-18",
   "description": "本文档系统梳理 Skill 在 AI 领域的概念定义、组成结构、工作原理、最佳实践及相关生态，适合作为个人或团队构建 AI 技能知识库的参考手册。",
   "tags": [
     "Skill",
@@ -237,7 +237,12 @@
       "href": "https://skillnav.com"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

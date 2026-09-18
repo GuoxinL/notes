@@ -4,7 +4,7 @@
   "slug": "Linux离线包制作-yum下载rpm与分发",
   "title": "Linux离线包制作-yum下载rpm与分发",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "适用于内网离线环境：在联网机器上用 yum --downloadonly 下载 rpm 及依赖，打包拷贝到离线机器后用 yum localinstall 或本地 yum 源安装。",
   "tags": [
     "Linux",
@@ -46,7 +46,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

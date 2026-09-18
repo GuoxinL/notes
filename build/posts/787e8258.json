@@ -4,7 +4,7 @@
   "slug": "Shell查看CPU与内存信息-系统监控速查",
   "title": "Shell查看CPU与内存信息-系统监控速查",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "整理 Shell 查看 CPU 与内存的常用命令：从 /proc/cpuinfo 读型号与核心数，从 /proc/meminfo 读总内存，用 dmidecode 查内存条。",
   "tags": [
     "Shell",
@@ -71,7 +71,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

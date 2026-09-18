@@ -4,7 +4,7 @@
   "slug": "Golang并发机制-CSP与GMP调度模型",
   "title": "Golang并发机制-CSP与GMP调度模型",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "本文梳理 Golang 并发机制，从 CSP 并发模型的理论基础出发，讲解 channel 与 goroutine 的特征、协程优势，并深入 N:1、1:1、M:N 线程模型与 GMP 调度器实现。",
   "tags": [
     "Golang",
@@ -132,7 +132,12 @@
       "href": "https://www.jianshu.com/p/36e246c6153d"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

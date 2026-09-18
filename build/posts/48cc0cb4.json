@@ -4,7 +4,7 @@
   "slug": "红黑树-原理与Go实现",
   "title": "红黑树-原理与Go实现",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "红黑树（Red Black Tree）是一种自平衡二叉查找树，常用于实现关联数组（如 std::map），其查找、插入、删除时间复杂度均为 O(log n)。",
   "tags": [
     "红黑树",
@@ -56,7 +56,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

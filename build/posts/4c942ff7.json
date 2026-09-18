@@ -4,7 +4,7 @@
   "slug": "Shell压缩解压-tar与zip批量操作",
   "title": "Shell压缩解压-tar与zip批量操作",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "Shell 压缩解压速查：用 ls *.tar.gz | xargs -n1 tar xzvf 批量解压，并整理 tar 的 czvf/cjvf/xzvf 与 zip、unzip 常用命令及指定目录解压。",
   "tags": [
     "Shell",
@@ -56,7 +56,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

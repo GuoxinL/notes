@@ -4,7 +4,7 @@
   "slug": "Redis缓存三大问题-雪崩穿透击穿应对方案",
   "title": "Redis缓存三大问题-雪崩穿透击穿应对方案",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "缓存雪崩与穿透是缓存体系中最致命的两个问题，一旦触发往往会造成数据库被打挂、系统整体不可用，因此是缓存面试的必考点。",
   "tags": [
     "Redis",
@@ -136,7 +136,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

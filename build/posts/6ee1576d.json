@@ -4,7 +4,7 @@
   "slug": "KubeKey离线部署KubeSphere与Kubernetes实战",
   "title": "KubeKey离线部署KubeSphere与Kubernetes实战",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "本文是使用 KubeKey 在离线环境部署 KubeSphere v3.4.1 与 Kubernetes v1.26 的完整实战记录，涵盖 manifest 与 artifact 制作、Harbor 安装、集群部署及 9 大常见问题排查。",
   "tags": [
     "Kubernetes",
@@ -186,7 +186,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

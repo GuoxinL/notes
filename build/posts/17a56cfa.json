@@ -4,7 +4,7 @@
   "slug": "MCP协议技术文档",
   "title": "MCP协议技术文档",
   "date": "2026-08-21",
-  "updated": "2026-08-21",
+  "updated": "2026-09-18",
   "description": "MCP 是 Anthropic 发布的开放协议，用于标准化大语言模型与外部数据源、工具的连接。本文梳理其核心架构、JSON-RPC 消息格式、stdio 与 Streamable HTTP 传输、连接生命周期与开发示例。",
   "tags": [
     "MCP",
@@ -156,7 +156,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

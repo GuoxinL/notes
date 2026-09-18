@@ -4,7 +4,7 @@
   "slug": "AI-Agent-CLI为何基于NodeJS_260821185246",
   "title": "AI-Agent-CLI为何基于NodeJS_260821185246",
   "date": "2026-08-21",
-  "updated": "2026-08-21",
+  "updated": "2026-09-18",
   "description": "本文讨论以 Node.js 为运行时的 AI Agent 命令行工具，澄清\"Agent 都用 JS\"的误区，并总结其偏爱 Node.js 的五大原因、JS 的优势与短板。",
   "tags": [
     "AI Agent",
@@ -76,7 +76,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

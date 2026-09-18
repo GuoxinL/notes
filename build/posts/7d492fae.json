@@ -4,7 +4,7 @@
   "slug": "Shell查看端口号-lsof与netstat命令详解",
   "title": "Shell查看端口号-lsof与netstat命令详解",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "本文详解 Linux 查看端口号的常用方法，包括按端口查占用、按 PID 查端口、按程序名查端口，并整理 netstat 参数、TCP 连接状态、ss 命令与完整排查流程。",
   "tags": [
     "Shell",
@@ -72,7 +72,12 @@
       "href": "https://blog.csdn.net/gyxinguan/article/details/95103945"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

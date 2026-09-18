@@ -4,7 +4,7 @@
   "slug": "交易平台建设-整理版",
   "title": "交易平台建设-整理版",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "整理自 2021-07-24 美团技术分享会议记录，基于 50 张 PPT 截图与现场笔记，梳理交易平台、CRM、供应链与结算平台的平台化建设方法论。",
   "tags": [
     "交易平台",
@@ -331,7 +331,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

@@ -4,7 +4,7 @@
   "slug": "Shell多分支case语句-语法与示例",
   "title": "Shell多分支case语句-语法与示例",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "介绍 Shell case in 多分支语句的语法结构、与多分支 if 的区别，并结合 yes/no 选择与 uname 系统判断给出完整示例。",
   "tags": [
     "Shell",
@@ -46,7 +46,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

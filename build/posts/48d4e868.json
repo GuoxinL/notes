@@ -4,7 +4,7 @@
   "slug": "MySQL事务隔离级别-ACID与隔离问题复现",
   "title": "MySQL事务隔离级别-ACID与隔离问题复现",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "SQL 标准定义了 4 类隔离级别，包含一些具体规则，用来限定事务内外的哪些改变是可见的、哪些是不可见的。",
   "tags": [
     "MySQL",
@@ -122,7 +122,12 @@
       "href": "http://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

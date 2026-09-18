@@ -4,7 +4,7 @@
   "slug": "快速排序-Quicksort原理与实现",
   "title": "快速排序-Quicksort原理与实现",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "快速排序（Quicksort）使用分治法（Divide and conquer）策略把一个序列分为较小和较大的 2 个子序列，然后递归地排序两个子序列。",
   "tags": [
     "快速排序",
@@ -66,7 +66,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

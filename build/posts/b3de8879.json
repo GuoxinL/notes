@@ -4,7 +4,7 @@
   "slug": "长安链内存溢出BugFix实践-pprof定位与Snapshot模块深拷贝问题",
   "title": "长安链内存溢出BugFix实践-pprof定位与Snapshot模块深拷贝问题",
   "date": "2026-08-20",
-  "updated": "2026-08-20",
+  "updated": "2026-09-18",
   "description": "记录长安链 2.1.0_alpha 压测 OOM 的两周排查过程：根因是 Snapshot 模块 map 的 put/get key 计算不一致，配合 protobuf 深拷贝与 pprof 定位。",
   "tags": [
     "长安链",
@@ -152,7 +152,12 @@
       "href": "https://go.dev/blog/pprof）"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

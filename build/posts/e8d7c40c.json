@@ -4,7 +4,7 @@
   "slug": "Hash-哈希原理与冲突处理",
   "title": "Hash-哈希原理与冲突处理",
   "date": "2026-08-18",
-  "updated": "2026-08-18",
+  "updated": "2026-09-18",
   "description": "本文讲解 hashCode 中常数 31 的由来、线性与非线性概念、四种常用散列函数，以及哈希冲突的开放地址、拉链、多哈希等再散列处理方式。",
   "tags": [
     "Hash",
@@ -61,7 +61,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

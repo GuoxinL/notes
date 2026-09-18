@@ -1,15 +1,19 @@
 ---
 title: GitHubPages自定义域名配置-腾讯云DNSPod实战指南
 date: 2026-08-24
-tags: [GitHub Pages, 自定义域名, DNS, DNSPod, 腾讯云]
+tags:
+  - GitHub Pages
+  - 自定义域名
+  - DNS
+  - DNSPod
+  - 腾讯云
 description: 本文以 example.com 与 GitHub 用户名 username 为例，给出腾讯云 DNSPod 解析、GitHub 仓库绑定自定义域名、TXT 所有权验证与 Enforce HTTPS 签发的完整步骤、填写值与预期输出。
 ---
-
 本文以示例域名 example.com、GitHub 用户名 username 为例(实际操作时请替换为你的真实域名和用户名),给出每一步的操作步骤 + 界面说明 + 填写值 + 预期输出,跟着做即可完成。
 
-### 〇、配置前准备与参数速查
+## 〇、配置前准备与参数速查
 
-#### 需要准备的东西
+### 需要准备的东西
 
 ||||
 |---|---|---|
@@ -19,9 +23,9 @@ description: 本文以 example.com 与 GitHub 用户名 username 为例，给出
 |Pages 仓库|username.github.io(或项目仓库,发布源已配置)|✅ 已有|
 
 
-#### 全部配置参数速查表(本文所有需要填的值汇总)
+### 全部配置参数速查表(本文所有需要填的值汇总)
 
-||||||
+| | | | | |
 |---|---|---|---|---|
 |顶级域解析|@|A|185.199.108.153|腾讯云 DNSPod|
 |顶级域解析|@|A|185.199.109.153|腾讯云 DNSPod|
@@ -31,14 +35,14 @@ description: 本文以 example.com 与 GitHub 用户名 username 为例，给出
 |域名所有权验证|_github-pages-challenge-username|TXT|4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d|腾讯云 DNSPod(GitHub 生成)|
 
 
-#### 配置完成后的目标状态
+### 配置完成后的目标状态
 
 - 浏览器访问 https://example.com → 显示你的站点,地址栏出现 🔒 锁
 - 访问 https://www.example.com → 自动重定向到 example.com
 - curl -I https://example.com → 返回 HTTP/2 200
-### 一、腾讯云 DNS 解析配置(带实际内容)
+## 一、腾讯云 DNS 解析配置(带实际内容)
 
-#### 1.1 登录控制台
+### 1.1 登录控制台
 
 操作:浏览器打开 cloud.tencent.com,顶部搜索框输入 DNS 解析 DNSPod,回车,进入控制台。
 
@@ -52,7 +56,7 @@ description: 本文以 example.com 与 GitHub 用户名 username 为例，给出
 
 右上角有蓝色 添加记录 按钮。后续所有记录都通过它添加。
 
-#### 1.2 添加顶级域名 A 记录(4 条)
+### 1.2 添加顶级域名 A 记录(4 条)
 
 为什么要配:顶级域名 example.com 必须解析到 GitHub Pages 的服务器 IP。GitHub Pages 在全球有 4 个 IP,配 4 条 A 记录可实现轮询负载均衡 + 容灾(某个 IP 故障时自动换下一个)。
 
@@ -60,7 +64,7 @@ description: 本文以 example.com 与 GitHub 用户名 username 为例，给出
 
 操作:点击 添加记录,按下表填,共操作 4 次(每次只填一个 IP):
 
-||||||
+| | | | | |
 |---|---|---|---|---|
 |1|@|A|185.199.108.153|600|
 |2|@|A|185.199.109.153|600|
@@ -87,7 +91,7 @@ description: 本文以 example.com 与 GitHub 用户名 username 为例，给出
 
 ✅ 判断标准:列表里出现 4 行主机记录都是 @ 的 A 记录即为正确。如果 @ 下原来有指向别处的旧 A 记录(比如指向旧服务器),先删除旧的再添加,避免冲突。
 
-#### 1.3 添加 www 子域名 CNAME 记录(1 条)
+### 1.3 添加 www 子域名 CNAME 记录(1 条)
 
 为什么要配:让 www.example.com 也能访问。GitHub Pages 会自动在 example.com 和 www.example.com 之间做重定向,用户输哪个都能进。
 
@@ -109,7 +113,7 @@ description: 本文以 example.com 与 GitHub 用户名 username 为例，给出
 
 ✅ 判断标准:列表里出现 www  CNAME  默认  username.github.io  600 一行。
 
-#### 1.4 添加 TXT 验证记录(仅域名提示"已被占用"时)
+### 1.4 添加 TXT 验证记录(仅域名提示"已被占用"时)
 
 什么时候需要:在 GitHub 仓库填自定义域名时,如果提示 "The custom domain example.com is already taken",说明该域名在 GitHub 内部被登记占用,需要先验证所有权才能释放。
 
@@ -117,7 +121,7 @@ description: 本文以 example.com 与 GitHub 用户名 username 为例，给出
 
 操作:点击 添加记录,填:
 
-||||
+| | | |
 |---|---|---|
 |_github-pages-challenge-username|TXT|4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d(以 GitHub 页面显示的为准)|
 
@@ -131,7 +135,7 @@ description: 本文以 example.com 与 GitHub 用户名 username 为例，给出
 ✅ 判断标准:列表里出现 _github-pages-challenge-username  TXT  默认  4a5b6c7d...  600 一行。
 📌 验证成功后不要删除这条 TXT 记录,避免域名再次被标记占用。
 
-#### 1.5 验证 DNS 是否生效
+### 1.5 验证 DNS 是否生效
 
 为什么要验证:DNS 配置完成后,必须在解析层面确认记录真实存在,才能去 GitHub 点 Verify / 绑域名。这一步能区分"记录没配好"和"GitHub 那边的问题"。
 
@@ -157,7 +161,7 @@ $ dig TXT _github-pages-challenge-username.example.com @<你的NS服务器> +sho
 
 输出解读:
 
-||||
+| | | |
 |---|---|---|
 |dig A|返回 4 个 185.199.* IP 中的若干|NXDOMAIN 或无输出 = 记录未生效|
 |dig CNAME|返回 username.github.io.|NXDOMAIN = 记录未添加|
@@ -166,9 +170,9 @@ $ dig TXT _github-pages-challenge-username.example.com @<你的NS服务器> +sho
 
 生效时间:DNSPod 一般秒级~几分钟生效;全球 DNS 传播最长 24 小时。本地查不到但公共 DNS(8.8.8.8)能查到时,清本地缓存:sudo resolvectl flush-caches(Ubuntu)。
 
-### 二、GitHub 配置(带实际内容)
+## 二、GitHub 配置(带实际内容)
 
-#### 2.1 验证域名所有权(释放"已占用"域名)
+### 2.1 验证域名所有权(释放"已占用"域名)
 
 什么时候需要:只有遇到 "domain is already taken" 报错才做这步;没报错直接跳到 2.2。
 
@@ -191,7 +195,7 @@ _github-pages-challenge-username   TXT   4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d
 
 ✅ 判断标准:example.com 出现在 Verified domains 列表且状态为 Verified。
 
-#### 2.2 仓库绑定自定义域名
+### 2.2 仓库绑定自定义域名
 
 操作步骤:
 
@@ -208,7 +212,7 @@ _github-pages-challenge-username   TXT   4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d
 
 ✅ 判断标准:仓库根目录出现 CNAME 文件,内容为 example.com。
 
-#### 2.3 启用 Enforce HTTPS
+### 2.3 启用 Enforce HTTPS
 
 操作步骤:
 
@@ -227,7 +231,7 @@ _github-pages-challenge-username   TXT   4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d
 
 ✅ 判断标准:Enforce HTTPS 处于勾选状态,且页面不再显示证书错误提示。
 
-#### 2.4 最终验证
+### 2.4 最终验证
 
 命令行验证:
 
@@ -254,9 +258,9 @@ curl: (60) SSL: no alternative certificate subject name matches target host name
 - 地址栏输入 https://example.com → 站点正常显示 + 地址栏出现 🔒 锁 = 全部完成
 - 输入 www.example.com → 自动跳到 example.com
 
-### 三、常见问题速查
+## 三、常见问题速查
 
-||||
+| | | |
 |---|---|---|
 |填域名提示 "already taken"|域名在 GitHub 内部有登记记录|走 2.1 TXT 验证释放;若域名已被其他账号验证过,验证会失败,需联系对方或 GitHub Support|
 |dig 查 TXT 返回 NXDOMAIN|记录未添加 / 主机记录填错 / NS 不在腾讯云|核对 1.4 的字段;dig NS example.com +short 确认权威 NS 是 DNSPod|
@@ -266,7 +270,7 @@ curl: (60) SSL: no alternative certificate subject name matches target host name
 |根域能访问、www 404|少了 www 的 CNAME|补 1.3 的 CNAME 记录|
 
 
-### 附:完整访问链路
+## 附:完整访问链路
 
 ```
 浏览器输入 https://example.com

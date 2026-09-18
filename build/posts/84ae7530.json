@@ -4,7 +4,7 @@
   "slug": "Linux用户管理-useradd-usermod-userdel详解",
   "title": "Linux用户管理-useradd-usermod-userdel详解",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "梳理 Linux 用户管理命令 useradd、userdel、usermod 的常用选项与操作示例，并附 users、usernetctl 及账号管理常用命令速查表。",
   "tags": [
     "Linux",
@@ -51,7 +51,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

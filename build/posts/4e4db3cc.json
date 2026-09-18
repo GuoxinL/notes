@@ -4,7 +4,7 @@
   "slug": "ima知识库使用指南",
   "title": "ima知识库使用指南",
   "date": "2026-06-17",
-  "updated": "2026-06-17",
+  "updated": "2026-09-18",
   "description": "ima 知识库是专属知识空间，支持个人知识库与共享知识库的知识增添、管理与检索，也能基于知识库向 ima 提问获得个性化回答。",
   "tags": [
     "ima",
@@ -66,7 +66,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

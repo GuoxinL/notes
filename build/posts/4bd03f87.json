@@ -4,7 +4,7 @@
   "slug": "Shell查看Linux系统版本-内核与发行版查询命令",
   "title": "Shell查看Linux系统版本-内核与发行版查询命令",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "本文整理查看 Linux 系统版本的常用命令，覆盖内核版本与发行版本两大类，包括 /proc/version、uname、lsb_release、hostnamectl 等，并附命令速查对比表。",
   "tags": [
     "Shell",
@@ -77,7 +77,12 @@
       "href": "https://blog.csdn.net/lovedingd/article/details/131249786"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

@@ -4,7 +4,7 @@
   "slug": "SSH免密登录原理与批量多机互信配置",
   "title": "SSH免密登录原理与批量多机互信配置",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "围绕 SSH 讲解 sshd 配置、ssh-keygen 生成密钥对与 ssh-copy-id 免密登录原理，并给出用 expect 脚本汇总公钥批量配置多机互信的完整方案。",
   "tags": [
     "SSH",
@@ -107,7 +107,12 @@
       "href": "https://github.com/tobewithyou1996/ssh-batch-believe.git"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

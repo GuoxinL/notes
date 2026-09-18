@@ -4,7 +4,7 @@
   "slug": "Linux磁盘分区parted-非交互式操作与文件系统对比",
   "title": "Linux磁盘分区parted-非交互式操作与文件系统对比",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "介绍 parted 非交互式磁盘分区的完整流程，含 GPT 分区表创建、格式化、fstab 开机自动挂载、一键脚本，以及 EXT3/EXT4/XFS 文件系统对比。",
   "tags": [
     "Linux",
@@ -112,7 +112,12 @@
       "href": "https://blog.csdn.net/zfw_666666/article/details/126744930"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

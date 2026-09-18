@@ -4,7 +4,7 @@
   "slug": "Shell异步执行-后台任务与wait同步",
   "title": "Shell异步执行-后台任务与wait同步",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "Shell 异步执行：在命令后加 & 将任务放到子 shell 后台运行，配合 wait 等待指定进程或全部子进程退出，实现脚本内的多线程同步。",
   "tags": [
     "Shell",
@@ -62,7 +62,12 @@
       "href": "https://blog.csdn.net/weixin_35852328/article/details/81508339"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

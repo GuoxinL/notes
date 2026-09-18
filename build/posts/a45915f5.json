@@ -4,7 +4,7 @@
   "slug": "telnet命令-Escape-character提示与常用命令",
   "title": "telnet命令-Escape-character提示与常用命令",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "telnet 连接后提示 Escape character is '^]'，表示按 Ctrl+] 可呼出 telnet 命令行；本文解释其含义并列出 close、quit、status 等常用内部命令。",
   "tags": [
     "telnet",
@@ -41,7 +41,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

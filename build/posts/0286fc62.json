@@ -4,7 +4,7 @@
   "slug": "dd测试磁盘读写速度-time计时与缓存参数",
   "title": "dd测试磁盘读写速度-time计时与缓存参数",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "用 time + dd 测磁盘读写速度：借 /dev/zero 与 /dev/null 消除单侧 IO，再用 conv=fsync、oflag=dsync 与 direct 参数绕开缓存，保证结果准确。",
   "tags": [
     "dd",
@@ -72,7 +72,12 @@
       "href": "https://blog.csdn.net/s1070/article/details/52860073"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

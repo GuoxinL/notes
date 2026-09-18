@@ -4,7 +4,7 @@
   "slug": "CloudDM4.1.0发布-达梦与Cloudberry数据源支持",
   "title": "CloudDM4.1.0发布-达梦与Cloudberry数据源支持",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "CloudDM 4.1.0 发布，新增 Apache Cloudberry 与达梦数据源、MongoDB/Redis SSL 连接，SQL 工单支持文件上传，数据库 CI/CD 支持级联编排。",
   "tags": [
     "CloudDM",
@@ -137,7 +137,12 @@
       "href": "https://mp.weixin.qq.com/s/_DR-TKhyi8MmQ85_i4hthQ"
     }
   ],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [

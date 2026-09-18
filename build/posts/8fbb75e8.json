@@ -4,7 +4,7 @@
   "slug": "SSH免密登录与config主机配置",
   "title": "SSH免密登录与config主机配置",
   "date": "2026-08-19",
-  "updated": "2026-08-19",
+  "updated": "2026-09-18",
   "description": "整理 SSH 密钥生成、ssh-copy-id 推送公钥实现免密登录，以及 ~/.ssh/config 多主机别名配置的完整步骤与常用参数说明。",
   "tags": [
     "SSH",
@@ -41,7 +41,12 @@
     }
   ],
   "references": [],
-  "history": [],
+  "history": [
+    {
+      "date": "2026-09-18",
+      "message": "feat(content): 从 ima 知识库「Guoxin的知识库」批量导入 55 篇文档"
+    }
+  ],
   "ast": {
     "type": "root",
     "children": [
