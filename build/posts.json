@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-18T15:53:21.744Z",
+  "generatedAt": "2026-09-18T16:07:41.891Z",
   "sourceRef": "GuoxinL/notes",
   "toolchain": {
     "node": "22.22.2",
@@ -8,11 +8,30 @@
   },
   "posts": [
     {
+      "id": "8c7242ec",
+      "slug": "Mermaid 图种全览（渲染测试）",
+      "title": "Mermaid 图种全览（渲染测试）",
+      "date": "2026-09-18",
+      "updated": "2026-09-18",
+      "description": "逐个渲染本站支持的 Mermaid 图种，用于验证渲染能力与语法关键字。覆盖流程、时序、类、状态、ER、旅程、甘特、饼图、四象限、需求、Git、思维导图、时间线、C4，以及 Sankey、Block、Packet、Kanban、Architecture、XY、Radar、Treemap、Use Case 等 Beta 图种。",
+      "tags": [
+        "mermaid",
+        "markdown",
+        "测试",
+        "图表"
+      ],
+      "status": "evergreen",
+      "readingTime": {
+        "minutes": 3,
+        "words": 1012
+      }
+    },
+    {
       "id": "39fb46bd",
       "slug": "Markdown 全功能示例",
       "title": "Markdown 全功能示例",
       "date": "2026-09-15",
-      "updated": "2026-09-16",
+      "updated": "2026-09-18",
       "description": "一篇覆盖写作模块计划支持的全部 Markdown 功能的示例文章。",
       "tags": [
         "markdown",
@@ -1167,6 +1186,7 @@
     "MCP协议技术文档": "17a56cfa",
     "Mac根目录Read-only-file-system报错解决": "2dfc5526",
     "Markdown 全功能示例": "39fb46bd",
+    "Mermaid 图种全览（渲染测试）": "8c7242ec",
     "MySQL事务隔离级别-ACID与隔离问题复现": "48d4e868",
     "MySQL索引与B+Tree底层实现好处": "24605a47",
     "Nginx配置实践-gRPC转发与双向TLS验证": "0fff3079",

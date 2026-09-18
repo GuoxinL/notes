@@ -26766,7 +26766,7 @@
     "slug": "Markdown 全功能示例",
     "title": "Markdown 全功能示例",
     "date": "2026-09-15",
-    "updated": "2026-09-16",
+    "updated": "2026-09-18",
     "description": "一篇覆盖写作模块计划支持的全部 Markdown 功能的示例文章。",
     "tags": [
       "markdown",
@@ -26901,6 +26901,10 @@
       }
     ],
     "history": [
+      {
+        "date": "2026-09-18",
+        "message": "docs(sample): 示例文章补充多级标题示例（三~六级）"
+      },
       {
         "date": "2026-09-16",
         "message": "feat(images): 示例文章补真实图片 + 修正空格路径约定"
@@ -27958,6 +27962,1399 @@
         "context": "本文引用了 Markdown 全功能示例 一文，作为反链演示。"
       }
     ]
+  },
+  {
+    "schemaVersion": 1,
+    "id": "8c7242ec",
+    "slug": "Mermaid 图种全览（渲染测试）",
+    "title": "Mermaid 图种全览（渲染测试）",
+    "date": "2026-09-18",
+    "updated": "2026-09-18",
+    "description": "逐个渲染本站支持的 Mermaid 图种，用于验证渲染能力与语法关键字。覆盖流程、时序、类、状态、ER、旅程、甘特、饼图、四象限、需求、Git、思维导图、时间线、C4，以及 Sankey、Block、Packet、Kanban、Architecture、XY、Radar、Treemap、Use Case 等 Beta 图种。",
+    "tags": [
+      "mermaid",
+      "markdown",
+      "测试",
+      "图表"
+    ],
+    "status": "evergreen",
+    "readingTime": {
+      "minutes": 3,
+      "words": 1012
+    },
+    "headings": [
+      {
+        "depth": 2,
+        "text": "一、稳定图种",
+        "slug": "一稳定图种"
+      },
+      {
+        "depth": 3,
+        "text": "1. 流程图 Flowchart",
+        "slug": "1-流程图-flowchart"
+      },
+      {
+        "depth": 3,
+        "text": "2. 时序图 Sequence Diagram",
+        "slug": "2-时序图-sequence-diagram"
+      },
+      {
+        "depth": 3,
+        "text": "3. 类图 Class Diagram",
+        "slug": "3-类图-class-diagram"
+      },
+      {
+        "depth": 3,
+        "text": "4. 状态图 State Diagram",
+        "slug": "4-状态图-state-diagram"
+      },
+      {
+        "depth": 3,
+        "text": "5. 实体关系图 ER Diagram（官方标注 experimental）",
+        "slug": "5-实体关系图-er-diagram官方标注-experimental"
+      },
+      {
+        "depth": 3,
+        "text": "6. 用户旅程图 User Journey",
+        "slug": "6-用户旅程图-user-journey"
+      },
+      {
+        "depth": 3,
+        "text": "7. 甘特图 Gantt",
+        "slug": "7-甘特图-gantt"
+      },
+      {
+        "depth": 3,
+        "text": "8. 饼图 Pie Chart",
+        "slug": "8-饼图-pie-chart"
+      },
+      {
+        "depth": 3,
+        "text": "9. 四象限图 Quadrant Chart",
+        "slug": "9-四象限图-quadrant-chart"
+      },
+      {
+        "depth": 3,
+        "text": "10. 需求图 Requirement Diagram",
+        "slug": "10-需求图-requirement-diagram"
+      },
+      {
+        "depth": 3,
+        "text": "11. Git 提交图 Gitgraph",
+        "slug": "11-git-提交图-gitgraph"
+      },
+      {
+        "depth": 3,
+        "text": "12. 思维导图 Mindmap",
+        "slug": "12-思维导图-mindmap"
+      },
+      {
+        "depth": 3,
+        "text": "13. 时间线 Timeline",
+        "slug": "13-时间线-timeline"
+      },
+      {
+        "depth": 3,
+        "text": "14. C4 架构图",
+        "slug": "14-c4-架构图"
+      },
+      {
+        "depth": 3,
+        "text": "15. 信息图 Info",
+        "slug": "15-信息图-info"
+      },
+      {
+        "depth": 2,
+        "text": "二、Beta / 实验性图种（关键字常带 -beta 后缀）",
+        "slug": "二beta-实验性图种关键字常带-beta-后缀"
+      },
+      {
+        "depth": 3,
+        "text": "16. 桑基图 Sankey",
+        "slug": "16-桑基图-sankey"
+      },
+      {
+        "depth": 3,
+        "text": "17. 区块图 Block",
+        "slug": "17-区块图-block"
+      },
+      {
+        "depth": 3,
+        "text": "18. 数据包图 Packet",
+        "slug": "18-数据包图-packet"
+      },
+      {
+        "depth": 3,
+        "text": "19. 看板 Kanban",
+        "slug": "19-看板-kanban"
+      },
+      {
+        "depth": 3,
+        "text": "20. 架构图 Architecture",
+        "slug": "20-架构图-architecture"
+      },
+      {
+        "depth": 3,
+        "text": "21. XY 图表",
+        "slug": "21-xy-图表"
+      },
+      {
+        "depth": 3,
+        "text": "22. 雷达图 Radar",
+        "slug": "22-雷达图-radar"
+      },
+      {
+        "depth": 3,
+        "text": "23. 矩形树图 Treemap",
+        "slug": "23-矩形树图-treemap"
+      },
+      {
+        "depth": 3,
+        "text": "24. 用例图 Use Case",
+        "slug": "24-用例图-use-case"
+      },
+      {
+        "depth": 2,
+        "text": "三、本版本内置但尚未稳定文档化的图种",
+        "slug": "三本版本内置但尚未稳定文档化的图种"
+      }
+    ],
+    "references": [],
+    "history": [],
+    "ast": {
+      "type": "root",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "本文是 "
+            },
+            {
+              "type": "strong",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "Mermaid 渲染能力测试页"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": "：每个小节给出该图种的"
+            },
+            {
+              "type": "strong",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "语法关键字"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": "（即 "
+            },
+            {
+              "type": "inlineCode",
+              "value": "```mermaid"
+            },
+            {
+              "type": "text",
+              "value": " 代码块的第一行）与一个最小可渲染示例，用于验证当前站点能否正确渲染。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "渲染机制：站点在文章详情页"
+            },
+            {
+              "type": "strong",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "运行时懒加载 Mermaid"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": "（避免拖慢首屏），主题跟随站点明暗切换，未对图种做任何白名单限制——"
+            },
+            {
+              "type": "strong",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "Mermaid 支持的类型即可渲染"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": "。若某图种解析失败，页面会在该位置显示「Mermaid 渲染失败」提示。"
+            }
+          ]
+        },
+        {
+          "type": "thematicBreak"
+        },
+        {
+          "type": "heading",
+          "depth": 2,
+          "children": [
+            {
+              "type": "text",
+              "value": "一、稳定图种"
+            }
+          ],
+          "data": {
+            "headingId": "一稳定图种"
+          }
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "1. 流程图 Flowchart"
+            }
+          ],
+          "data": {
+            "headingId": "1-流程图-flowchart"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "flowchart"
+            },
+            {
+              "type": "text",
+              "value": " 或 "
+            },
+            {
+              "type": "inlineCode",
+              "value": "graph"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "flowchart TD\n  A[开始] --> B{判断}\n  B -->|是| C[执行]\n  B -->|否| D[结束]\n  C --> D"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "2. 时序图 Sequence Diagram"
+            }
+          ],
+          "data": {
+            "headingId": "2-时序图-sequence-diagram"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "sequenceDiagram"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "sequenceDiagram\n  participant 用户\n  participant 服务\n  用户->>服务: 请求数据\n  服务-->>用户: 返回结果"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "3. 类图 Class Diagram"
+            }
+          ],
+          "data": {
+            "headingId": "3-类图-class-diagram"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "classDiagram"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "classDiagram\n  Animal <|-- Duck\n  Animal : +int age\n  Animal : +swim()\n  Duck : +quack()"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "4. 状态图 State Diagram"
+            }
+          ],
+          "data": {
+            "headingId": "4-状态图-state-diagram"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "stateDiagram-v2"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "stateDiagram-v2\n  [*] --> 待处理\n  待处理 --> 处理中 : 开始\n  处理中 --> 已完成 : 结束\n  已完成 --> [*]"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "5. 实体关系图 ER Diagram（官方标注 experimental）"
+            }
+          ],
+          "data": {
+            "headingId": "5-实体关系图-er-diagram官方标注-experimental"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "erDiagram"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "erDiagram\n  CUSTOMER ||--o{ ORDER : places\n  ORDER ||--|{ LINE-ITEM : contains"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "6. 用户旅程图 User Journey"
+            }
+          ],
+          "data": {
+            "headingId": "6-用户旅程图-user-journey"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "journey"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "journey\n  title 我的一天\n  section 上班\n    泡茶: 5: 我\n    上楼: 3: 我\n  section 回家\n    下楼: 5: 我"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "7. 甘特图 Gantt"
+            }
+          ],
+          "data": {
+            "headingId": "7-甘特图-gantt"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "gantt"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "gantt\n  dateFormat YYYY-MM-DD\n  title 项目排期\n  section 设计\n  需求评审 :done, des1, 2026-01-01, 3d\n  原型设计 :active, des2, 2026-01-04, 5d"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "8. 饼图 Pie Chart"
+            }
+          ],
+          "data": {
+            "headingId": "8-饼图-pie-chart"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "pie"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "pie title 语言占比\n  \"Go\" : 40\n  \"TypeScript\" : 35\n  \"Python\" : 25"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "9. 四象限图 Quadrant Chart"
+            }
+          ],
+          "data": {
+            "headingId": "9-四象限图-quadrant-chart"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "quadrantChart"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "quadrantChart\n  title 覆盖与深度\n  x-axis 低覆盖 --> 高覆盖\n  y-axis 浅 --> 深\n  quadrant-1 重点投入\n  quadrant-2 需推广\n  quadrant-3 重评估\n  quadrant-4 可优化\n  A: [0.3, 0.6]\n  B: [0.45, 0.23]"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "10. 需求图 Requirement Diagram"
+            }
+          ],
+          "data": {
+            "headingId": "10-需求图-requirement-diagram"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "requirementDiagram"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "requirementDiagram\n  requirement 登录需求 {\n    id: 1.1\n    text: 用户可用邮箱登录\n    risk: high\n    verifymethod: test\n  }"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "11. Git 提交图 Gitgraph"
+            }
+          ],
+          "data": {
+            "headingId": "11-git-提交图-gitgraph"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "gitGraph"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "gitGraph\n  commit\n  branch develop\n  checkout develop\n  commit\n  checkout main\n  merge develop"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "12. 思维导图 Mindmap"
+            }
+          ],
+          "data": {
+            "headingId": "12-思维导图-mindmap"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "mindmap"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "mindmap\n  root((站点))\n    笔记\n      双链\n      标签\n    工具箱\n      JSON"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "13. 时间线 Timeline"
+            }
+          ],
+          "data": {
+            "headingId": "13-时间线-timeline"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "timeline"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "timeline\n  title 里程碑\n  2024 : 立项\n  2025 : 上线\n  2026 : 迭代"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "14. C4 架构图"
+            }
+          ],
+          "data": {
+            "headingId": "14-c4-架构图"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "C4Context"
+            },
+            {
+              "type": "text",
+              "value": "（另有 "
+            },
+            {
+              "type": "inlineCode",
+              "value": "C4Container"
+            },
+            {
+              "type": "text",
+              "value": " / "
+            },
+            {
+              "type": "inlineCode",
+              "value": "C4Component"
+            },
+            {
+              "type": "text",
+              "value": " / "
+            },
+            {
+              "type": "inlineCode",
+              "value": "C4Dynamic"
+            },
+            {
+              "type": "text",
+              "value": " / "
+            },
+            {
+              "type": "inlineCode",
+              "value": "C4Deployment"
+            },
+            {
+              "type": "text",
+              "value": "）"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "C4Context\n  title 系统上下文\n  Person(user, \"访客\")\n  System(site, \"guoxin.space\", \"个人主页\")\n  Rel(user, site, \"浏览\")"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "15. 信息图 Info"
+            }
+          ],
+          "data": {
+            "headingId": "15-信息图-info"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "info"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "info\n  showInfo"
+        },
+        {
+          "type": "thematicBreak"
+        },
+        {
+          "type": "heading",
+          "depth": 2,
+          "children": [
+            {
+              "type": "text",
+              "value": "二、Beta / 实验性图种（关键字常带 "
+            },
+            {
+              "type": "inlineCode",
+              "value": "-beta"
+            },
+            {
+              "type": "text",
+              "value": " 后缀）"
+            }
+          ],
+          "data": {
+            "headingId": "二beta-实验性图种关键字常带-beta-后缀"
+          }
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "16. 桑基图 Sankey"
+            }
+          ],
+          "data": {
+            "headingId": "16-桑基图-sankey"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "sankey-beta"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "sankey-beta\n  来源A,目标X,40\n  来源B,目标X,30\n  来源B,目标Y,20"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "17. 区块图 Block"
+            }
+          ],
+          "data": {
+            "headingId": "17-区块图-block"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "block-beta"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "block-beta\n  columns 3\n  A[\"甲\"] B[\"乙\"] C[\"丙\"]\n  D[\"丁\"] E[\"戊\"] F[\"己\"]"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "18. 数据包图 Packet"
+            }
+          ],
+          "data": {
+            "headingId": "18-数据包图-packet"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "packet-beta"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "packet-beta\n  0-15: \"源端口\"\n  16-31: \"目的端口\""
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "19. 看板 Kanban"
+            }
+          ],
+          "data": {
+            "headingId": "19-看板-kanban"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "kanban"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "kanban\n  待办\n    任务一\n    任务二\n  进行中\n    任务三"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "20. 架构图 Architecture"
+            }
+          ],
+          "data": {
+            "headingId": "20-架构图-architecture"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "architecture-beta"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "architecture-beta\n  group api(cloud)[API]\n  service web(internet)[Web] in api\n  service db(database)[DB] in api"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "21. XY 图表"
+            }
+          ],
+          "data": {
+            "headingId": "21-xy-图表"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "xychart-beta"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "xychart-beta\n  title \"销售额\"\n  x-axis [1月, 2月, 3月, 4月]\n  y-axis \"金额\" 0 --> 100\n  bar [30, 50, 70, 60]\n  line [25, 45, 65, 55]"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "22. 雷达图 Radar"
+            }
+          ],
+          "data": {
+            "headingId": "22-雷达图-radar"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "radar-beta"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "radar-beta\n  title 技能\n  axis 前端,后端,运维\n  curve 我[\"我\"]\n  我: [8, 6, 7]"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "23. 矩形树图 Treemap"
+            }
+          ],
+          "data": {
+            "headingId": "23-矩形树图-treemap"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "treemap-beta"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "treemap-beta\n  \"前端\" : 40\n  \"后端\" : 35\n  \"运维\" : 25"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "24. 用例图 Use Case"
+            }
+          ],
+          "data": {
+            "headingId": "24-用例图-use-case"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "关键字："
+            },
+            {
+              "type": "inlineCode",
+              "value": "usecase-beta"
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "usecase-beta\n  direction LR\n  actor 读者\n  浏览(\"浏览文章\")\n  读者 --> 浏览"
+        },
+        {
+          "type": "thematicBreak"
+        },
+        {
+          "type": "heading",
+          "depth": 2,
+          "children": [
+            {
+              "type": "text",
+              "value": "三、本版本内置但尚未稳定文档化的图种"
+            }
+          ],
+          "data": {
+            "headingId": "三本版本内置但尚未稳定文档化的图种"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "以下图种已包含在当前 Mermaid 构建中（可从其 "
+            },
+            {
+              "type": "inlineCode",
+              "value": "detectType"
+            },
+            {
+              "type": "text",
+              "value": " 登记表确认），但官方文档尚未给出稳定语法说明，"
+            },
+            {
+              "type": "strong",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "本页暂不演示"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": "，避免给出错误示例："
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "align": [
+            null,
+            null
+          ],
+          "children": [
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "图种"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "探测到的关键字"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "Venn（韦恩图）"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "venn-beta"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "Tree View（树视图）"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "treeView-beta"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "Swimlane（泳道）"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "swimlane-beta"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "Cynefin"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "cynefin-beta"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "Agent Flow"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "agentflow-beta"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "Event Modeling"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "eventmodeling"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "Ishikawa（鱼骨图）"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "未公开"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "Wardley（沃德利地图）"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "未公开"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "Railroad（铁路图）"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "未公开"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "blockquote",
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "说明：Beta 图种的语法在后续 Mermaid 版本中可能调整；若某图种在本页显示为「渲染失败」，通常意味着当前版本语法与示例不一致，而非站点限制。"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   },
   {
     "schemaVersion": 1,
