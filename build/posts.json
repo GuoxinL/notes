@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-18T16:07:41.891Z",
+  "generatedAt": "2026-09-18T16:16:14.353Z",
   "sourceRef": "GuoxinL/notes",
   "toolchain": {
     "node": "22.22.2",
@@ -12,7 +12,7 @@
       "slug": "Mermaid 图种全览（渲染测试）",
       "title": "Mermaid 图种全览（渲染测试）",
       "date": "2026-09-18",
-      "updated": "2026-09-18",
+      "updated": "2026-09-19",
       "description": "逐个渲染本站支持的 Mermaid 图种，用于验证渲染能力与语法关键字。覆盖流程、时序、类、状态、ER、旅程、甘特、饼图、四象限、需求、Git、思维导图、时间线、C4，以及 Sankey、Block、Packet、Kanban、Architecture、XY、Radar、Treemap、Use Case 等 Beta 图种。",
       "tags": [
         "mermaid",
@@ -22,8 +22,8 @@
       ],
       "status": "evergreen",
       "readingTime": {
-        "minutes": 3,
-        "words": 1012
+        "minutes": 4,
+        "words": 1076
       }
     },
     {

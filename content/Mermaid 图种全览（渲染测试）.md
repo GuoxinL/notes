@@ -132,9 +132,9 @@ quadrantChart
 
 ```mermaid
 requirementDiagram
-  requirement 登录需求 {
+  requirement login_req {
     id: 1.1
-    text: 用户可用邮箱登录
+    text: user can login by email
     risk: high
     verifymethod: test
   }
@@ -211,21 +211,16 @@ info
 
 ```mermaid
 sankey-beta
-  来源A,目标X,40
-  来源B,目标X,30
-  来源B,目标Y,20
+  A,X,40
+  B,X,30
+  B,Y,20
 ```
 
 ### 17. 区块图 Block
 
 关键字：`block-beta`
 
-```mermaid
-block-beta
-  columns 3
-  A["甲"] B["乙"] C["丙"]
-  D["丁"] E["戊"] F["己"]
-```
+> ⚠️ 实测结论：Mermaid **12.0.0 渲染该图种会报 `TypeError: Converting circular structure to JSON`**（已尝试官方多种标准写法均复现），疑似该版本内部缺陷。为免给出错误示例，此处不展示代码块。
 
 ### 18. 数据包图 Packet
 
@@ -267,9 +262,9 @@ architecture-beta
 
 ```mermaid
 xychart-beta
-  title "销售额"
-  x-axis [1月, 2月, 3月, 4月]
-  y-axis "金额" 0 --> 100
+  title "Sales Revenue"
+  x-axis [jan, feb, mar, apr]
+  y-axis "Amount" 0 --> 100
   bar [30, 50, 70, 60]
   line [25, 45, 65, 55]
 ```
@@ -278,13 +273,7 @@ xychart-beta
 
 关键字：`radar-beta`
 
-```mermaid
-radar-beta
-  title 技能
-  axis 前端,后端,运维
-  curve 我["我"]
-  我: [8, 6, 7]
-```
+> ⚠️ 实测结论：Mermaid **12.0.0 对该图种的轴/曲线写法解析失败**（已尝试 `axis` + 命名曲线、`axis` + 引号序列等多种写法均报 Parse error），语法仍在演进。为免给出错误示例，此处不展示代码块。
 
 ### 23. 矩形树图 Treemap
 
@@ -303,10 +292,10 @@ treemap-beta
 
 ```mermaid
 usecase-beta
-  direction LR
-  actor 读者
-  浏览("浏览文章")
-  读者 --> 浏览
+direction LR
+actor Reader
+Browse("Browse article")
+Reader --> Browse
 ```
 
 ---
