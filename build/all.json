@@ -27980,7 +27980,7 @@
     "status": "evergreen",
     "readingTime": {
       "minutes": 5,
-      "words": 1403
+      "words": 1489
     },
     "headings": [
       {
@@ -28065,8 +28065,8 @@
       },
       {
         "depth": 2,
-        "text": "文档：Mermaid 语法文档 （官方暂无独立语法文档页，链接为其源码目录）\n示例：mermaid.live 在线示例",
-        "slug": "文档mermaid-语法文档-官方暂无独立语法文档页链接为其源码目录-示例mermaidlive-在线示例"
+        "text": "文档：信息图 官方语法 （官方暂无独立语法文档页，链接为其源码目录）\n示例：信息图 在线示例",
+        "slug": "文档信息图-官方语法-官方暂无独立语法文档页链接为其源码目录-示例信息图-在线示例"
       },
       {
         "depth": 2,
@@ -28120,8 +28120,8 @@
       },
       {
         "depth": 2,
-        "text": "文档：Mermaid 语法文档\n示例：mermaid.live 在线示例",
-        "slug": "文档mermaid-语法文档-示例mermaidlive-在线示例"
+        "text": "文档：用例图 官方语法\n示例：用例图 在线示例",
+        "slug": "文档用例图-官方语法-示例用例图-在线示例"
       },
       {
         "depth": 2,
@@ -28132,246 +28132,250 @@
     "references": [
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "流程图 官方语法",
         "href": "https://mermaid.js.org/syntax/flowchart.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "流程图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJxFjE0KgkAYhq8yfGu9gIsg9Qa1ynHxoeMPqBPTDBEqtCxqEQTRJiKIXEUHqOtoHSMUrOXzvD85eNxnYECQ8LkXoZBkbNOMkKFTv5Z1tXGJrg-Imdera3O4l21ktqpojo-CWE6zrj6Xrfv39e5WENt5P_fN6dx5q7uwQYNQxD4YUiimQcpEii1C3pYoyIiljIJBKPgsQJVICjQrQQNUko8WmddP1dRHyewYQ4FpL6eYTTj_oeAqjMAIMJmx8gujg1U-"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "时序图 官方语法",
         "href": "https://mermaid.js.org/syntax/sequenceDiagram.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "时序图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJxdzy0OwkAQBeCrbEa3F1hRxQ1wZM2kHdpN6G5ZdgUhGBQhqQIUTRMcih9VgeA0XTgGaZoikO-b98SsINYJAYcFzR2pmEYSU4O5UIwVaKyMZYHKsvfh4rfNv_qqbHfnTvt7GEU9cfa5Nf6x8ce7L69dofcwjKK-ytnndWhP9fu593UFAaRGJsCtcRRATibHLsKq2wqwGeUkgDMBCU3RzawAodYQADqrx0sVD1NXJGiHLwYsUE20_kWjXZoBn-JsQesvIcttUA"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "类图 官方语法",
         "href": "https://mermaid.js.org/syntax/classDiagram.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "类图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJxVzk0KwjAUBOCrhLdqMb1AcCP0Bu4km0fymobmp-YHkdq7S8CKLudjBmYDFTWBAOUw59GiSehlYOwSrEfHzq9hYGNVy48JdrKhMDT0j_lhfdc3a4Mm94pq6XrgYJLVIEqqxMFT8tgibK0soczkSYJgEjRNWF2RIMMOHLCWeH0GdUzrqrHQ5-aBK4ZbjN-YYjUziAldpv0NzllKGg"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "状态图 官方语法",
         "href": "https://mermaid.js.org/syntax/stateDiagram.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "状态图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJyrVkrOT0lVslIqLkksSXXJTEwvSszVLTOKyVNQiNaKVdDVtVN4uq_16ZKW5xPaQIJwDkQKzHyyY62ClcLTPQ1Pl3eD1cBFwWq2b3q6rudZxwQFK4Xnuyc_mzsfrAYuClITrRWrpKOUXpSZomRVUlSaqqOUm1qUmwjiKlWDlMcolWSk5qbGKFkpxCilpKYlluaUxCjF5NUq6SgllpbkB1fmJcO0lhakIPwCEyxIzIvKz4dzi_JL0zOUrNISc4pTawHHh2st"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "实体关系图 官方语法",
         "href": "https://mermaid.js.org/syntax/entityRelationshipDiagram.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "实体关系图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJw9js0KgzAQhF9l2bO-QK41B6FWUHspuSxx_QGTSEwORX33Elp7nG_mg9lRu55RIPtiptGTURbg9my7upINHEeeux3qppANCFgX0rylxZek-tjhXj5kXnayAgHa2UCz3TDD0c89iuAjZ2jYG0oR96QrDBMbVihAYc8DxSUoVPbEDCkG176tvtS49hT49-6CK9mXc__oXRwnFAMtG58fUB5GMQ"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "用户旅程图 官方语法",
         "href": "https://mermaid.js.org/syntax/userJourney.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "用户旅程图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJw9i7sKwjAUQH_lcudu4pLZP3CTLKG9fUibSEyGUgQHB1FBXBUEQQcHXQTp4Oe01c-QKO14DucU6KuAkOFYWS0p5xLAJCYlaJa7935RlfP6fHV2Sr5JlISqXL23N2cAmsfps3ky6DOX_11VrprLi0Gvc-1ZH471_dlW61_1P9HDSCcBMqMteZiRzoRDLFzN0cSUEUcGHAMKhU0NRy5n6KGwRg1z6bernQTC0CARkRZZKydCjpTqUCsbxchCkU5p9gVcn2Y-"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "甘特图 官方语法",
         "href": "https://mermaid.js.org/syntax/gantt.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "甘特图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJxNjz1qw0AQha8yTL0CSfkpthbpXKVS2GbRjmWBtGtWo0AwhhDSBVykjYnRBRRSpsltpMi3CItxSPm--d6D2WDhDKHEUltmZQGMZrpxvtEMeZ7n0WIRZVk4cMU1wbH_-nkbpt3rtD8E2lLBlbMwD9_z0Ady3D9On0_zx_M49CCNsyTAUJsISOP0OoqTKE4EXJjgjrvD-P5y6oLUBVf3Jzv9Z18KuDIosPSVQcm-I4EN-UaHiJuwo5BX1JBCCQoNLXVXs0JltyhQd-xuH2xxrnbr8GJW6dLr5gzX2t459xe968oVyqWuW9r-AhJdbTY"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "饼图 官方语法",
         "href": "https://mermaid.js.org/syntax/pie.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "饼图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJw9yz0KwkAQhuGrLFOnEDXN1oKtoJVsM2QnyUL2h3W2CCHgBew8gKWN5FRKjiEmxPJ9-L4OCq8JJARDgg03JMbhNT6v79vjM9yVE0LB3isQUmxXc57aQMcimsATb_KZDy3X3k20ziGDKhoNkmOiDCxFi7-Ebh5zTZYUSKFAU4mpYQXK9ZABJvbH1hXLNQWNTDuDVUS7YEB39v6f0aeqBllic6H-C5w4SQQ"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "四象限图 官方语法",
         "href": "https://mermaid.js.org/syntax/quadrantChart.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "四象限图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJxVjc1Kw0AUhV_lctdJqU11kYXgzxu403RxaaZJID91OgMtpSBiFUTjSino1iK4qF1IrVR8mSRt30ImIUKW5_vO4QyxHdkMTTyXZHMKxZFLXFghgPCEz2AzvV4_PyVfcbaYp99TJfo69b0eJD9xIUHX92H7PimSagyKRvY5zl22mCtaPug7sL25X18us9vHdPxaUQ3Yvlxk8Vu6_K1wQ002s6tk9VHhTUgfZslqkt7lxwcmnNVrhgb12l5LgcMcNHcVaRgt1NDhno2m4JJpGDAekIo4VGULhcsCZqEJFtqsQ9IXFlrhCDUkKaKTQdgup7Jrk2DHHjmcghJ2KTyNov_II-m4aHbI77HRH2UykVc"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "需求图 官方语法",
         "href": "https://mermaid.js.org/syntax/requirementDiagram.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "需求图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJxNj8FqxDAMRH9F6LwU9upz_6C3YihqPLFFY3tXkUvDsv9e0nRLj-9phkE3nnoCBzZchxoqmj-rZJMaG9E_S0vP2t4MV7rtJyJNgc5P5wMcXx5orDCapB1het8IVXQ5IqbrR6CiuRz8CdN5q_DSUyDH6ru_84mzaeLgNnDiCquyI__MRvaCisiBIifMMhaPHNtek-H9ZWvTozouSRy_7zzkRdpr739ofeTCYZZlxf0brrFcRA"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "Git 提交图 官方语法",
         "href": "https://mermaid.js.org/syntax/gitgraph.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "Git 提交图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJxVi0EKwzAMBL8SdM4LfC70Ab0VX1RbsU0jy6hyoYT8vbiQQG-7s7MbBIkEDlKxq2LLvk5TEOZiIz0Ua8hTpDet0n5bpvCUbn_s9M-VsdQBmDTR4cIMSUsEZ9ppBiZlHBW2oXqwTEwe3OQh0oJ9NQ--7jADdpPbp4bj2ltEo0vBpMgHbFjvImdV6SmDW3B90f4FGq1Rcw"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "思维导图 官方语法",
         "href": "https://mermaid.js.org/syntax/mindmap.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "思维导图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJw9i70KwjAUhV8l3MlCn6Czk4MO3STLpUl_oElKTAYpXQRxERx0cXNxUotOxcW3qdG3kKJ1O993zikhUoxDACKTTGBBJSFaKTMYuNPeLe6e1xlC3Hn3qq_fTEi7Wb-3j56eh5W7_Khtju2ycfWtL0fhZAw-JDpjEBhtuQ-Ca4EdQtmtKJiUC04hIBQYj9HmhgKVFfiA1qhwLqP-aguGhg8zTDSKXhYop0r9USubpBDEmM949QHoClOQ"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "时间线 官方语法",
         "href": "https://mermaid.js.org/syntax/timeline.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "时间线 在线示例",
         "href": "https://mermaid.live/edit#pako:eJw9y70KwjAUhuFbOZy5gxR1yOwduEmW0J62gSYpMRmkdBasi5egLoK4-zP0Zgq1dyGF1vF9-L4SIxMTMnRSUS41cQ3gpMsJ-v2xu9Xd5TRQOAvnwKC71_35NcICGLTPQ_duRlgCg2_zaD9XDDC1MkbmrKcAFVklhsRymHJ0GSniyIBjTInwuePIdYUBCu_Meqej6eqLWDhaSZFaoSYshN4Y809rfJohS0S-peoHEEZOCQ"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "C4 架构图 官方语法",
         "href": "https://mermaid.js.org/syntax/c4.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "C4 架构图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJw9jLFKA0EURX9leVUCi1WqbeMHiOnkNY_dl83Azswy8wYSQmpFCztb0UawSCOBJVv4M2MS_8IMZC3vOZy7htJWDAVMJ1NrhJeCJstEScPZ8as_9q-xe4zd0-HlPokbdt6aUfDs8gzhtP3-2b4jjJObrbywHnklnFwd7FKZK99SyQiJxO4z7vex63_fdpfmlpvL2ZAdds-njweEMeRQO1VBIS5wDpqdpjRhnUIEWbBmhOJ8XPGcQiMIaDaQAwWxs5UphzS0FQlfK6od6QG2ZO6s_Z_OhnoBxZwaz5s_RtZruA"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "信息图 官方语法",
         "href": "https://github.com/mermaid-js/mermaid/tree/develop/packages/mermaid/src/diagrams/info"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "信息图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJw9izsKwzAQBa8iXq0TqE6TOl3YZrFWH7B2jSwRgvHdgwunnGHmwGJREFA1Galze7HPU5PBI_caEUaf4tGkN74Qx1URRpEmhOAIURLPdRBIT3jwHPb66nKvc4s85FE5d2633FjfZn_sNnNBSLzucv4AfHky1g"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "桑基图 官方语法",
         "href": "https://mermaid.js.org/syntax/sankey.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "桑基图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJw9i7EOgjAURX-F3PmZEHXqpvEPXJB0edJHIdKWlHYghH83TcTtnJtzN3TBCBQW9h9ZT29JrH1V3aiha13oTg1dfvSicw2CjaOBSjELwUl0XBRbaTTSIE40VKVhpOc8JQ3tdxA4p_BcfXdc82w4yWNkG9kd48y-DeGvMWQ7QPU8LbJ_ATfQOEQ"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "区块图 官方语法",
         "href": "https://mermaid.js.org/syntax/block.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "区块图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJw9zLFqwzAYBOBXETe14Kmjt0KXbIUMhfr38Fv6Y5taklEkSgl5gAY8hUKHLplDm86lr2PnNYqHdPyOu9tAeyPIUXVeP5FTSvsuWbdWNzOepSoID1Kp8XU4H0-EUnHfFoTb-4WaPoZxdyCUc9VUxRVhevuehq_xZ0-4LpVm3UhBOP_ux893QokMdWgN8hiSZLASLM_EZr4gxEasEHJFMLLi1EUCuS0ycIp--eL0ZZp6w1HuWq4D20vYs3v0_p_Bp7pBvuJuLds_zkpXUw"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "数据包图 官方语法",
         "href": "https://mermaid.js.org/syntax/packet.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "数据包图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJw9jDsOwjAQBa8SvTqRiBAUrrkBHXKzxJuPwHFk1gWK0tFDDSUlEvTcB3IN5CKUM0_zehTOMBQ6KnYs2ZaFdJsksyxfqETj-76Mj9fnfNeIOl9m8zz68fYcr6dpQorKNwZKfOAUlr2liOhjpCE1W9aIoeGSwl7i3YAUFMStj20xpaEzJLxqqPJkJ9lRu3Huj96FqoYqaX_g4QcjeEak"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "看板 官方语法",
         "href": "https://mermaid.js.org/syntax/kanban.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "看板 在线示例",
         "href": "https://mermaid.live/edit#pako:eJxVyz8KwjAYBfCrhG_uCTJ7AzfJ8tl8_YNNUmIySCm4OFh6A0HoAdyLBb1MCj2GZKjQ7f0e7zWQGknA4YT6iFpoxubPbe6eMTEWpmnuhjBeN3z3kcv3sQx9GF_b6R0SyG0pgTvrKQFFVmEkNHEowBWkSABnAiRl6CsnQOgWEkDvzP6i0_Xqa4mOdiXmFtVa1qgPxvxpjc8L4BlWZ2p_DfdTrg"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "架构图 官方语法",
         "href": "https://mermaid.js.org/syntax/architecture.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "架构图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJxNizGKwzAQRa8iprLBuYC7LGnSBVIEYrkYST-2wJbMeJQQQu6-uPCy5fv_vQ_5HEAtsfgxKrwWwcFB2SZjBsllMbzEyk-5hLo7Xs79dqyQZ_QwL7gqJoUkaN3d4HoT0xb8l4KrAis7XlF3p59doYYGiYFalYKGZsjMG9Jniy3piBmWWmMp4MFlUks2fakhLpqv7-T3tCyBFafIg_C8jwune85_KLkMI7UPnlZ8fwE1SFVa"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "XY 图表 官方语法",
         "href": "https://mermaid.js.org/syntax/xyChart.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "XY 图表 在线示例",
         "href": "https://mermaid.live/edit#pako:eJw9jktqxDAQBa_S9LoNykcT8CIQyAkyu1izaNttW0EfI0vBZpi7ByVMlvWKgnfFIY6CLe7HsHDKTS-ZTQDINjsBg2d2ssGHfEsoYrCqveHdbtB9cSCYpCfwnAh4TZeqjz9t8M3HErJBUNA0r_CgVNU9J-ieFIFWBC-K4KR-M2eDQPeoCZ41wUkTaH1BwjnZEducihB6SZ4r4rUmBvMiXgy2YHCUiYvL9eINCbnkeD7CcE_LOnKWd8tzYn8fVw6fMf5jimVesJ3YbXL7AY1YWTM"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "雷达图 官方语法",
         "href": "https://mermaid.js.org/syntax/radar.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "雷达图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJxFjMFOwzAMhl8l8jlI5TAxegOBxoXTbsQc3NZLIzVJ5SZoU9V3R8nYOFjy__v7vEIfB4YWhAaSh44TYVCKzm5R3iB8UhoRvrVaDMKxdxx6rpkNwnuwk1vK_e6MBuHDLSnKpWLWIBw4WqF5vDZkEF4k_Ul9lh--dpOrr9f9TqvnRqt9o9VTmZq3f7ozCK-xK-ztXpzCV29XWU9n9dg0dXVBNaDBihugTZJZg2fxVCKsBUFII3tGaBXCwCfKU0LAsIEGyikeL6G_qXkeKPGbIyvkb-VM4SvGe5SY7QjtiaaFt1_B3HBH"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "矩形树图 官方语法",
         "href": "https://mermaid.js.org/syntax/treemap.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "矩形树图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJw9y7sNwjAUheFVrFMHCQFpXLMBHXJziW8eUmxHxi5QlAEoQNmDgoaOgmlQGANBCOX_6ZwWmdMMieCZDTWzHQdSVgiF5_E0XK4KQorV_Ef9eaJlOtLr0Q_325cWKRIUvtKQwUdOYNgb-iTacRxKNqwghYLmnGIdFJTtkIBicJuDzaZrbDQFXldUeDITNmS3zv3Tu1iUkDnVe-7eWmtHSg"
       },
       {
         "kind": "external",
-        "label": "Mermaid 语法文档",
+        "label": "用例图 官方语法",
         "href": "https://mermaid.js.org/syntax/usecase.html"
       },
       {
         "kind": "external",
-        "label": "mermaid.live 在线示例",
+        "label": "用例图 在线示例",
         "href": "https://mermaid.live/edit#pako:eJw9i7EKwkAQRH_lmEoh-YEUFmJppZ1ss95tkoNkTzZ7iAT_XSRoN2_ezIpYkqBDXSTyIu1dnElTNomei4bzhZSjFwsX4SRGerTyXGRH2EJg8xwnIexJt01o20PYLBoMlhM6tyoNZrGZv4iVNASCjzILoQuEJD3XyQmkbzTg6uX60vi71kdil1PmwXj-lQ_WWyl_tFKHEV3P0yLvDwaTTIo"
       }
     ],
     "history": [
+      {
+        "date": "2026-09-19",
+        "message": "docs(notes): Mermaid 全览示例/文档链接改为别名展示"
+      },
       {
         "date": "2026-09-19",
         "message": "docs(notes): Mermaid 全览补全文档/示例链接，修复 Block/Radar 语法"
@@ -28536,7 +28540,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "流程图 官方语法"
                 }
               ]
             },
@@ -28551,7 +28555,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "流程图 在线示例"
                 }
               ]
             }
@@ -28603,7 +28607,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "时序图 官方语法"
                 }
               ]
             },
@@ -28618,7 +28622,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "时序图 在线示例"
                 }
               ]
             }
@@ -28670,7 +28674,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "类图 官方语法"
                 }
               ]
             },
@@ -28685,7 +28689,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "类图 在线示例"
                 }
               ]
             }
@@ -28737,7 +28741,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "状态图 官方语法"
                 }
               ]
             },
@@ -28752,7 +28756,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "状态图 在线示例"
                 }
               ]
             }
@@ -28804,7 +28808,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "实体关系图 官方语法"
                 }
               ]
             },
@@ -28819,7 +28823,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "实体关系图 在线示例"
                 }
               ]
             }
@@ -28871,7 +28875,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "用户旅程图 官方语法"
                 }
               ]
             },
@@ -28886,7 +28890,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "用户旅程图 在线示例"
                 }
               ]
             }
@@ -28938,7 +28942,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "甘特图 官方语法"
                 }
               ]
             },
@@ -28953,7 +28957,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "甘特图 在线示例"
                 }
               ]
             }
@@ -29005,7 +29009,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "饼图 官方语法"
                 }
               ]
             },
@@ -29020,7 +29024,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "饼图 在线示例"
                 }
               ]
             }
@@ -29072,7 +29076,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "四象限图 官方语法"
                 }
               ]
             },
@@ -29087,7 +29091,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "四象限图 在线示例"
                 }
               ]
             }
@@ -29139,7 +29143,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "需求图 官方语法"
                 }
               ]
             },
@@ -29154,7 +29158,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "需求图 在线示例"
                 }
               ]
             }
@@ -29206,7 +29210,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "Git 提交图 官方语法"
                 }
               ]
             },
@@ -29221,7 +29225,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "Git 提交图 在线示例"
                 }
               ]
             }
@@ -29273,7 +29277,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "思维导图 官方语法"
                 }
               ]
             },
@@ -29288,7 +29292,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "思维导图 在线示例"
                 }
               ]
             }
@@ -29340,7 +29344,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "时间线 官方语法"
                 }
               ]
             },
@@ -29355,7 +29359,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "时间线 在线示例"
                 }
               ]
             }
@@ -29443,7 +29447,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "C4 架构图 官方语法"
                 }
               ]
             },
@@ -29458,7 +29462,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "C4 架构图 在线示例"
                 }
               ]
             }
@@ -29511,7 +29515,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "信息图 官方语法"
                 }
               ]
             },
@@ -29526,13 +29530,13 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "信息图 在线示例"
                 }
               ]
             }
           ],
           "data": {
-            "headingId": "文档mermaid-语法文档-官方暂无独立语法文档页链接为其源码目录-示例mermaidlive-在线示例"
+            "headingId": "文档信息图-官方语法-官方暂无独立语法文档页链接为其源码目录-示例信息图-在线示例"
           }
         },
         {
@@ -29602,7 +29606,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "桑基图 官方语法"
                 }
               ]
             },
@@ -29617,7 +29621,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "桑基图 在线示例"
                 }
               ]
             }
@@ -29681,7 +29685,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "区块图 官方语法"
                 }
               ]
             },
@@ -29696,7 +29700,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "区块图 在线示例"
                 }
               ]
             }
@@ -29748,7 +29752,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "数据包图 官方语法"
                 }
               ]
             },
@@ -29763,7 +29767,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "数据包图 在线示例"
                 }
               ]
             }
@@ -29815,7 +29819,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "看板 官方语法"
                 }
               ]
             },
@@ -29830,7 +29834,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "看板 在线示例"
                 }
               ]
             }
@@ -29882,7 +29886,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "架构图 官方语法"
                 }
               ]
             },
@@ -29897,7 +29901,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "架构图 在线示例"
                 }
               ]
             }
@@ -29949,7 +29953,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "XY 图表 官方语法"
                 }
               ]
             },
@@ -29964,7 +29968,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "XY 图表 在线示例"
                 }
               ]
             }
@@ -30016,7 +30020,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "雷达图 官方语法"
                 }
               ]
             },
@@ -30031,7 +30035,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "雷达图 在线示例"
                 }
               ]
             }
@@ -30083,7 +30087,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "矩形树图 官方语法"
                 }
               ]
             },
@@ -30098,7 +30102,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "矩形树图 在线示例"
                 }
               ]
             }
@@ -30151,7 +30155,7 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "Mermaid 语法文档"
+                  "value": "用例图 官方语法"
                 }
               ]
             },
@@ -30166,13 +30170,13 @@
               "children": [
                 {
                   "type": "text",
-                  "value": "mermaid.live 在线示例"
+                  "value": "用例图 在线示例"
                 }
               ]
             }
           ],
           "data": {
-            "headingId": "文档mermaid-语法文档-示例mermaidlive-在线示例"
+            "headingId": "文档用例图-官方语法-示例用例图-在线示例"
           }
         },
         {
