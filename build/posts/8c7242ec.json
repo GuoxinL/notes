@@ -14,8 +14,8 @@
   ],
   "status": "evergreen",
   "readingTime": {
-    "minutes": 4,
-    "words": 1076
+    "minutes": 5,
+    "words": 1586
   },
   "headings": [
     {
@@ -154,8 +154,253 @@
       "slug": "三本版本内置但尚未稳定文档化的图种"
     }
   ],
-  "references": [],
+  "references": [
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/flowchart.html",
+      "href": "https://mermaid.js.org/syntax/flowchart.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJxFjE0KgkAYhq8yfGu9gIsg9Qa1ynHxoeMPqBPTDBEqtCxqEQTRJiKIXEUHqOtoHSMUrOXzvD85eNxnYECQ8LkXoZBkbNOMkKFTv5Z1tXGJrg-Imdera3O4l21ktqpojo-CWE6zrj6Xrfv39e5WENt5P_fN6dx5q7uwQYNQxD4YUiimQcpEii1C3pYoyIiljIJBKPgsQJVICjQrQQNUko8WmddP1dRHyewYQ4FpL6eYTTj_oeAqjMAIMJmx8gujg1U-",
+      "href": "https://mermaid.live/edit#pako:eJxFjE0KgkAYhq8yfGu9gIsg9Qa1ynHxoeMPqBPTDBEqtCxqEQTRJiKIXEUHqOtoHSMUrOXzvD85eNxnYECQ8LkXoZBkbNOMkKFTv5Z1tXGJrg-Imdera3O4l21ktqpojo-CWE6zrj6Xrfv39e5WENt5P_fN6dx5q7uwQYNQxD4YUiimQcpEii1C3pYoyIiljIJBKPgsQJVICjQrQQNUko8WmddP1dRHyewYQ4FpL6eYTTj_oeAqjMAIMJmx8gujg1U-"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/sequenceDiagram.html",
+      "href": "https://mermaid.js.org/syntax/sequenceDiagram.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJxdzy0OwkAQBeCrbEa3F1hRxQ1wZM2kHdpN6G5ZdgUhGBQhqQIUTRMcih9VgeA0XTgGaZoikO-b98SsINYJAYcFzR2pmEYSU4O5UIwVaKyMZYHKsvfh4rfNv_qqbHfnTvt7GEU9cfa5Nf6x8ce7L69dofcwjKK-ytnndWhP9fu593UFAaRGJsCtcRRATibHLsKq2wqwGeUkgDMBCU3RzawAodYQADqrx0sVD1NXJGiHLwYsUE20_kWjXZoBn-JsQesvIcttUA",
+      "href": "https://mermaid.live/edit#pako:eJxdzy0OwkAQBeCrbEa3F1hRxQ1wZM2kHdpN6G5ZdgUhGBQhqQIUTRMcih9VgeA0XTgGaZoikO-b98SsINYJAYcFzR2pmEYSU4O5UIwVaKyMZYHKsvfh4rfNv_qqbHfnTvt7GEU9cfa5Nf6x8ce7L69dofcwjKK-ytnndWhP9fu593UFAaRGJsCtcRRATibHLsKq2wqwGeUkgDMBCU3RzawAodYQADqrx0sVD1NXJGiHLwYsUE20_kWjXZoBn-JsQesvIcttUA"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/classDiagram.html",
+      "href": "https://mermaid.js.org/syntax/classDiagram.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJxVzk0KwjAUBOCrhLdqMb1AcCP0Bu4km0fymobmp-YHkdq7S8CKLudjBmYDFTWBAOUw59GiSehlYOwSrEfHzq9hYGNVy48JdrKhMDT0j_lhfdc3a4Mm94pq6XrgYJLVIEqqxMFT8tgibK0soczkSYJgEjRNWF2RIMMOHLCWeH0GdUzrqrHQ5-aBK4ZbjN-YYjUziAldpv0NzllKGg",
+      "href": "https://mermaid.live/edit#pako:eJxVzk0KwjAUBOCrhLdqMb1AcCP0Bu4km0fymobmp-YHkdq7S8CKLudjBmYDFTWBAOUw59GiSehlYOwSrEfHzq9hYGNVy48JdrKhMDT0j_lhfdc3a4Mm94pq6XrgYJLVIEqqxMFT8tgibK0soczkSYJgEjRNWF2RIMMOHLCWeH0GdUzrqrHQ5-aBK4ZbjN-YYjUziAldpv0NzllKGg"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/stateDiagram.html",
+      "href": "https://mermaid.js.org/syntax/stateDiagram.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJyrVkrOT0lVslIqLkksSXXJTEwvSszVLTOKyVNQiNaKVdDVtVN4uq_16ZKW5xPaQIJwDkQKzHyyY62ClcLTPQ1Pl3eD1cBFwWq2b3q6rudZxwQFK4Xnuyc_mzsfrAYuClITrRWrpKOUXpSZomRVUlSaqqOUm1qUmwjiKlWDlMcolWSk5qbGKFkpxCilpKYlluaUxCjF5NUq6SgllpbkB1fmJcO0lhakIPwCEyxIzIvKz4dzi_JL0zOUrNISc4pTawHHh2st",
+      "href": "https://mermaid.live/edit#pako:eJyrVkrOT0lVslIqLkksSXXJTEwvSszVLTOKyVNQiNaKVdDVtVN4uq_16ZKW5xPaQIJwDkQKzHyyY62ClcLTPQ1Pl3eD1cBFwWq2b3q6rudZxwQFK4Xnuyc_mzsfrAYuClITrRWrpKOUXpSZomRVUlSaqqOUm1qUmwjiKlWDlMcolWSk5qbGKFkpxCilpKYlluaUxCjF5NUq6SgllpbkB1fmJcO0lhakIPwCEyxIzIvKz4dzi_JL0zOUrNISc4pTawHHh2st"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/entityRelationshipDiagram.html",
+      "href": "https://mermaid.js.org/syntax/entityRelationshipDiagram.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJw9js0KgzAQhF9l2bO-QK41B6FWUHspuSxx_QGTSEwORX33Elp7nG_mg9lRu55RIPtiptGTURbg9my7upINHEeeux3qppANCFgX0rylxZek-tjhXj5kXnayAgHa2UCz3TDD0c89iuAjZ2jYG0oR96QrDBMbVihAYc8DxSUoVPbEDCkG176tvtS49hT49-6CK9mXc__oXRwnFAMtG58fUB5GMQ",
+      "href": "https://mermaid.live/edit#pako:eJw9js0KgzAQhF9l2bO-QK41B6FWUHspuSxx_QGTSEwORX33Elp7nG_mg9lRu55RIPtiptGTURbg9my7upINHEeeux3qppANCFgX0rylxZek-tjhXj5kXnayAgHa2UCz3TDD0c89iuAjZ2jYG0oR96QrDBMbVihAYc8DxSUoVPbEDCkG176tvtS49hT49-6CK9mXc__oXRwnFAMtG58fUB5GMQ"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/userJourney.html",
+      "href": "https://mermaid.js.org/syntax/userJourney.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJw9i7sKwjAUQH_lcudu4pLZP3CTLKG9fUibSEyGUgQHB1FBXBUEQQcHXQTp4Oe01c-QKO14DucU6KuAkOFYWS0p5xLAJCYlaJa7935RlfP6fHV2Sr5JlISqXL23N2cAmsfps3ky6DOX_11VrprLi0Gvc-1ZH471_dlW61_1P9HDSCcBMqMteZiRzoRDLFzN0cSUEUcGHAMKhU0NRy5n6KGwRg1z6bernQTC0CARkRZZKydCjpTqUCsbxchCkU5p9gVcn2Y-",
+      "href": "https://mermaid.live/edit#pako:eJw9i7sKwjAUQH_lcudu4pLZP3CTLKG9fUibSEyGUgQHB1FBXBUEQQcHXQTp4Oe01c-QKO14DucU6KuAkOFYWS0p5xLAJCYlaJa7935RlfP6fHV2Sr5JlISqXL23N2cAmsfps3ky6DOX_11VrprLi0Gvc-1ZH471_dlW61_1P9HDSCcBMqMteZiRzoRDLFzN0cSUEUcGHAMKhU0NRy5n6KGwRg1z6bernQTC0CARkRZZKydCjpTqUCsbxchCkU5p9gVcn2Y-"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/gantt.html",
+      "href": "https://mermaid.js.org/syntax/gantt.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJxNjz1qw0AQha8yTL0CSfkpthbpXKVS2GbRjmWBtGtWo0AwhhDSBVykjYnRBRRSpsltpMi3CItxSPm--d6D2WDhDKHEUltmZQGMZrpxvtEMeZ7n0WIRZVk4cMU1wbH_-nkbpt3rtD8E2lLBlbMwD9_z0Ady3D9On0_zx_M49CCNsyTAUJsISOP0OoqTKE4EXJjgjrvD-P5y6oLUBVf3Jzv9Z18KuDIosPSVQcm-I4EN-UaHiJuwo5BX1JBCCQoNLXVXs0JltyhQd-xuH2xxrnbr8GJW6dLr5gzX2t459xe968oVyqWuW9r-AhJdbTY",
+      "href": "https://mermaid.live/edit#pako:eJxNjz1qw0AQha8yTL0CSfkpthbpXKVS2GbRjmWBtGtWo0AwhhDSBVykjYnRBRRSpsltpMi3CItxSPm--d6D2WDhDKHEUltmZQGMZrpxvtEMeZ7n0WIRZVk4cMU1wbH_-nkbpt3rtD8E2lLBlbMwD9_z0Ady3D9On0_zx_M49CCNsyTAUJsISOP0OoqTKE4EXJjgjrvD-P5y6oLUBVf3Jzv9Z18KuDIosPSVQcm-I4EN-UaHiJuwo5BX1JBCCQoNLXVXs0JltyhQd-xuH2xxrnbr8GJW6dLr5gzX2t459xe968oVyqWuW9r-AhJdbTY"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/pie.html",
+      "href": "https://mermaid.js.org/syntax/pie.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJw9yz0KwkAQhuGrLFOnEDXN1oKtoJVsM2QnyUL2h3W2CCHgBew8gKWN5FRKjiEmxPJ9-L4OCq8JJARDgg03JMbhNT6v79vjM9yVE0LB3isQUmxXc57aQMcimsATb_KZDy3X3k20ziGDKhoNkmOiDCxFi7-Ebh5zTZYUSKFAU4mpYQXK9ZABJvbH1hXLNQWNTDuDVUS7YEB39v6f0aeqBllic6H-C5w4SQQ",
+      "href": "https://mermaid.live/edit#pako:eJw9yz0KwkAQhuGrLFOnEDXN1oKtoJVsM2QnyUL2h3W2CCHgBew8gKWN5FRKjiEmxPJ9-L4OCq8JJARDgg03JMbhNT6v79vjM9yVE0LB3isQUmxXc57aQMcimsATb_KZDy3X3k20ziGDKhoNkmOiDCxFi7-Ebh5zTZYUSKFAU4mpYQXK9ZABJvbH1hXLNQWNTDuDVUS7YEB39v6f0aeqBllic6H-C5w4SQQ"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/quadrantChart.html",
+      "href": "https://mermaid.js.org/syntax/quadrantChart.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJxVjc1Kw0AUhV_lctdJqU11kYXgzxu403RxaaZJID91OgMtpSBiFUTjSino1iK4qF1IrVR8mSRt30ImIUKW5_vO4QyxHdkMTTyXZHMKxZFLXFghgPCEz2AzvV4_PyVfcbaYp99TJfo69b0eJD9xIUHX92H7PimSagyKRvY5zl22mCtaPug7sL25X18us9vHdPxaUQ3Yvlxk8Vu6_K1wQ002s6tk9VHhTUgfZslqkt7lxwcmnNVrhgb12l5LgcMcNHcVaRgt1NDhno2m4JJpGDAekIo4VGULhcsCZqEJFtqsQ9IXFlrhCDUkKaKTQdgup7Jrk2DHHjmcghJ2KTyNov_II-m4aHbI77HRH2UykVc",
+      "href": "https://mermaid.live/edit#pako:eJxVjc1Kw0AUhV_lctdJqU11kYXgzxu403RxaaZJID91OgMtpSBiFUTjSino1iK4qF1IrVR8mSRt30ImIUKW5_vO4QyxHdkMTTyXZHMKxZFLXFghgPCEz2AzvV4_PyVfcbaYp99TJfo69b0eJD9xIUHX92H7PimSagyKRvY5zl22mCtaPug7sL25X18us9vHdPxaUQ3Yvlxk8Vu6_K1wQ002s6tk9VHhTUgfZslqkt7lxwcmnNVrhgb12l5LgcMcNHcVaRgt1NDhno2m4JJpGDAekIo4VGULhcsCZqEJFtqsQ9IXFlrhCDUkKaKTQdgup7Jrk2DHHjmcghJ2KTyNov_II-m4aHbI77HRH2UykVc"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/requirementDiagram.html",
+      "href": "https://mermaid.js.org/syntax/requirementDiagram.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJxNj8FqxDAMRH9F6LwU9upz_6C3YihqPLFFY3tXkUvDsv9e0nRLj-9phkE3nnoCBzZchxoqmj-rZJMaG9E_S0vP2t4MV7rtJyJNgc5P5wMcXx5orDCapB1het8IVXQ5IqbrR6CiuRz8CdN5q_DSUyDH6ru_84mzaeLgNnDiCquyI__MRvaCisiBIifMMhaPHNtek-H9ZWvTozouSRy_7zzkRdpr739ofeTCYZZlxf0brrFcRA",
+      "href": "https://mermaid.live/edit#pako:eJxNj8FqxDAMRH9F6LwU9upz_6C3YihqPLFFY3tXkUvDsv9e0nRLj-9phkE3nnoCBzZchxoqmj-rZJMaG9E_S0vP2t4MV7rtJyJNgc5P5wMcXx5orDCapB1het8IVXQ5IqbrR6CiuRz8CdN5q_DSUyDH6ru_84mzaeLgNnDiCquyI__MRvaCisiBIifMMhaPHNtek-H9ZWvTozouSRy_7zzkRdpr739ofeTCYZZlxf0brrFcRA"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/gitgraph.html",
+      "href": "https://mermaid.js.org/syntax/gitgraph.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJxVi0EKwzAMBL8SdM4LfC70Ab0VX1RbsU0jy6hyoYT8vbiQQG-7s7MbBIkEDlKxq2LLvk5TEOZiIz0Ua8hTpDet0n5bpvCUbn_s9M-VsdQBmDTR4cIMSUsEZ9ppBiZlHBW2oXqwTEwe3OQh0oJ9NQ--7jADdpPbp4bj2ltEo0vBpMgHbFjvImdV6SmDW3B90f4FGq1Rcw",
+      "href": "https://mermaid.live/edit#pako:eJxVi0EKwzAMBL8SdM4LfC70Ab0VX1RbsU0jy6hyoYT8vbiQQG-7s7MbBIkEDlKxq2LLvk5TEOZiIz0Ua8hTpDet0n5bpvCUbn_s9M-VsdQBmDTR4cIMSUsEZ9ppBiZlHBW2oXqwTEwe3OQh0oJ9NQ--7jADdpPbp4bj2ltEo0vBpMgHbFjvImdV6SmDW3B90f4FGq1Rcw"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/mindmap.html",
+      "href": "https://mermaid.js.org/syntax/mindmap.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJw9i70KwjAUhV8l3MlCn6Czk4MO3STLpUl_oElKTAYpXQRxERx0cXNxUotOxcW3qdG3kKJ1O993zikhUoxDACKTTGBBJSFaKTMYuNPeLe6e1xlC3Hn3qq_fTEi7Wb-3j56eh5W7_Khtju2ycfWtL0fhZAw-JDpjEBhtuQ-Ca4EdQtmtKJiUC04hIBQYj9HmhgKVFfiA1qhwLqP-aguGhg8zTDSKXhYop0r9USubpBDEmM949QHoClOQ",
+      "href": "https://mermaid.live/edit#pako:eJw9i70KwjAUhV8l3MlCn6Czk4MO3STLpUl_oElKTAYpXQRxERx0cXNxUotOxcW3qdG3kKJ1O993zikhUoxDACKTTGBBJSFaKTMYuNPeLe6e1xlC3Hn3qq_fTEi7Wb-3j56eh5W7_Khtju2ycfWtL0fhZAw-JDpjEBhtuQ-Ca4EdQtmtKJiUC04hIBQYj9HmhgKVFfiA1qhwLqP-aguGhg8zTDSKXhYop0r9USubpBDEmM949QHoClOQ"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/timeline.html",
+      "href": "https://mermaid.js.org/syntax/timeline.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJw9y70KwjAUhuFbOZy5gxR1yOwduEmW0J62gSYpMRmkdBasi5egLoK4-zP0Zgq1dyGF1vF9-L4SIxMTMnRSUS41cQ3gpMsJ-v2xu9Xd5TRQOAvnwKC71_35NcICGLTPQ_duRlgCg2_zaD9XDDC1MkbmrKcAFVklhsRymHJ0GSniyIBjTInwuePIdYUBCu_Meqej6eqLWDhaSZFaoSYshN4Y809rfJohS0S-peoHEEZOCQ",
+      "href": "https://mermaid.live/edit#pako:eJw9y70KwjAUhuFbOZy5gxR1yOwduEmW0J62gSYpMRmkdBasi5egLoK4-zP0Zgq1dyGF1vF9-L4SIxMTMnRSUS41cQ3gpMsJ-v2xu9Xd5TRQOAvnwKC71_35NcICGLTPQ_duRlgCg2_zaD9XDDC1MkbmrKcAFVklhsRymHJ0GSniyIBjTInwuePIdYUBCu_Meqej6eqLWDhaSZFaoSYshN4Y809rfJohS0S-peoHEEZOCQ"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/c4.html",
+      "href": "https://mermaid.js.org/syntax/c4.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJw9jLFKA0EURX9leVUCi1WqbeMHiOnkNY_dl83Azswy8wYSQmpFCztb0UawSCOBJVv4M2MS_8IMZC3vOZy7htJWDAVMJ1NrhJeCJstEScPZ8as_9q-xe4zd0-HlPokbdt6aUfDs8gzhtP3-2b4jjJObrbywHnklnFwd7FKZK99SyQiJxO4z7vex63_fdpfmlpvL2ZAdds-njweEMeRQO1VBIS5wDpqdpjRhnUIEWbBmhOJ8XPGcQiMIaDaQAwWxs5UphzS0FQlfK6od6QG2ZO6s_Z_OhnoBxZwaz5s_RtZruA",
+      "href": "https://mermaid.live/edit#pako:eJw9jLFKA0EURX9leVUCi1WqbeMHiOnkNY_dl83Azswy8wYSQmpFCztb0UawSCOBJVv4M2MS_8IMZC3vOZy7htJWDAVMJ1NrhJeCJstEScPZ8as_9q-xe4zd0-HlPokbdt6aUfDs8gzhtP3-2b4jjJObrbywHnklnFwd7FKZK99SyQiJxO4z7vex63_fdpfmlpvL2ZAdds-njweEMeRQO1VBIS5wDpqdpjRhnUIEWbBmhOJ8XPGcQiMIaDaQAwWxs5UphzS0FQlfK6od6QG2ZO6s_Z_OhnoBxZwaz5s_RtZruA"
+    },
+    {
+      "kind": "external",
+      "label": "https://github.com/mermaid-js/mermaid/tree/develop/packages/mermaid/src/diagrams/info",
+      "href": "https://github.com/mermaid-js/mermaid/tree/develop/packages/mermaid/src/diagrams/info"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJw9izsKwzAQBa8iXq0TqE6TOl3YZrFWH7B2jSwRgvHdgwunnGHmwGJREFA1Galze7HPU5PBI_caEUaf4tGkN74Qx1URRpEmhOAIURLPdRBIT3jwHPb66nKvc4s85FE5d2633FjfZn_sNnNBSLzucv4AfHky1g",
+      "href": "https://mermaid.live/edit#pako:eJw9izsKwzAQBa8iXq0TqE6TOl3YZrFWH7B2jSwRgvHdgwunnGHmwGJREFA1Galze7HPU5PBI_caEUaf4tGkN74Qx1URRpEmhOAIURLPdRBIT3jwHPb66nKvc4s85FE5d2633FjfZn_sNnNBSLzucv4AfHky1g"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/sankey.html",
+      "href": "https://mermaid.js.org/syntax/sankey.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJw9i7EOgjAURX-F3PmZEHXqpvEPXJB0edJHIdKWlHYghH83TcTtnJtzN3TBCBQW9h9ZT29JrH1V3aiha13oTg1dfvSicw2CjaOBSjELwUl0XBRbaTTSIE40VKVhpOc8JQ3tdxA4p_BcfXdc82w4yWNkG9kd48y-DeGvMWQ7QPU8LbJ_ATfQOEQ",
+      "href": "https://mermaid.live/edit#pako:eJw9i7EOgjAURX-F3PmZEHXqpvEPXJB0edJHIdKWlHYghH83TcTtnJtzN3TBCBQW9h9ZT29JrH1V3aiha13oTg1dfvSicw2CjaOBSjELwUl0XBRbaTTSIE40VKVhpOc8JQ3tdxA4p_BcfXdc82w4yWNkG9kd48y-DeGvMWQ7QPU8LbJ_ATfQOEQ"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/block.html",
+      "href": "https://mermaid.js.org/syntax/block.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJw9zLFqwzAYBOBXETe14Kmjt0KXbIUMhfr38Fv6Y5taklEkSgl5gAY8hUKHLplDm86lr2PnNYqHdPyOu9tAeyPIUXVeP5FTSvsuWbdWNzOepSoID1Kp8XU4H0-EUnHfFoTb-4WaPoZxdyCUc9VUxRVhevuehq_xZ0-4LpVm3UhBOP_ux893QokMdWgN8hiSZLASLM_EZr4gxEasEHJFMLLi1EUCuS0ycIp--eL0ZZp6w1HuWq4D20vYs3v0_p_Bp7pBvuJuLds_zkpXUw",
+      "href": "https://mermaid.live/edit#pako:eJw9zLFqwzAYBOBXETe14Kmjt0KXbIUMhfr38Fv6Y5taklEkSgl5gAY8hUKHLplDm86lr2PnNYqHdPyOu9tAeyPIUXVeP5FTSvsuWbdWNzOepSoID1Kp8XU4H0-EUnHfFoTb-4WaPoZxdyCUc9VUxRVhevuehq_xZ0-4LpVm3UhBOP_ux893QokMdWgN8hiSZLASLM_EZr4gxEasEHJFMLLi1EUCuS0ycIp--eL0ZZp6w1HuWq4D20vYs3v0_p_Bp7pBvuJuLds_zkpXUw"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/packet.html",
+      "href": "https://mermaid.js.org/syntax/packet.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJw9jDsOwjAQBa8SvTqRiBAUrrkBHXKzxJuPwHFk1gWK0tFDDSUlEvTcB3IN5CKUM0_zehTOMBQ6KnYs2ZaFdJsksyxfqETj-76Mj9fnfNeIOl9m8zz68fYcr6dpQorKNwZKfOAUlr2liOhjpCE1W9aIoeGSwl7i3YAUFMStj20xpaEzJLxqqPJkJ9lRu3Huj96FqoYqaX_g4QcjeEak",
+      "href": "https://mermaid.live/edit#pako:eJw9jDsOwjAQBa8SvTqRiBAUrrkBHXKzxJuPwHFk1gWK0tFDDSUlEvTcB3IN5CKUM0_zehTOMBQ6KnYs2ZaFdJsksyxfqETj-76Mj9fnfNeIOl9m8zz68fYcr6dpQorKNwZKfOAUlr2liOhjpCE1W9aIoeGSwl7i3YAUFMStj20xpaEzJLxqqPJkJ9lRu3Huj96FqoYqaX_g4QcjeEak"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/kanban.html",
+      "href": "https://mermaid.js.org/syntax/kanban.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJxVyz8KwjAYBfCrhG_uCTJ7AzfJ8tl8_YNNUmIySCm4OFh6A0HoAdyLBb1MCj2GZKjQ7f0e7zWQGknA4YT6iFpoxubPbe6eMTEWpmnuhjBeN3z3kcv3sQx9GF_b6R0SyG0pgTvrKQFFVmEkNHEowBWkSABnAiRl6CsnQOgWEkDvzP6i0_Xqa4mOdiXmFtVa1qgPxvxpjc8L4BlWZ2p_DfdTrg",
+      "href": "https://mermaid.live/edit#pako:eJxVyz8KwjAYBfCrhG_uCTJ7AzfJ8tl8_YNNUmIySCm4OFh6A0HoAdyLBb1MCj2GZKjQ7f0e7zWQGknA4YT6iFpoxubPbe6eMTEWpmnuhjBeN3z3kcv3sQx9GF_b6R0SyG0pgTvrKQFFVmEkNHEowBWkSABnAiRl6CsnQOgWEkDvzP6i0_Xqa4mOdiXmFtVa1qgPxvxpjc8L4BlWZ2p_DfdTrg"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/architecture.html",
+      "href": "https://mermaid.js.org/syntax/architecture.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJxNizGKwzAQRa8iprLBuYC7LGnSBVIEYrkYST-2wJbMeJQQQu6-uPCy5fv_vQ_5HEAtsfgxKrwWwcFB2SZjBsllMbzEyk-5hLo7Xs79dqyQZ_QwL7gqJoUkaN3d4HoT0xb8l4KrAis7XlF3p59doYYGiYFalYKGZsjMG9Jniy3piBmWWmMp4MFlUks2fakhLpqv7-T3tCyBFafIg_C8jwune85_KLkMI7UPnlZ8fwE1SFVa",
+      "href": "https://mermaid.live/edit#pako:eJxNizGKwzAQRa8iprLBuYC7LGnSBVIEYrkYST-2wJbMeJQQQu6-uPCy5fv_vQ_5HEAtsfgxKrwWwcFB2SZjBsllMbzEyk-5hLo7Xs79dqyQZ_QwL7gqJoUkaN3d4HoT0xb8l4KrAis7XlF3p59doYYGiYFalYKGZsjMG9Jniy3piBmWWmMp4MFlUks2fakhLpqv7-T3tCyBFafIg_C8jwune85_KLkMI7UPnlZ8fwE1SFVa"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/xyChart.html",
+      "href": "https://mermaid.js.org/syntax/xyChart.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJw9jktqxDAQBa_S9LoNykcT8CIQyAkyu1izaNttW0EfI0vBZpi7ByVMlvWKgnfFIY6CLe7HsHDKTS-ZTQDINjsBg2d2ssGHfEsoYrCqveHdbtB9cSCYpCfwnAh4TZeqjz9t8M3HErJBUNA0r_CgVNU9J-ieFIFWBC-K4KR-M2eDQPeoCZ41wUkTaH1BwjnZEducihB6SZ4r4rUmBvMiXgy2YHCUiYvL9eINCbnkeD7CcE_LOnKWd8tzYn8fVw6fMf5jimVesJ3YbXL7AY1YWTM",
+      "href": "https://mermaid.live/edit#pako:eJw9jktqxDAQBa_S9LoNykcT8CIQyAkyu1izaNttW0EfI0vBZpi7ByVMlvWKgnfFIY6CLe7HsHDKTS-ZTQDINjsBg2d2ssGHfEsoYrCqveHdbtB9cSCYpCfwnAh4TZeqjz9t8M3HErJBUNA0r_CgVNU9J-ieFIFWBC-K4KR-M2eDQPeoCZ41wUkTaH1BwjnZEducihB6SZ4r4rUmBvMiXgy2YHCUiYvL9eINCbnkeD7CcE_LOnKWd8tzYn8fVw6fMf5jimVesJ3YbXL7AY1YWTM"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/radar.html",
+      "href": "https://mermaid.js.org/syntax/radar.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJxFjMFOwzAMhl8l8jlI5TAxegOBxoXTbsQc3NZLIzVJ5SZoU9V3R8nYOFjy__v7vEIfB4YWhAaSh44TYVCKzm5R3iB8UhoRvrVaDMKxdxx6rpkNwnuwk1vK_e6MBuHDLSnKpWLWIBw4WqF5vDZkEF4k_Ul9lh--dpOrr9f9TqvnRqt9o9VTmZq3f7ozCK-xK-ztXpzCV29XWU9n9dg0dXVBNaDBihugTZJZg2fxVCKsBUFII3tGaBXCwCfKU0LAsIEGyikeL6G_qXkeKPGbIyvkb-VM4SvGe5SY7QjtiaaFt1_B3HBH",
+      "href": "https://mermaid.live/edit#pako:eJxFjMFOwzAMhl8l8jlI5TAxegOBxoXTbsQc3NZLIzVJ5SZoU9V3R8nYOFjy__v7vEIfB4YWhAaSh44TYVCKzm5R3iB8UhoRvrVaDMKxdxx6rpkNwnuwk1vK_e6MBuHDLSnKpWLWIBw4WqF5vDZkEF4k_Ul9lh--dpOrr9f9TqvnRqt9o9VTmZq3f7ozCK-xK-ztXpzCV29XWU9n9dg0dXVBNaDBihugTZJZg2fxVCKsBUFII3tGaBXCwCfKU0LAsIEGyikeL6G_qXkeKPGbIyvkb-VM4SvGe5SY7QjtiaaFt1_B3HBH"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/treemap.html",
+      "href": "https://mermaid.js.org/syntax/treemap.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJw9y7sNwjAUheFVrFMHCQFpXLMBHXJziW8eUmxHxi5QlAEoQNmDgoaOgmlQGANBCOX_6ZwWmdMMieCZDTWzHQdSVgiF5_E0XK4KQorV_Ef9eaJlOtLr0Q_325cWKRIUvtKQwUdOYNgb-iTacRxKNqwghYLmnGIdFJTtkIBicJuDzaZrbDQFXldUeDITNmS3zv3Tu1iUkDnVe-7eWmtHSg",
+      "href": "https://mermaid.live/edit#pako:eJw9y7sNwjAUheFVrFMHCQFpXLMBHXJziW8eUmxHxi5QlAEoQNmDgoaOgmlQGANBCOX_6ZwWmdMMieCZDTWzHQdSVgiF5_E0XK4KQorV_Ef9eaJlOtLr0Q_325cWKRIUvtKQwUdOYNgb-iTacRxKNqwghYLmnGIdFJTtkIBicJuDzaZrbDQFXldUeDITNmS3zv3Tu1iUkDnVe-7eWmtHSg"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.js.org/syntax/usecase.html",
+      "href": "https://mermaid.js.org/syntax/usecase.html"
+    },
+    {
+      "kind": "external",
+      "label": "https://mermaid.live/edit#pako:eJw9i7EKwkAQRH_lmEoh-YEUFmJppZ1ss95tkoNkTzZ7iAT_XSRoN2_ezIpYkqBDXSTyIu1dnElTNomei4bzhZSjFwsX4SRGerTyXGRH2EJg8xwnIexJt01o20PYLBoMlhM6tyoNZrGZv4iVNASCjzILoQuEJD3XyQmkbzTg6uX60vi71kdil1PmwXj-lQ_WWyl_tFKHEV3P0yLvDwaTTIo",
+      "href": "https://mermaid.live/edit#pako:eJw9i7EKwkAQRH_lmEoh-YEUFmJppZ1ss95tkoNkTzZ7iAT_XSRoN2_ezIpYkqBDXSTyIu1dnElTNomei4bzhZSjFwsX4SRGerTyXGRH2EJg8xwnIexJt01o20PYLBoMlhM6tyoNZrGZv4iVNASCjzILoQuEJD3XyQmkbzTg6uX60vi71kdil1PmwXj-lQ_WWyl_tFKHEV3P0yLvDwaTTIo"
+    }
+  ],
   "history": [
+    {
+      "date": "2026-09-19",
+      "message": "docs: 同步 main 的 Mermaid 图种全览文档修订"
+    },
     {
       "date": "2026-09-19",
       "message": "docs: 同步 main 的示例文档（多级标题示例 + Mermaid 图种全览）"
@@ -299,6 +544,41 @@
         "value": "flowchart TD\n  A[开始] --> B{判断}\n  B -->|是| C[执行]\n  B -->|否| D[结束]\n  C --> D"
       },
       {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/flowchart.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/flowchart.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJxFjE0KgkAYhq8yfGu9gIsg9Qa1ynHxoeMPqBPTDBEqtCxqEQTRJiKIXEUHqOtoHSMUrOXzvD85eNxnYECQ8LkXoZBkbNOMkKFTv5Z1tXGJrg-Imdera3O4l21ktqpojo-CWE6zrj6Xrfv39e5WENt5P_fN6dx5q7uwQYNQxD4YUiimQcpEii1C3pYoyIiljIJBKPgsQJVICjQrQQNUko8WmddP1dRHyewYQ4FpL6eYTTj_oeAqjMAIMJmx8gujg1U-",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJxFjE0KgkAYhq8yfGu9gIsg9Qa1ynHxoeMPqBPTDBEqtCxqEQTRJiKIXEUHqOtoHSMUrOXzvD85eNxnYECQ8LkXoZBkbNOMkKFTv5Z1tXGJrg-Imdera3O4l21ktqpojo-CWE6zrj6Xrfv39e5WENt5P_fN6dx5q7uwQYNQxD4YUiimQcpEii1C3pYoyIiljIJBKPgsQJVICjQrQQNUko8WmddP1dRHyewYQ4FpL6eYTTj_oeAqjMAIMJmx8gujg1U-"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "heading",
         "depth": 3,
         "children": [
@@ -329,6 +609,41 @@
         "lang": "mermaid",
         "meta": null,
         "value": "sequenceDiagram\n  participant 用户\n  participant 服务\n  用户->>服务: 请求数据\n  服务-->>用户: 返回结果"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/sequenceDiagram.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/sequenceDiagram.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJxdzy0OwkAQBeCrbEa3F1hRxQ1wZM2kHdpN6G5ZdgUhGBQhqQIUTRMcih9VgeA0XTgGaZoikO-b98SsINYJAYcFzR2pmEYSU4O5UIwVaKyMZYHKsvfh4rfNv_qqbHfnTvt7GEU9cfa5Nf6x8ce7L69dofcwjKK-ytnndWhP9fu593UFAaRGJsCtcRRATibHLsKq2wqwGeUkgDMBCU3RzawAodYQADqrx0sVD1NXJGiHLwYsUE20_kWjXZoBn-JsQesvIcttUA",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJxdzy0OwkAQBeCrbEa3F1hRxQ1wZM2kHdpN6G5ZdgUhGBQhqQIUTRMcih9VgeA0XTgGaZoikO-b98SsINYJAYcFzR2pmEYSU4O5UIwVaKyMZYHKsvfh4rfNv_qqbHfnTvt7GEU9cfa5Nf6x8ce7L69dofcwjKK-ytnndWhP9fu593UFAaRGJsCtcRRATibHLsKq2wqwGeUkgDMBCU3RzawAodYQADqrx0sVD1NXJGiHLwYsUE20_kWjXZoBn-JsQesvIcttUA"
+              }
+            ]
+          }
+        ]
       },
       {
         "type": "heading",
@@ -363,6 +678,41 @@
         "value": "classDiagram\n  Animal <|-- Duck\n  Animal : +int age\n  Animal : +swim()\n  Duck : +quack()"
       },
       {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/classDiagram.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/classDiagram.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJxVzk0KwjAUBOCrhLdqMb1AcCP0Bu4km0fymobmp-YHkdq7S8CKLudjBmYDFTWBAOUw59GiSehlYOwSrEfHzq9hYGNVy48JdrKhMDT0j_lhfdc3a4Mm94pq6XrgYJLVIEqqxMFT8tgibK0soczkSYJgEjRNWF2RIMMOHLCWeH0GdUzrqrHQ5-aBK4ZbjN-YYjUziAldpv0NzllKGg",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJxVzk0KwjAUBOCrhLdqMb1AcCP0Bu4km0fymobmp-YHkdq7S8CKLudjBmYDFTWBAOUw59GiSehlYOwSrEfHzq9hYGNVy48JdrKhMDT0j_lhfdc3a4Mm94pq6XrgYJLVIEqqxMFT8tgibK0soczkSYJgEjRNWF2RIMMOHLCWeH0GdUzrqrHQ5-aBK4ZbjN-YYjUziAldpv0NzllKGg"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "heading",
         "depth": 3,
         "children": [
@@ -393,6 +743,41 @@
         "lang": "mermaid",
         "meta": null,
         "value": "stateDiagram-v2\n  [*] --> 待处理\n  待处理 --> 处理中 : 开始\n  处理中 --> 已完成 : 结束\n  已完成 --> [*]"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/stateDiagram.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/stateDiagram.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJyrVkrOT0lVslIqLkksSXXJTEwvSszVLTOKyVNQiNaKVdDVtVN4uq_16ZKW5xPaQIJwDkQKzHyyY62ClcLTPQ1Pl3eD1cBFwWq2b3q6rudZxwQFK4Xnuyc_mzsfrAYuClITrRWrpKOUXpSZomRVUlSaqqOUm1qUmwjiKlWDlMcolWSk5qbGKFkpxCilpKYlluaUxCjF5NUq6SgllpbkB1fmJcO0lhakIPwCEyxIzIvKz4dzi_JL0zOUrNISc4pTawHHh2st",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJyrVkrOT0lVslIqLkksSXXJTEwvSszVLTOKyVNQiNaKVdDVtVN4uq_16ZKW5xPaQIJwDkQKzHyyY62ClcLTPQ1Pl3eD1cBFwWq2b3q6rudZxwQFK4Xnuyc_mzsfrAYuClITrRWrpKOUXpSZomRVUlSaqqOUm1qUmwjiKlWDlMcolWSk5qbGKFkpxCilpKYlluaUxCjF5NUq6SgllpbkB1fmJcO0lhakIPwCEyxIzIvKz4dzi_JL0zOUrNISc4pTawHHh2st"
+              }
+            ]
+          }
+        ]
       },
       {
         "type": "heading",
@@ -427,6 +812,41 @@
         "value": "erDiagram\n  CUSTOMER ||--o{ ORDER : places\n  ORDER ||--|{ LINE-ITEM : contains"
       },
       {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/entityRelationshipDiagram.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/entityRelationshipDiagram.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJw9js0KgzAQhF9l2bO-QK41B6FWUHspuSxx_QGTSEwORX33Elp7nG_mg9lRu55RIPtiptGTURbg9my7upINHEeeux3qppANCFgX0rylxZek-tjhXj5kXnayAgHa2UCz3TDD0c89iuAjZ2jYG0oR96QrDBMbVihAYc8DxSUoVPbEDCkG176tvtS49hT49-6CK9mXc__oXRwnFAMtG58fUB5GMQ",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJw9js0KgzAQhF9l2bO-QK41B6FWUHspuSxx_QGTSEwORX33Elp7nG_mg9lRu55RIPtiptGTURbg9my7upINHEeeux3qppANCFgX0rylxZek-tjhXj5kXnayAgHa2UCz3TDD0c89iuAjZ2jYG0oR96QrDBMbVihAYc8DxSUoVPbEDCkG176tvtS49hT49-6CK9mXc__oXRwnFAMtG58fUB5GMQ"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "heading",
         "depth": 3,
         "children": [
@@ -457,6 +877,41 @@
         "lang": "mermaid",
         "meta": null,
         "value": "journey\n  title 我的一天\n  section 上班\n    泡茶: 5: 我\n    上楼: 3: 我\n  section 回家\n    下楼: 5: 我"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/userJourney.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/userJourney.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJw9i7sKwjAUQH_lcudu4pLZP3CTLKG9fUibSEyGUgQHB1FBXBUEQQcHXQTp4Oe01c-QKO14DucU6KuAkOFYWS0p5xLAJCYlaJa7935RlfP6fHV2Sr5JlISqXL23N2cAmsfps3ky6DOX_11VrprLi0Gvc-1ZH471_dlW61_1P9HDSCcBMqMteZiRzoRDLFzN0cSUEUcGHAMKhU0NRy5n6KGwRg1z6bernQTC0CARkRZZKydCjpTqUCsbxchCkU5p9gVcn2Y-",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJw9i7sKwjAUQH_lcudu4pLZP3CTLKG9fUibSEyGUgQHB1FBXBUEQQcHXQTp4Oe01c-QKO14DucU6KuAkOFYWS0p5xLAJCYlaJa7935RlfP6fHV2Sr5JlISqXL23N2cAmsfps3ky6DOX_11VrprLi0Gvc-1ZH471_dlW61_1P9HDSCcBMqMteZiRzoRDLFzN0cSUEUcGHAMKhU0NRy5n6KGwRg1z6bernQTC0CARkRZZKydCjpTqUCsbxchCkU5p9gVcn2Y-"
+              }
+            ]
+          }
+        ]
       },
       {
         "type": "heading",
@@ -491,6 +946,41 @@
         "value": "gantt\n  dateFormat YYYY-MM-DD\n  title 项目排期\n  section 设计\n  需求评审 :done, des1, 2026-01-01, 3d\n  原型设计 :active, des2, 2026-01-04, 5d"
       },
       {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/gantt.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/gantt.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJxNjz1qw0AQha8yTL0CSfkpthbpXKVS2GbRjmWBtGtWo0AwhhDSBVykjYnRBRRSpsltpMi3CItxSPm--d6D2WDhDKHEUltmZQGMZrpxvtEMeZ7n0WIRZVk4cMU1wbH_-nkbpt3rtD8E2lLBlbMwD9_z0Ady3D9On0_zx_M49CCNsyTAUJsISOP0OoqTKE4EXJjgjrvD-P5y6oLUBVf3Jzv9Z18KuDIosPSVQcm-I4EN-UaHiJuwo5BX1JBCCQoNLXVXs0JltyhQd-xuH2xxrnbr8GJW6dLr5gzX2t459xe968oVyqWuW9r-AhJdbTY",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJxNjz1qw0AQha8yTL0CSfkpthbpXKVS2GbRjmWBtGtWo0AwhhDSBVykjYnRBRRSpsltpMi3CItxSPm--d6D2WDhDKHEUltmZQGMZrpxvtEMeZ7n0WIRZVk4cMU1wbH_-nkbpt3rtD8E2lLBlbMwD9_z0Ady3D9On0_zx_M49CCNsyTAUJsISOP0OoqTKE4EXJjgjrvD-P5y6oLUBVf3Jzv9Z18KuDIosPSVQcm-I4EN-UaHiJuwo5BX1JBCCQoNLXVXs0JltyhQd-xuH2xxrnbr8GJW6dLr5gzX2t459xe968oVyqWuW9r-AhJdbTY"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "heading",
         "depth": 3,
         "children": [
@@ -521,6 +1011,41 @@
         "lang": "mermaid",
         "meta": null,
         "value": "pie title 语言占比\n  \"Go\" : 40\n  \"TypeScript\" : 35\n  \"Python\" : 25"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/pie.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/pie.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJw9yz0KwkAQhuGrLFOnEDXN1oKtoJVsM2QnyUL2h3W2CCHgBew8gKWN5FRKjiEmxPJ9-L4OCq8JJARDgg03JMbhNT6v79vjM9yVE0LB3isQUmxXc57aQMcimsATb_KZDy3X3k20ziGDKhoNkmOiDCxFi7-Ebh5zTZYUSKFAU4mpYQXK9ZABJvbH1hXLNQWNTDuDVUS7YEB39v6f0aeqBllic6H-C5w4SQQ",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJw9yz0KwkAQhuGrLFOnEDXN1oKtoJVsM2QnyUL2h3W2CCHgBew8gKWN5FRKjiEmxPJ9-L4OCq8JJARDgg03JMbhNT6v79vjM9yVE0LB3isQUmxXc57aQMcimsATb_KZDy3X3k20ziGDKhoNkmOiDCxFi7-Ebh5zTZYUSKFAU4mpYQXK9ZABJvbH1hXLNQWNTDuDVUS7YEB39v6f0aeqBllic6H-C5w4SQQ"
+              }
+            ]
+          }
+        ]
       },
       {
         "type": "heading",
@@ -555,6 +1080,41 @@
         "value": "quadrantChart\n  title 覆盖与深度\n  x-axis 低覆盖 --> 高覆盖\n  y-axis 浅 --> 深\n  quadrant-1 重点投入\n  quadrant-2 需推广\n  quadrant-3 重评估\n  quadrant-4 可优化\n  A: [0.3, 0.6]\n  B: [0.45, 0.23]"
       },
       {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/quadrantChart.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/quadrantChart.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJxVjc1Kw0AUhV_lctdJqU11kYXgzxu403RxaaZJID91OgMtpSBiFUTjSino1iK4qF1IrVR8mSRt30ImIUKW5_vO4QyxHdkMTTyXZHMKxZFLXFghgPCEz2AzvV4_PyVfcbaYp99TJfo69b0eJD9xIUHX92H7PimSagyKRvY5zl22mCtaPug7sL25X18us9vHdPxaUQ3Yvlxk8Vu6_K1wQ002s6tk9VHhTUgfZslqkt7lxwcmnNVrhgb12l5LgcMcNHcVaRgt1NDhno2m4JJpGDAekIo4VGULhcsCZqEJFtqsQ9IXFlrhCDUkKaKTQdgup7Jrk2DHHjmcghJ2KTyNov_II-m4aHbI77HRH2UykVc",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJxVjc1Kw0AUhV_lctdJqU11kYXgzxu403RxaaZJID91OgMtpSBiFUTjSino1iK4qF1IrVR8mSRt30ImIUKW5_vO4QyxHdkMTTyXZHMKxZFLXFghgPCEz2AzvV4_PyVfcbaYp99TJfo69b0eJD9xIUHX92H7PimSagyKRvY5zl22mCtaPug7sL25X18us9vHdPxaUQ3Yvlxk8Vu6_K1wQ002s6tk9VHhTUgfZslqkt7lxwcmnNVrhgb12l5LgcMcNHcVaRgt1NDhno2m4JJpGDAekIo4VGULhcsCZqEJFtqsQ9IXFlrhCDUkKaKTQdgup7Jrk2DHHjmcghJ2KTyNov_II-m4aHbI77HRH2UykVc"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "heading",
         "depth": 3,
         "children": [
@@ -585,6 +1145,41 @@
         "lang": "mermaid",
         "meta": null,
         "value": "requirementDiagram\n  requirement login_req {\n    id: 1.1\n    text: user can login by email\n    risk: high\n    verifymethod: test\n  }"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/requirementDiagram.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/requirementDiagram.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJxNj8FqxDAMRH9F6LwU9upz_6C3YihqPLFFY3tXkUvDsv9e0nRLj-9phkE3nnoCBzZchxoqmj-rZJMaG9E_S0vP2t4MV7rtJyJNgc5P5wMcXx5orDCapB1het8IVXQ5IqbrR6CiuRz8CdN5q_DSUyDH6ru_84mzaeLgNnDiCquyI__MRvaCisiBIifMMhaPHNtek-H9ZWvTozouSRy_7zzkRdpr739ofeTCYZZlxf0brrFcRA",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJxNj8FqxDAMRH9F6LwU9upz_6C3YihqPLFFY3tXkUvDsv9e0nRLj-9phkE3nnoCBzZchxoqmj-rZJMaG9E_S0vP2t4MV7rtJyJNgc5P5wMcXx5orDCapB1het8IVXQ5IqbrR6CiuRz8CdN5q_DSUyDH6ru_84mzaeLgNnDiCquyI__MRvaCisiBIifMMhaPHNtek-H9ZWvTozouSRy_7zzkRdpr739ofeTCYZZlxf0brrFcRA"
+              }
+            ]
+          }
+        ]
       },
       {
         "type": "heading",
@@ -619,6 +1214,41 @@
         "value": "gitGraph\n  commit\n  branch develop\n  checkout develop\n  commit\n  checkout main\n  merge develop"
       },
       {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/gitgraph.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/gitgraph.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJxVi0EKwzAMBL8SdM4LfC70Ab0VX1RbsU0jy6hyoYT8vbiQQG-7s7MbBIkEDlKxq2LLvk5TEOZiIz0Ua8hTpDet0n5bpvCUbn_s9M-VsdQBmDTR4cIMSUsEZ9ppBiZlHBW2oXqwTEwe3OQh0oJ9NQ--7jADdpPbp4bj2ltEo0vBpMgHbFjvImdV6SmDW3B90f4FGq1Rcw",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJxVi0EKwzAMBL8SdM4LfC70Ab0VX1RbsU0jy6hyoYT8vbiQQG-7s7MbBIkEDlKxq2LLvk5TEOZiIz0Ua8hTpDet0n5bpvCUbn_s9M-VsdQBmDTR4cIMSUsEZ9ppBiZlHBW2oXqwTEwe3OQh0oJ9NQ--7jADdpPbp4bj2ltEo0vBpMgHbFjvImdV6SmDW3B90f4FGq1Rcw"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "heading",
         "depth": 3,
         "children": [
@@ -651,6 +1281,41 @@
         "value": "mindmap\n  root((站点))\n    笔记\n      双链\n      标签\n    工具箱\n      JSON"
       },
       {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/mindmap.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/mindmap.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJw9i70KwjAUhV8l3MlCn6Czk4MO3STLpUl_oElKTAYpXQRxERx0cXNxUotOxcW3qdG3kKJ1O993zikhUoxDACKTTGBBJSFaKTMYuNPeLe6e1xlC3Hn3qq_fTEi7Wb-3j56eh5W7_Khtju2ycfWtL0fhZAw-JDpjEBhtuQ-Ca4EdQtmtKJiUC04hIBQYj9HmhgKVFfiA1qhwLqP-aguGhg8zTDSKXhYop0r9USubpBDEmM949QHoClOQ",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJw9i70KwjAUhV8l3MlCn6Czk4MO3STLpUl_oElKTAYpXQRxERx0cXNxUotOxcW3qdG3kKJ1O993zikhUoxDACKTTGBBJSFaKTMYuNPeLe6e1xlC3Hn3qq_fTEi7Wb-3j56eh5W7_Khtju2ycfWtL0fhZAw-JDpjEBhtuQ-Ca4EdQtmtKJiUC04hIBQYj9HmhgKVFfiA1qhwLqP-aguGhg8zTDSKXhYop0r9USubpBDEmM949QHoClOQ"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "heading",
         "depth": 3,
         "children": [
@@ -681,6 +1346,41 @@
         "lang": "mermaid",
         "meta": null,
         "value": "timeline\n  title 里程碑\n  2024 : 立项\n  2025 : 上线\n  2026 : 迭代"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/timeline.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/timeline.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJw9y70KwjAUhuFbOZy5gxR1yOwduEmW0J62gSYpMRmkdBasi5egLoK4-zP0Zgq1dyGF1vF9-L4SIxMTMnRSUS41cQ3gpMsJ-v2xu9Xd5TRQOAvnwKC71_35NcICGLTPQ_duRlgCg2_zaD9XDDC1MkbmrKcAFVklhsRymHJ0GSniyIBjTInwuePIdYUBCu_Meqej6eqLWDhaSZFaoSYshN4Y809rfJohS0S-peoHEEZOCQ",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJw9y70KwjAUhuFbOZy5gxR1yOwduEmW0J62gSYpMRmkdBasi5egLoK4-zP0Zgq1dyGF1vF9-L4SIxMTMnRSUS41cQ3gpMsJ-v2xu9Xd5TRQOAvnwKC71_35NcICGLTPQ_duRlgCg2_zaD9XDDC1MkbmrKcAFVklhsRymHJ0GSniyIBjTInwuePIdYUBCu_Meqej6eqLWDhaSZFaoSYshN4Y809rfJohS0S-peoHEEZOCQ"
+              }
+            ]
+          }
+        ]
       },
       {
         "type": "heading",
@@ -751,6 +1451,41 @@
         "value": "C4Context\n  title 系统上下文\n  Person(user, \"访客\")\n  System(site, \"guoxin.space\", \"个人主页\")\n  Rel(user, site, \"浏览\")"
       },
       {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/c4.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/c4.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJw9jLFKA0EURX9leVUCi1WqbeMHiOnkNY_dl83Azswy8wYSQmpFCztb0UawSCOBJVv4M2MS_8IMZC3vOZy7htJWDAVMJ1NrhJeCJstEScPZ8as_9q-xe4zd0-HlPokbdt6aUfDs8gzhtP3-2b4jjJObrbywHnklnFwd7FKZK99SyQiJxO4z7vex63_fdpfmlpvL2ZAdds-njweEMeRQO1VBIS5wDpqdpjRhnUIEWbBmhOJ8XPGcQiMIaDaQAwWxs5UphzS0FQlfK6od6QG2ZO6s_Z_OhnoBxZwaz5s_RtZruA",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJw9jLFKA0EURX9leVUCi1WqbeMHiOnkNY_dl83Azswy8wYSQmpFCztb0UawSCOBJVv4M2MS_8IMZC3vOZy7htJWDAVMJ1NrhJeCJstEScPZ8as_9q-xe4zd0-HlPokbdt6aUfDs8gzhtP3-2b4jjJObrbywHnklnFwd7FKZK99SyQiJxO4z7vex63_fdpfmlpvL2ZAdds-njweEMeRQO1VBIS5wDpqdpjRhnUIEWbBmhOJ8XPGcQiMIaDaQAwWxs5UphzS0FQlfK6od6QG2ZO6s_Z_OhnoBxZwaz5s_RtZruA"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "heading",
         "depth": 3,
         "children": [
@@ -781,6 +1516,41 @@
         "lang": "mermaid",
         "meta": null,
         "value": "info\n  showInfo"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://github.com/mermaid-js/mermaid/tree/develop/packages/mermaid/src/diagrams/info",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://github.com/mermaid-js/mermaid/tree/develop/packages/mermaid/src/diagrams/info"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": " （官方暂无独立语法文档页，链接为其源码目录）\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJw9izsKwzAQBa8iXq0TqE6TOl3YZrFWH7B2jSwRgvHdgwunnGHmwGJREFA1Galze7HPU5PBI_caEUaf4tGkN74Qx1URRpEmhOAIURLPdRBIT3jwHPb66nKvc4s85FE5d2633FjfZn_sNnNBSLzucv4AfHky1g",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJw9izsKwzAQBa8iXq0TqE6TOl3YZrFWH7B2jSwRgvHdgwunnGHmwGJREFA1Galze7HPU5PBI_caEUaf4tGkN74Qx1URRpEmhOAIURLPdRBIT3jwHPb66nKvc4s85FE5d2633FjfZn_sNnNBSLzucv4AfHky1g"
+              }
+            ]
+          }
+        ]
       },
       {
         "type": "thematicBreak"
@@ -839,6 +1609,41 @@
         "value": "sankey-beta\n  A,X,40\n  B,X,30\n  B,Y,20"
       },
       {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/sankey.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/sankey.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJw9i7EOgjAURX-F3PmZEHXqpvEPXJB0edJHIdKWlHYghH83TcTtnJtzN3TBCBQW9h9ZT29JrH1V3aiha13oTg1dfvSicw2CjaOBSjELwUl0XBRbaTTSIE40VKVhpOc8JQ3tdxA4p_BcfXdc82w4yWNkG9kd48y-DeGvMWQ7QPU8LbJ_ATfQOEQ",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJw9i7EOgjAURX-F3PmZEHXqpvEPXJB0edJHIdKWlHYghH83TcTtnJtzN3TBCBQW9h9ZT29JrH1V3aiha13oTg1dfvSicw2CjaOBSjELwUl0XBRbaTTSIE40VKVhpOc8JQ3tdxA4p_BcfXdc82w4yWNkG9kd48y-DeGvMWQ7QPU8LbJ_ATfQOEQ"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "heading",
         "depth": 3,
         "children": [
@@ -860,36 +1665,58 @@
           },
           {
             "type": "inlineCode",
+            "value": "block"
+          },
+          {
+            "type": "text",
+            "value": "（基础写法；"
+          },
+          {
+            "type": "inlineCode",
             "value": "block-beta"
+          },
+          {
+            "type": "text",
+            "value": " 为同义别名）"
           }
         ]
       },
       {
-        "type": "blockquote",
+        "type": "code",
+        "lang": "mermaid",
+        "meta": null,
+        "value": "block\n  columns 2\n  web[\"Web 前端\"] api[\"API 服务\"]\n  db[(\"数据库\")] cache[\"缓存\"]"
+      },
+      {
+        "type": "paragraph",
         "children": [
           {
-            "type": "paragraph",
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/block.html",
             "children": [
               {
                 "type": "text",
-                "value": "⚠️ 实测结论：Mermaid "
-              },
-              {
-                "type": "strong",
-                "children": [
-                  {
-                    "type": "text",
-                    "value": "12.0.0 渲染该图种会报 "
-                  },
-                  {
-                    "type": "inlineCode",
-                    "value": "TypeError: Converting circular structure to JSON"
-                  }
-                ]
-              },
+                "value": "https://mermaid.js.org/syntax/block.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJw9zLFqwzAYBOBXETe14Kmjt0KXbIUMhfr38Fv6Y5taklEkSgl5gAY8hUKHLplDm86lr2PnNYqHdPyOu9tAeyPIUXVeP5FTSvsuWbdWNzOepSoID1Kp8XU4H0-EUnHfFoTb-4WaPoZxdyCUc9VUxRVhevuehq_xZ0-4LpVm3UhBOP_ux893QokMdWgN8hiSZLASLM_EZr4gxEasEHJFMLLi1EUCuS0ycIp--eL0ZZp6w1HuWq4D20vYs3v0_p_Bp7pBvuJuLds_zkpXUw",
+            "children": [
               {
                 "type": "text",
-                "value": "（已尝试官方多种标准写法均复现），疑似该版本内部缺陷。为免给出错误示例，此处不展示代码块。"
+                "value": "https://mermaid.live/edit#pako:eJw9zLFqwzAYBOBXETe14Kmjt0KXbIUMhfr38Fv6Y5taklEkSgl5gAY8hUKHLplDm86lr2PnNYqHdPyOu9tAeyPIUXVeP5FTSvsuWbdWNzOepSoID1Kp8XU4H0-EUnHfFoTb-4WaPoZxdyCUc9VUxRVhevuehq_xZ0-4LpVm3UhBOP_ux893QokMdWgN8hiSZLASLM_EZr4gxEasEHJFMLLi1EUCuS0ycIp--eL0ZZp6w1HuWq4D20vYs3v0_p_Bp7pBvuJuLds_zkpXUw"
               }
             ]
           }
@@ -928,6 +1755,41 @@
         "value": "packet-beta\n  0-15: \"源端口\"\n  16-31: \"目的端口\""
       },
       {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/packet.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/packet.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJw9jDsOwjAQBa8SvTqRiBAUrrkBHXKzxJuPwHFk1gWK0tFDDSUlEvTcB3IN5CKUM0_zehTOMBQ6KnYs2ZaFdJsksyxfqETj-76Mj9fnfNeIOl9m8zz68fYcr6dpQorKNwZKfOAUlr2liOhjpCE1W9aIoeGSwl7i3YAUFMStj20xpaEzJLxqqPJkJ9lRu3Huj96FqoYqaX_g4QcjeEak",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJw9jDsOwjAQBa8SvTqRiBAUrrkBHXKzxJuPwHFk1gWK0tFDDSUlEvTcB3IN5CKUM0_zehTOMBQ6KnYs2ZaFdJsksyxfqETj-76Mj9fnfNeIOl9m8zz68fYcr6dpQorKNwZKfOAUlr2liOhjpCE1W9aIoeGSwl7i3YAUFMStj20xpaEzJLxqqPJkJ9lRu3Huj96FqoYqaX_g4QcjeEak"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "heading",
         "depth": 3,
         "children": [
@@ -958,6 +1820,41 @@
         "lang": "mermaid",
         "meta": null,
         "value": "kanban\n  待办\n    任务一\n    任务二\n  进行中\n    任务三"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/kanban.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/kanban.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJxVyz8KwjAYBfCrhG_uCTJ7AzfJ8tl8_YNNUmIySCm4OFh6A0HoAdyLBb1MCj2GZKjQ7f0e7zWQGknA4YT6iFpoxubPbe6eMTEWpmnuhjBeN3z3kcv3sQx9GF_b6R0SyG0pgTvrKQFFVmEkNHEowBWkSABnAiRl6CsnQOgWEkDvzP6i0_Xqa4mOdiXmFtVa1qgPxvxpjc8L4BlWZ2p_DfdTrg",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJxVyz8KwjAYBfCrhG_uCTJ7AzfJ8tl8_YNNUmIySCm4OFh6A0HoAdyLBb1MCj2GZKjQ7f0e7zWQGknA4YT6iFpoxubPbe6eMTEWpmnuhjBeN3z3kcv3sQx9GF_b6R0SyG0pgTvrKQFFVmEkNHEowBWkSABnAiRl6CsnQOgWEkDvzP6i0_Xqa4mOdiXmFtVa1qgPxvxpjc8L4BlWZ2p_DfdTrg"
+              }
+            ]
+          }
+        ]
       },
       {
         "type": "heading",
@@ -992,6 +1889,41 @@
         "value": "architecture-beta\n  group api(cloud)[API]\n  service web(internet)[Web] in api\n  service db(database)[DB] in api"
       },
       {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/architecture.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/architecture.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJxNizGKwzAQRa8iprLBuYC7LGnSBVIEYrkYST-2wJbMeJQQQu6-uPCy5fv_vQ_5HEAtsfgxKrwWwcFB2SZjBsllMbzEyk-5hLo7Xs79dqyQZ_QwL7gqJoUkaN3d4HoT0xb8l4KrAis7XlF3p59doYYGiYFalYKGZsjMG9Jniy3piBmWWmMp4MFlUks2fakhLpqv7-T3tCyBFafIg_C8jwune85_KLkMI7UPnlZ8fwE1SFVa",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJxNizGKwzAQRa8iprLBuYC7LGnSBVIEYrkYST-2wJbMeJQQQu6-uPCy5fv_vQ_5HEAtsfgxKrwWwcFB2SZjBsllMbzEyk-5hLo7Xs79dqyQZ_QwL7gqJoUkaN3d4HoT0xb8l4KrAis7XlF3p59doYYGiYFalYKGZsjMG9Jniy3piBmWWmMp4MFlUks2fakhLpqv7-T3tCyBFafIg_C8jwune85_KLkMI7UPnlZ8fwE1SFVa"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "heading",
         "depth": 3,
         "children": [
@@ -1024,6 +1956,41 @@
         "value": "xychart-beta\n  title \"Sales Revenue\"\n  x-axis [jan, feb, mar, apr]\n  y-axis \"Amount\" 0 --> 100\n  bar [30, 50, 70, 60]\n  line [25, 45, 65, 55]"
       },
       {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/xyChart.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/xyChart.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJw9jktqxDAQBa_S9LoNykcT8CIQyAkyu1izaNttW0EfI0vBZpi7ByVMlvWKgnfFIY6CLe7HsHDKTS-ZTQDINjsBg2d2ssGHfEsoYrCqveHdbtB9cSCYpCfwnAh4TZeqjz9t8M3HErJBUNA0r_CgVNU9J-ieFIFWBC-K4KR-M2eDQPeoCZ41wUkTaH1BwjnZEducihB6SZ4r4rUmBvMiXgy2YHCUiYvL9eINCbnkeD7CcE_LOnKWd8tzYn8fVw6fMf5jimVesJ3YbXL7AY1YWTM",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJw9jktqxDAQBa_S9LoNykcT8CIQyAkyu1izaNttW0EfI0vBZpi7ByVMlvWKgnfFIY6CLe7HsHDKTS-ZTQDINjsBg2d2ssGHfEsoYrCqveHdbtB9cSCYpCfwnAh4TZeqjz9t8M3HErJBUNA0r_CgVNU9J-ieFIFWBC-K4KR-M2eDQPeoCZ41wUkTaH1BwjnZEducihB6SZ4r4rUmBvMiXgy2YHCUiYvL9eINCbnkeD7CcE_LOnKWd8tzYn8fVw6fMf5jimVesJ3YbXL7AY1YWTM"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "heading",
         "depth": 3,
         "children": [
@@ -1050,43 +2017,41 @@
         ]
       },
       {
-        "type": "blockquote",
+        "type": "code",
+        "lang": "mermaid",
+        "meta": null,
+        "value": "radar-beta\n  axis m[\"Math\"], s[\"Science\"], e[\"English\"]\n  axis h[\"History\"], g[\"Geography\"], a[\"Art\"]\n  curve a[\"Alice\"]{85, 90, 80, 70, 75, 90}\n  curve b[\"Bob\"]{70, 75, 85, 80, 90, 85}\n  max 100\n  min 0"
+      },
+      {
+        "type": "paragraph",
         "children": [
           {
-            "type": "paragraph",
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/radar.html",
             "children": [
               {
                 "type": "text",
-                "value": "⚠️ 实测结论：Mermaid "
-              },
-              {
-                "type": "strong",
-                "children": [
-                  {
-                    "type": "text",
-                    "value": "12.0.0 对该图种的轴/曲线写法解析失败"
-                  }
-                ]
-              },
-              {
-                "type": "text",
-                "value": "（已尝试 "
-              },
-              {
-                "type": "inlineCode",
-                "value": "axis"
-              },
+                "value": "https://mermaid.js.org/syntax/radar.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJxFjMFOwzAMhl8l8jlI5TAxegOBxoXTbsQc3NZLIzVJ5SZoU9V3R8nYOFjy__v7vEIfB4YWhAaSh44TYVCKzm5R3iB8UhoRvrVaDMKxdxx6rpkNwnuwk1vK_e6MBuHDLSnKpWLWIBw4WqF5vDZkEF4k_Ul9lh--dpOrr9f9TqvnRqt9o9VTmZq3f7ozCK-xK-ztXpzCV29XWU9n9dg0dXVBNaDBihugTZJZg2fxVCKsBUFII3tGaBXCwCfKU0LAsIEGyikeL6G_qXkeKPGbIyvkb-VM4SvGe5SY7QjtiaaFt1_B3HBH",
+            "children": [
               {
                 "type": "text",
-                "value": " + 命名曲线、"
-              },
-              {
-                "type": "inlineCode",
-                "value": "axis"
-              },
-              {
-                "type": "text",
-                "value": " + 引号序列等多种写法均报 Parse error），语法仍在演进。为免给出错误示例，此处不展示代码块。"
+                "value": "https://mermaid.live/edit#pako:eJxFjMFOwzAMhl8l8jlI5TAxegOBxoXTbsQc3NZLIzVJ5SZoU9V3R8nYOFjy__v7vEIfB4YWhAaSh44TYVCKzm5R3iB8UhoRvrVaDMKxdxx6rpkNwnuwk1vK_e6MBuHDLSnKpWLWIBw4WqF5vDZkEF4k_Ul9lh--dpOrr9f9TqvnRqt9o9VTmZq3f7ozCK-xK-ztXpzCV29XWU9n9dg0dXVBNaDBihugTZJZg2fxVCKsBUFII3tGaBXCwCfKU0LAsIEGyikeL6G_qXkeKPGbIyvkb-VM4SvGe5SY7QjtiaaFt1_B3HBH"
               }
             ]
           }
@@ -1125,6 +2090,41 @@
         "value": "treemap-beta\n  \"前端\" : 40\n  \"后端\" : 35\n  \"运维\" : 25"
       },
       {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/treemap.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/treemap.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJw9y7sNwjAUheFVrFMHCQFpXLMBHXJziW8eUmxHxi5QlAEoQNmDgoaOgmlQGANBCOX_6ZwWmdMMieCZDTWzHQdSVgiF5_E0XK4KQorV_Ef9eaJlOtLr0Q_325cWKRIUvtKQwUdOYNgb-iTacRxKNqwghYLmnGIdFJTtkIBicJuDzaZrbDQFXldUeDITNmS3zv3Tu1iUkDnVe-7eWmtHSg",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJw9y7sNwjAUheFVrFMHCQFpXLMBHXJziW8eUmxHxi5QlAEoQNmDgoaOgmlQGANBCOX_6ZwWmdMMieCZDTWzHQdSVgiF5_E0XK4KQorV_Ef9eaJlOtLr0Q_325cWKRIUvtKQwUdOYNgb-iTacRxKNqwghYLmnGIdFJTtkIBicJuDzaZrbDQFXldUeDITNmS3zv3Tu1iUkDnVe-7eWmtHSg"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "type": "heading",
         "depth": 3,
         "children": [
@@ -1155,6 +2155,41 @@
         "lang": "mermaid",
         "meta": null,
         "value": "usecase-beta\ndirection LR\nactor Reader\nBrowse(\"Browse article\")\nReader --> Browse"
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "文档："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.js.org/syntax/usecase.html",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.js.org/syntax/usecase.html"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "\n示例："
+          },
+          {
+            "type": "link",
+            "title": null,
+            "url": "https://mermaid.live/edit#pako:eJw9i7EKwkAQRH_lmEoh-YEUFmJppZ1ss95tkoNkTzZ7iAT_XSRoN2_ezIpYkqBDXSTyIu1dnElTNomei4bzhZSjFwsX4SRGerTyXGRH2EJg8xwnIexJt01o20PYLBoMlhM6tyoNZrGZv4iVNASCjzILoQuEJD3XyQmkbzTg6uX60vi71kdil1PmwXj-lQ_WWyl_tFKHEV3P0yLvDwaTTIo",
+            "children": [
+              {
+                "type": "text",
+                "value": "https://mermaid.live/edit#pako:eJw9i7EKwkAQRH_lmEoh-YEUFmJppZ1ss95tkoNkTzZ7iAT_XSRoN2_ezIpYkqBDXSTyIu1dnElTNomei4bzhZSjFwsX4SRGerTyXGRH2EJg8xwnIexJt01o20PYLBoMlhM6tyoNZrGZv4iVNASCjzILoQuEJD3XyQmkbzTg6uX60vi71kdil1PmwXj-lQ_WWyl_tFKHEV3P0yLvDwaTTIo"
+              }
+            ]
+          }
+        ]
       },
       {
         "type": "thematicBreak"
