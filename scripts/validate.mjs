@@ -93,5 +93,37 @@ for (const f of postFiles) {
   }
 }
 
+// ── series.json（评审决策 2）──
+const VALID_STATUS = new Set(['active', 'completed', 'wip', 'archived']);
+try {
+  const series = JSON.parse(readFileSync(join(BUILD, 'series.json'), 'utf8'));
+  if (!Array.isArray(series)) fail('series.json 不是数组');
+  else {
+    ok(`series.json 含 ${series.length} 个专栏`);
+    const seen = new Set();
+    for (const c of series) {
+      if (!c.name) fail(`series 条目缺 name: ${JSON.stringify(c)}`);
+      if (seen.has(c.name)) fail(`series name 重复: ${c.name}`);
+      seen.add(c.name);
+      if (!c.slug) fail(`series ${c.name} 缺 slug`);
+      if (c.status != null && !VALID_STATUS.has(c.status)) fail(`series ${c.name} status 非法: ${c.status}`);
+      if (typeof c.count !== 'number' || c.count < 0) fail(`series ${c.name} count 非法`);
+      if (typeof c.total !== 'number' || c.total < 0) fail(`series ${c.name} total 非法`);
+      if (c.total !== c.count) fail(`series ${c.name} total(${c.total}) != count(${c.count})（评审决策 1：恒相等）`);
+      // 反向校验：series.name 必须在文章中存在（否则是孤儿专栏）
+      const hasArticle = index.posts.some((p) => p.series?.name === c.name);
+      if (!hasArticle) fail(`series ${c.name} 在文章中无对应系列（孤儿专栏）`);
+    }
+    // 反向校验：文章 series.name 都应被 series.json 富集（warning 不阻断）
+    for (const p of index.posts) {
+      if (p.series && !seen.has(p.series.name)) {
+        console.warn(`  ⚠ 文章 series.name="${p.series.name}" 未在 series.json 登记（将出默认卡片）`);
+      }
+    }
+  }
+} catch (e) {
+  fail(`series.json 读取/解析失败: ${e.message}`);
+}
+
 console.log(errors === 0 ? '\n✓ 全部校验通过' : `\n✗ ${errors} 处校验失败`);
 process.exit(errors === 0 ? 0 : 1);

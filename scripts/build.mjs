@@ -58,6 +58,21 @@ function dedupHeadingSlugs(texts) {
   });
 }
 
+/** series 字段鲁棒归一（评审决策 4：存量兼容）。
+ *  - 未定义 → undefined（无系列）
+ *  - 字符串 "专栏名" → { name, order: 999 }
+ *  - 对象 {name, order} → 缺 order 补 999
+ * 注意：total 不读取（评审决策 1），由构建期算实际篇数。 */
+function normalizeSeries(fm) {
+  if (!fm || !fm.series) return undefined;
+  const s = fm.series;
+  if (typeof s === 'string') return { name: s.trim(), order: 999 };
+  if (typeof s === 'object' && s !== null && typeof s.name === 'string') {
+    return { name: s.name.trim(), order: Number(s.order) || 999 };
+  }
+  return undefined;
+}
+
 // ── 自定义 remark 插件 ──
 // [[target|alias]] → wikiLink ; ![[target|alias]] → wikiEmbed
 // 注意：raw markdown 中的 `[[...]]` 会与 remark 的链接/autolink 解析冲突（尤其是 inner 含 URL 时，
@@ -374,7 +389,6 @@ async function main() {
     const date = toISODate(fm.date) || (hist.length ? hist[hist.length - 1].date : todayISO());
     const updated = toISODate(fm.updated) || (hist.length ? hist[0].date : date);
     const tags = normalizeTags(fm.tags);
-    const seriesFm = fm.series || undefined;
     const headings = collectHeadings(r.tree);
     const description = String(fm.description || firstParagraphText(r.tree) || '');
     const reading = readingTime(r.tree);
@@ -390,7 +404,7 @@ async function main() {
       tags,
       category: fm.category ? String(fm.category) : undefined,
       status: fm.status || 'evergreen',
-      series: seriesFm ? { name: String(seriesFm.name), order: Number(seriesFm.order) } : undefined,
+      series: normalizeSeries(fm),
       readingTime: reading,
       headings,
       references,
@@ -400,7 +414,7 @@ async function main() {
     return { doc, file: r.file };
   });
 
-  // ── 系列 total/prev/next ──
+  // ── 系列分组 + prev/next + total(=实际篇数，评审决策 1) ──
   const seriesGroups = new Map();
   for (const { doc } of docs) {
     if (doc.series) {
@@ -410,11 +424,11 @@ async function main() {
   }
   for (const [, arr] of seriesGroups) {
     arr.sort((a, b) => a.series.order - b.series.order);
-    const total = arr.length;
+    const count = arr.length;
     arr.forEach((d, i) => {
-      d.series.total = total;
+      d.series.total = count;
       if (i > 0) d.series.prev = { slug: arr[i - 1].slug, title: arr[i - 1].title };
-      if (i < total - 1) d.series.next = { slug: arr[i + 1].slug, title: arr[i + 1].title };
+      if (i < count - 1) d.series.next = { slug: arr[i + 1].slug, title: arr[i + 1].title };
     });
   }
 
@@ -499,8 +513,36 @@ async function main() {
   }));
   writeFileSync(join(BUILD_DIR, 'search-index.json'), JSON.stringify(search, null, 2));
 
+  // ── 系列聚合输出（build/series.json，评审决策 2）──
+  let seriesDef = [];
+  try {
+    seriesDef = JSON.parse(readFileSync(join(CONTENT_DIR, 'series.json'), 'utf8'));
+  } catch {
+    seriesDef = [];
+  }
+  if (!Array.isArray(seriesDef)) seriesDef = [];
+  const defByName = new Map(seriesDef.map((c) => [c.name, c]));
+  const seriesOut = [...seriesGroups.keys()].map((name) => {
+    const arts = seriesGroups.get(name);
+    const def = defByName.get(name) ?? {};
+    const dates = arts.map((d) => d.updated || d.date).filter(Boolean);
+    return {
+      name,
+      slug: def.slug ?? slugifyHeading(name),
+      cover: def.cover,
+      summary: def.summary,
+      status: def.status ?? 'active',
+      order: def.order ?? 999,
+      count: arts.length,
+      recentDate: dates.length ? dates.sort().at(-1) : '',
+      total: arts.length,
+    };
+  });
+  seriesOut.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+  writeFileSync(join(BUILD_DIR, 'series.json'), JSON.stringify(seriesOut, null, 2));
+
   console.log(
-    `✓ 构建完成：${docs.length} 篇文章 → build/（posts.json + posts/*.json + all.json + search-index.json）`
+    `✓ 构建完成：${docs.length} 篇文章 → build/（posts.json + posts/*.json + all.json + search-index.json + series.json）`
   );
 
   // ── 图片校验汇总（只告警，不阻断）：缺失 / 超 200KB ──

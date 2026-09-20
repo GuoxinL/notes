@@ -15,10 +15,14 @@
   "series": {
     "name": "Markdown 实战",
     "order": 2,
-    "total": 2,
+    "total": 3,
     "prev": {
       "slug": "Markdown 全功能示例",
       "title": "Markdown 全功能示例"
+    },
+    "next": {
+      "slug": "Mermaid 图种全览（渲染测试）",
+      "title": "Mermaid 图种全览（渲染测试）"
     }
   },
   "readingTime": {

@@ -15,7 +15,7 @@
   "series": {
     "name": "Markdown 实战",
     "order": 1,
-    "total": 2,
+    "total": 3,
     "next": {
       "slug": "Qwik 与 SSR 笔记",
       "title": "Qwik 与 SSR 笔记"
