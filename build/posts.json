@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-20T04:34:12.132Z",
+  "generatedAt": "2026-09-20T04:37:22.893Z",
   "sourceRef": "GuoxinL/notes",
   "toolchain": {
     "node": "24.20.0",
@@ -35,7 +35,7 @@
       "slug": "人大金仓 + GORM 慢查询踩坑-缺索引全表扫描的定位与修复",
       "title": "人大金仓 + GORM 慢查询踩坑-缺索引全表扫描的定位与修复",
       "date": "2026-09-18",
-      "updated": "2026-09-18",
+      "updated": "2026-09-20",
       "description": "KingbaseES（PG 兼容模式）+ GORM v1.31.1 的生产慢查询复盘：AutoMigrate 只建表结构与主键、不建业务查询索引，全表扫描让「查 1 行」耗时 16 秒；补建索引并 ANALYZE 后降到 10 毫秒，附夜莺 / Loki 慢日志排查语句。",
       "tags": [
         "KingbaseES",
