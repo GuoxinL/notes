@@ -31,6 +31,23 @@ agent_created: true
 | 消费方 | 站点**运行时**拉取 `raw.githubusercontent.com/<owner>/<repo>/main/build/**`；`<owner>/<repo>` 以本仓 `git remote -v` 为准，不用猜。**具体是哪个站点由部署方决定，本 skill 不绑定任何站点** |
 | 生效延迟 | GitHub raw CDN 约 5 分钟；浏览器强刷即可 |
 
+### 构建环境（首次 / 新环境必读）
+
+`npm run build` 依赖 `node_modules`，先装依赖再构建。下面两条是踩过的坑，**照抄即可**：
+
+```bash
+# 1) 装依赖——必须绕开失效代理：WSL 里默认的 http(s)_proxy 不可达，走它会静默挂死（实测卡 20 分钟无输出）
+env -u http_proxy -u https_proxy -u HTTP_PROXY -u HTTPS_PROXY \
+  npm install --registry=https://registry.npmmirror.com --no-audit --no-fund
+
+# 2) 重建前归一化换行符——content/ 里被 Windows 工具存成 CRLF 的 .md，
+#    会让 remark 把 \r 原样写进 build/ 产物，几篇无关文章一起脏掉
+grep -rlZ --include="*.md" -P "\r" content/ | xargs -0 -r sed -i 's/\r$//'
+```
+
+- 换行符已由仓根 `.gitattributes`（`* text=auto eol=lf`）兜底；若 `git diff` 里仍出现大面积 `\n` → `\r\n`，先跑第 2 条再重建。
+- 提交时**不要**用 `git add -A`：仓根的 `.obsidian/` 未被忽略，会被一起带进公开仓库。用 `git add content build`。
+
 ### 谁做什么
 
 一次发布是一条完整链路：**定标题并查重 → 写 `content/*.md` → `npm run build` + `npm run validate` → 把 `build/` 产物随代码提交推送 → 确认站点能读到新文章**。
