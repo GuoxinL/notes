@@ -26766,7 +26766,7 @@
     "slug": "Markdown 全功能示例",
     "title": "Markdown 全功能示例",
     "date": "2026-09-15",
-    "updated": "2026-09-18",
+    "updated": "2026-09-20",
     "description": "一篇覆盖写作模块计划支持的全部 Markdown 功能的示例文章。",
     "tags": [
       "markdown",
@@ -26901,6 +26901,10 @@
       }
     ],
     "history": [
+      {
+        "date": "2026-09-20",
+        "message": "feat: 新增专栏 series 聚合（build/series.json）+ 存量 series 字段迁移"
+      },
       {
         "date": "2026-09-18",
         "message": "docs(sample): 示例文章补充多级标题示例（三~六级）"
@@ -27969,7 +27973,7 @@
     "slug": "Mermaid 图种全览（渲染测试）",
     "title": "Mermaid 图种全览（渲染测试）",
     "date": "2026-09-18",
-    "updated": "2026-09-19",
+    "updated": "2026-09-20",
     "description": "逐个渲染本站支持的 Mermaid 图种，用于验证渲染能力与语法关键字。覆盖流程、时序、类、状态、ER、旅程、甘特、饼图、四象限、需求、Git、思维导图、时间线、C4，以及 Sankey、Block、Packet、Kanban、Architecture、XY、Radar、Treemap、Use Case 等 Beta 图种。",
     "tags": [
       "mermaid",
@@ -29356,6 +29360,10 @@
       }
     ],
     "history": [
+      {
+        "date": "2026-09-20",
+        "message": "feat: 新增专栏 series 聚合（build/series.json）+ 存量 series 字段迁移"
+      },
       {
         "date": "2026-09-19",
         "message": "docs(notes): Mermaid 全览扒入 mermaid.live 全部 Sample Diagrams，按图种归类（每类多示例）"
@@ -38431,7 +38439,14 @@
           ]
         }
       ]
-    }
+    },
+    "backlinks": [
+      {
+        "slug": "人大金仓 + GORM 慢查询踩坑-缺索引全表扫描的定位与修复",
+        "title": "人大金仓 + GORM 慢查询踩坑-缺索引全表扫描的定位与修复",
+        "context": "环境：KingbaseES（PG 兼容模式）+ GORM v1.31.1。"
+      }
+    ]
   },
   {
     "schemaVersion": 1,
@@ -72710,6 +72725,1411 @@
               "value": "整理版本：v1.0 · 2026-08-18"
             }
           ]
+        }
+      ]
+    }
+  },
+  {
+    "schemaVersion": 1,
+    "id": "482fb1a2",
+    "slug": "人大金仓 + GORM 慢查询踩坑-缺索引全表扫描的定位与修复",
+    "title": "人大金仓 + GORM 慢查询踩坑-缺索引全表扫描的定位与修复",
+    "date": "2026-09-18",
+    "updated": "2026-09-18",
+    "description": "KingbaseES（PG 兼容模式）+ GORM v1.31.1 的生产慢查询复盘：AutoMigrate 只建表结构与主键、不建业务查询索引，全表扫描让「查 1 行」耗时 16 秒；补建索引并 ANALYZE 后降到 10 毫秒，附夜莺 / Loki 慢日志排查语句。",
+    "tags": [
+      "KingbaseES",
+      "GORM",
+      "索引",
+      "查询优化",
+      "Loki"
+    ],
+    "category": "数据库",
+    "status": "evergreen",
+    "readingTime": {
+      "minutes": 4,
+      "words": 1233
+    },
+    "headings": [
+      {
+        "depth": 2,
+        "text": "背景",
+        "slug": "背景"
+      },
+      {
+        "depth": 2,
+        "text": "问题现象",
+        "slug": "问题现象"
+      },
+      {
+        "depth": 2,
+        "text": "排查路径",
+        "slug": "排查路径"
+      },
+      {
+        "depth": 2,
+        "text": "修复：补建索引",
+        "slug": "修复补建索引"
+      },
+      {
+        "depth": 3,
+        "text": "核心索引（一次性执行）",
+        "slug": "核心索引一次性执行"
+      },
+      {
+        "depth": 3,
+        "text": "修复效果对比",
+        "slug": "修复效果对比"
+      },
+      {
+        "depth": 2,
+        "text": "附带发现的问题",
+        "slug": "附带发现的问题"
+      },
+      {
+        "depth": 3,
+        "text": "context canceled 导致事务状态混乱",
+        "slug": "context-canceled-导致事务状态混乱"
+      },
+      {
+        "depth": 3,
+        "text": "OR 条件让索引更难被使用",
+        "slug": "or-条件让索引更难被使用"
+      },
+      {
+        "depth": 3,
+        "text": "GORM 日志全是文本格式",
+        "slug": "gorm-日志全是文本格式"
+      },
+      {
+        "depth": 2,
+        "text": "夜莺 + Loki 慢日志查询备忘",
+        "slug": "夜莺-loki-慢日志查询备忘"
+      },
+      {
+        "depth": 3,
+        "text": "基础：检索慢日志（≥ 1 秒）",
+        "slug": "基础检索慢日志-1-秒"
+      },
+      {
+        "depth": 3,
+        "text": "数值过滤（推荐，更精确）",
+        "slug": "数值过滤推荐更精确"
+      },
+      {
+        "depth": 3,
+        "text": "排除已知问题，只看新冒出来的",
+        "slug": "排除已知问题只看新冒出来的"
+      },
+      {
+        "depth": 3,
+        "text": "专门找 context canceled 的",
+        "slug": "专门找-context-canceled-的"
+      },
+      {
+        "depth": 3,
+        "text": "多服务聚合统计慢 SQL 数量",
+        "slug": "多服务聚合统计慢-sql-数量"
+      },
+      {
+        "depth": 3,
+        "text": "只看 HTTP 慢请求",
+        "slug": "只看-http-慢请求"
+      },
+      {
+        "depth": 3,
+        "text": "正则阈值速查",
+        "slug": "正则阈值速查"
+      },
+      {
+        "depth": 2,
+        "text": "Checklist：以后建表必做",
+        "slug": "checklist以后建表必做"
+      },
+      {
+        "depth": 2,
+        "text": "关联",
+        "slug": "关联"
+      }
+    ],
+    "references": [
+      {
+        "kind": "internal",
+        "label": "MySQL索引与B+Tree底层实现好处",
+        "target": "MySQL索引与B+Tree底层实现好处",
+        "href": "/notes/MySQL%E7%B4%A2%E5%BC%95%E4%B8%8EB%2BTree%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%A5%BD%E5%A4%84/",
+        "exists": true
+      }
+    ],
+    "history": [],
+    "ast": {
+      "type": "root",
+      "children": [
+        {
+          "type": "heading",
+          "depth": 2,
+          "children": [
+            {
+              "type": "text",
+              "value": "背景"
+            }
+          ],
+          "data": {
+            "headingId": "背景"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "环境："
+            },
+            {
+              "type": "strong",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "KingbaseES（PG 兼容模式）+ GORM v1.31.1"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": "。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "现象：接口超时、单条 SQL 耗时 4~16 秒、"
+            },
+            {
+              "type": "inlineCode",
+              "value": "context canceled"
+            },
+            {
+              "type": "text",
+              "value": " 频发。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "一句话结论："
+            },
+            {
+              "type": "strong",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "GORM 的 "
+                },
+                {
+                  "type": "inlineCode",
+                  "value": "AutoMigrate"
+                },
+                {
+                  "type": "text",
+                  "value": " 只建表结构和主键，不会为业务查询字段建索引"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": "。数据量一大，所有查询退化成全表扫描（Seq Scan），于是就有了「查 1 行耗时 16 秒」。"
+            }
+          ]
+        },
+        {
+          "type": "blockquote",
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "一句话根因\nGORM 模型只建了表，没建任何查询条件字段的索引。每个 "
+                },
+                {
+                  "type": "inlineCode",
+                  "value": "WHERE"
+                },
+                {
+                  "type": "text",
+                  "value": " 条件、"
+                },
+                {
+                  "type": "inlineCode",
+                  "value": "ORDER BY"
+                },
+                {
+                  "type": "text",
+                  "value": "、"
+                },
+                {
+                  "type": "inlineCode",
+                  "value": "JOIN"
+                },
+                {
+                  "type": "text",
+                  "value": " 字段都需要手动建。"
+                }
+              ]
+            }
+          ],
+          "data": {
+            "callout": "info"
+          }
+        },
+        {
+          "type": "heading",
+          "depth": 2,
+          "children": [
+            {
+              "type": "text",
+              "value": "问题现象"
+            }
+          ],
+          "data": {
+            "headingId": "问题现象"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "日志里频繁出现这类记录："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "text",
+          "meta": null,
+          "value": "Trace sql: SELECT * FROM \"vc_issuer_log\" WHERE \"vc_id\" = 'xxx' LIMIT 1\nduration=7417.2ms  row: 1\n\nTrace sql: UPDATE \"vc_issuer_log\" SET \"revoked\"=true WHERE \"vc_id\" = 'xxx'\nduration=5423.5ms  row: 1\n\nTrace sql: SELECT * FROM \"did_document_record\" WHERE \"did\" = 'xxx' ORDER BY version_id DESC, id LIMIT 1\nduration=16338.7ms  row: 1"
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "最离谱的一条："
+            },
+            {
+              "type": "strong",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "16.3 秒只返回 1 行"
+                }
+              ]
+            },
+            {
+              "type": "text",
+              "value": "。"
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "align": [
+            null,
+            null,
+            null
+          ],
+          "children": [
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "表"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "缺失索引的字段"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "最慢耗时"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "vc_issuer_log"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "vc_id"
+                    },
+                    {
+                      "type": "text",
+                      "value": "、"
+                    },
+                    {
+                      "type": "inlineCode",
+                      "value": "holder"
+                    },
+                    {
+                      "type": "text",
+                      "value": "、复合四字段"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "SELECT 7.4s / UPDATE 5.4s"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "did_document_record"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "did"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "SELECT 16.3s"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "identity_enterprise"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "uniscid"
+                    },
+                    {
+                      "type": "text",
+                      "value": "、"
+                    },
+                    {
+                      "type": "inlineCode",
+                      "value": "entname"
+                    },
+                    {
+                      "type": "text",
+                      "value": "（OR 条件 + 软删除）"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "SELECT 4.1s"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "depth": 2,
+          "children": [
+            {
+              "type": "text",
+              "value": "排查路径"
+            }
+          ],
+          "data": {
+            "headingId": "排查路径"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "从「接口超时」到「16 秒变 10 毫秒」的完整链路："
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "lang": "mermaid",
+          "meta": null,
+          "value": "flowchart LR\n  A[接口超时 / context canceled] --> B[夜莺 + Loki 捞慢日志]\n  B --> C[日志出现 duration 4~16 秒]\n  C --> D[EXPLAIN 看执行计划]\n  D --> E{Seq Scan 全表扫描}\n  E -->|确认缺索引| F[补建索引 + ANALYZE]\n  F --> G[16 秒降到 10 毫秒]"
+        },
+        {
+          "type": "heading",
+          "depth": 2,
+          "children": [
+            {
+              "type": "text",
+              "value": "修复：补建索引"
+            }
+          ],
+          "data": {
+            "headingId": "修复补建索引"
+          }
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "核心索引（一次性执行）"
+            }
+          ],
+          "data": {
+            "headingId": "核心索引一次性执行"
+          }
+        },
+        {
+          "type": "code",
+          "lang": "sql",
+          "meta": null,
+          "value": "-- ===== vc_issuer_log =====\nCREATE INDEX CONCURRENTLY IF NOT EXISTS idx_vc_issuer_log_vc_id\nON vc_issuer_log(vc_id);\n\nCREATE INDEX CONCURRENTLY IF NOT EXISTS idx_vc_issuer_log_holder\nON vc_issuer_log(holder);\n\nCREATE INDEX CONCURRENTLY IF NOT EXISTS idx_vc_issuer_log_composite\nON vc_issuer_log(holder, issuer, vc_id, template_id);\n\n-- ===== did_document_record =====\n-- 每个 did 一般只有 3 行，单列索引完全够用，不需要联合索引\nCREATE INDEX CONCURRENTLY IF NOT EXISTS idx_did_document_record_did\nON did_document_record(did);\n\n-- ===== identity_enterprise（部分索引，排除软删除）=====\nCREATE INDEX CONCURRENTLY IF NOT EXISTS idx_identity_enterprise_uniscid_active\nON identity_enterprise(uniscid) WHERE deleted_at IS NULL;\n\nCREATE INDEX CONCURRENTLY IF NOT EXISTS idx_identity_enterprise_entname_active\nON identity_enterprise(entname) WHERE deleted_at IS NULL;\n\n-- ===== 更新统计信息 =====\nANALYZE vc_issuer_log;\nANALYZE did_document_record;\nANALYZE identity_enterprise;"
+        },
+        {
+          "type": "blockquote",
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "版本差异\nKingbaseES V8R6+ 支持 "
+                },
+                {
+                  "type": "inlineCode",
+                  "value": "CONCURRENTLY"
+                },
+                {
+                  "type": "text",
+                  "value": " 与部分索引（"
+                },
+                {
+                  "type": "inlineCode",
+                  "value": "WHERE deleted_at IS NULL"
+                },
+                {
+                  "type": "text",
+                  "value": "）；老版本去掉这两个关键字即可。"
+                }
+              ]
+            }
+          ],
+          "data": {
+            "callout": "warning"
+          }
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "修复效果对比"
+            }
+          ],
+          "data": {
+            "headingId": "修复效果对比"
+          }
+        },
+        {
+          "type": "table",
+          "align": [
+            null,
+            null,
+            null
+          ],
+          "children": [
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "操作"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "修复前"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "修复后"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "SELECT * WHERE vc_id"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "7417ms"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "< 5ms"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "UPDATE WHERE vc_id"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "5423ms"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "< 5ms"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "SELECT * WHERE did"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "16338ms"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "< 10ms"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "SELECT OR + 软删除"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "4139ms"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "< 20ms"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "strong",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "16 秒 → 10 毫秒，三个数量级的提升。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "depth": 2,
+          "children": [
+            {
+              "type": "text",
+              "value": "附带发现的问题"
+            }
+          ],
+          "data": {
+            "headingId": "附带发现的问题"
+          }
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "context canceled 导致事务状态混乱"
+            }
+          ],
+          "data": {
+            "headingId": "context-canceled-导致事务状态混乱"
+          }
+        },
+        {
+          "type": "code",
+          "lang": "text",
+          "meta": null,
+          "value": "err: context canceled; sql: transaction has already been committed or rolled back"
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "上游设了超时（5s），SQL 还没跑完就被 cancel，但数据库端可能已经执行完了。Go 的 "
+            },
+            {
+              "type": "inlineCode",
+              "value": "database/sql"
+            },
+            {
+              "type": "text",
+              "value": " 检测到事务状态变了就报这个错。"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "影响：应用层认为失败可能重试，但实际已经成功——好在 "
+            },
+            {
+              "type": "inlineCode",
+              "value": "SET revoked=true"
+            },
+            {
+              "type": "text",
+              "value": " 是幂等操作，没有造成脏数据。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "OR 条件让索引更难被使用"
+            }
+          ],
+          "data": {
+            "headingId": "or-条件让索引更难被使用"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "inlineCode",
+              "value": "WHERE uniscid = ? OR entname = ?"
+            },
+            {
+              "type": "text",
+              "value": " 即使两个字段都有单列索引，优化器也可能选择全表扫描。部分索引 + 更新统计信息后改善；代码层面拆成 "
+            },
+            {
+              "type": "inlineCode",
+              "value": "UNION"
+            },
+            {
+              "type": "text",
+              "value": " 更稳妥。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "GORM 日志全是文本格式"
+            }
+          ],
+          "data": {
+            "headingId": "gorm-日志全是文本格式"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "字段靠正则提取，效率低。建议改成 JSON 输出，方便日志系统结构化查询。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "depth": 2,
+          "children": [
+            {
+              "type": "text",
+              "value": "夜莺 + Loki 慢日志查询备忘"
+            }
+          ],
+          "data": {
+            "headingId": "夜莺-loki-慢日志查询备忘"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "这次排查全程靠夜莺看日志，常用的 LogQL 语句整理如下，以后直接抄。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "基础：检索慢日志（≥ 1 秒）"
+            }
+          ],
+          "data": {
+            "headingId": "基础检索慢日志-1-秒"
+          }
+        },
+        {
+          "type": "code",
+          "lang": "bash",
+          "meta": null,
+          "value": "{app=\"did-gateway\"} |~ `duration=([1-9]\\d{3,})\\.?\\d*ms`"
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "正则拆解："
+            },
+            {
+              "type": "inlineCode",
+              "value": "[1-9]\\d{3,}"
+            },
+            {
+              "type": "text",
+              "value": " = 首位非零 + 至少 3 位数字 = ≥ 1000。"
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "数值过滤（推荐，更精确）"
+            }
+          ],
+          "data": {
+            "headingId": "数值过滤推荐更精确"
+          }
+        },
+        {
+          "type": "code",
+          "lang": "bash",
+          "meta": null,
+          "value": "{app=\"did-gateway\"} |~ `duration=(?P<dur>\\d+\\.?\\d*)ms` | duration > 3000"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "排除已知问题，只看新冒出来的"
+            }
+          ],
+          "data": {
+            "headingId": "排除已知问题只看新冒出来的"
+          }
+        },
+        {
+          "type": "code",
+          "lang": "bash",
+          "meta": null,
+          "value": "{app=~\"did-gateway|did-admin-service\"}\n|~ `duration=(?P<dur>\\d+\\.?\\d*)ms`\n| duration > 1000\n!~ `(\"vc_issuer_log\"|\"did_document_record\"|\"identity_enterprise\"|issue-log/detail)`"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "专门找 context canceled 的"
+            }
+          ],
+          "data": {
+            "headingId": "专门找-context-canceled-的"
+          }
+        },
+        {
+          "type": "code",
+          "lang": "bash",
+          "meta": null,
+          "value": "{app=~\"did-gateway|did-admin-service\"}\n|= \"Trace sql:\"\n|= \"context canceled\"\n|~ `duration=([1-9]\\d{3,})\\.?\\d*ms`"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "多服务聚合统计慢 SQL 数量"
+            }
+          ],
+          "data": {
+            "headingId": "多服务聚合统计慢-sql-数量"
+          }
+        },
+        {
+          "type": "code",
+          "lang": "bash",
+          "meta": null,
+          "value": "sum by (app) (\n  count_over_time(\n    {app=~\"did-gateway|did-admin-service|vc-service\"}\n    |~ `Trace sql:.*duration=([1-9]\\d{3,})\\.?\\d*ms` [5m]\n  )\n)"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "只看 HTTP 慢请求"
+            }
+          ],
+          "data": {
+            "headingId": "只看-http-慢请求"
+          }
+        },
+        {
+          "type": "code",
+          "lang": "bash",
+          "meta": null,
+          "value": "{app=\"did-gateway\"}\n|= \"[HTTP]\"\n|~ `duration=([1-9]\\d{3,})\\.?\\d*ms`\n!~ `issue-log/detail`"
+        },
+        {
+          "type": "heading",
+          "depth": 3,
+          "children": [
+            {
+              "type": "text",
+              "value": "正则阈值速查"
+            }
+          ],
+          "data": {
+            "headingId": "正则阈值速查"
+          }
+        },
+        {
+          "type": "table",
+          "align": [
+            null,
+            null
+          ],
+          "children": [
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "阈值"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "正则"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "≥ 1s"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "duration=([1-9]\\d{3,})\\.?\\d*ms"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "≥ 3s"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "duration=([3-9]\\d{3,})\\.?\\d*ms"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "≥ 5s"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "duration=([5-9]\\d{3,})\\.?\\d*ms"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "tableRow",
+              "children": [
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "≥ 10s"
+                    }
+                  ]
+                },
+                {
+                  "type": "tableCell",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "duration=([1-9]\\d{4,})\\.?\\d*ms"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "depth": 2,
+          "children": [
+            {
+              "type": "text",
+              "value": "Checklist：以后建表必做"
+            }
+          ],
+          "data": {
+            "headingId": "checklist以后建表必做"
+          }
+        },
+        {
+          "type": "list",
+          "ordered": false,
+          "start": null,
+          "spread": false,
+          "children": [
+            {
+              "type": "listItem",
+              "spread": false,
+              "checked": false,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "每个 GORM 模型的 "
+                    },
+                    {
+                      "type": "inlineCode",
+                      "value": "WHERE"
+                    },
+                    {
+                      "type": "text",
+                      "value": " 条件字段 → 建索引"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "spread": false,
+              "checked": false,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "ORDER BY"
+                    },
+                    {
+                      "type": "text",
+                      "value": " 字段如果数据量大 → 考虑联合索引"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "spread": false,
+              "checked": false,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "type": "inlineCode",
+                      "value": "OR"
+                    },
+                    {
+                      "type": "text",
+                      "value": " 条件涉及的字段 → 分别建索引 + 考虑 "
+                    },
+                    {
+                      "type": "inlineCode",
+                      "value": "UNION"
+                    },
+                    {
+                      "type": "text",
+                      "value": " 改写"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "spread": false,
+              "checked": false,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "软删除表 → 建部分索引 "
+                    },
+                    {
+                      "type": "inlineCode",
+                      "value": "WHERE deleted_at IS NULL"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "spread": false,
+              "checked": false,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "建完索引后 "
+                    },
+                    {
+                      "type": "inlineCode",
+                      "value": "ANALYZE"
+                    },
+                    {
+                      "type": "text",
+                      "value": " 更新统计信息"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "spread": false,
+              "checked": false,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "GORM 配置 "
+                    },
+                    {
+                      "type": "inlineCode",
+                      "value": "SlowThreshold"
+                    },
+                    {
+                      "type": "text",
+                      "value": " + JSON 日志输出"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "listItem",
+              "spread": false,
+              "checked": false,
+              "children": [
+                {
+                  "type": "paragraph",
+                  "children": [
+                    {
+                      "type": "text",
+                      "value": "夜莺配慢 SQL 告警（> 1s 触发）"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "heading",
+          "depth": 2,
+          "children": [
+            {
+              "type": "text",
+              "value": "关联"
+            }
+          ],
+          "data": {
+            "headingId": "关联"
+          }
+        },
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "索引为什么能加速查询、B+Tree 为什么适合做数据库索引，见 "
+            },
+            {
+              "type": "wikiLink",
+              "value": "MySQL索引与B+Tree底层实现好处",
+              "data": {
+                "target": "MySQL索引与B+Tree底层实现好处",
+                "exists": true,
+                "permalink": "/notes/MySQL%E7%B4%A2%E5%BC%95%E4%B8%8EB%2BTree%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%A5%BD%E5%A4%84/"
+              }
+            },
+            {
+              "type": "text",
+              "value": "。"
+            }
+          ]
+        },
+        {
+          "type": "blockquote",
+          "children": [
+            {
+              "type": "paragraph",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "一句话总结\n全表扫描 + 无索引 = 生产事故。GORM 不会帮你建索引，自己长点心。"
+                }
+              ]
+            }
+          ],
+          "data": {
+            "callout": "danger"
+          }
         }
       ]
     }

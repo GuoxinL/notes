@@ -4,7 +4,7 @@
   "slug": "Markdown 全功能示例",
   "title": "Markdown 全功能示例",
   "date": "2026-09-15",
-  "updated": "2026-09-18",
+  "updated": "2026-09-20",
   "description": "一篇覆盖写作模块计划支持的全部 Markdown 功能的示例文章。",
   "tags": [
     "markdown",
@@ -139,6 +139,10 @@
     }
   ],
   "history": [
+    {
+      "date": "2026-09-20",
+      "message": "feat: 新增专栏 series 聚合（build/series.json）+ 存量 series 字段迁移"
+    },
     {
       "date": "2026-09-18",
       "message": "docs(sample): 示例文章补充多级标题示例（三~六级）"
