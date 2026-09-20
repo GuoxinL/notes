@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-19T03:14:48.291Z",
+  "generatedAt": "2026-09-20T02:56:33.950Z",
   "sourceRef": "GuoxinL/notes",
   "toolchain": {
-    "node": "24.20.0",
+    "node": "22.22.2",
     "builder": "notes-build"
   },
   "posts": [
@@ -21,6 +21,10 @@
         "图表"
       ],
       "status": "evergreen",
+      "series": {
+        "name": "Markdown 实战",
+        "order": 3
+      },
       "readingTime": {
         "minutes": 24,
         "words": 7298

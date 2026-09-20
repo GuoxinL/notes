@@ -1,8 +1,16 @@
 ---
 title: Mermaid 图种全览（渲染测试）
 date: 2026-09-18
-tags: [mermaid, markdown, 测试, 图表]
+tags:
+  - mermaid
+  - markdown
+  - 测试
+  - 图表
 description: 逐个渲染本站支持的 Mermaid 图种，用于验证渲染能力与语法关键字。覆盖流程、时序、类、状态、ER、旅程、甘特、饼图、四象限、需求、Git、思维导图、时间线、C4，以及 Sankey、Block、Packet、Kanban、Architecture、XY、Radar、Treemap、Use Case 等 Beta 图种。
+series:
+  name: Markdown 实战
+  order: 3
+  total: 3
 ---
 
 本文是 **Mermaid 渲染能力测试页**：每个小节给出该图种的**语法关键字**（即 ` ```mermaid ` 代码块的第一行）与一个最小可渲染示例，用于验证当前站点能否正确渲染。

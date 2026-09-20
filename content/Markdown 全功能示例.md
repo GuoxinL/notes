@@ -7,7 +7,7 @@ status: evergreen
 series:
   name: Markdown 实战
   order: 1
-  total: 2
+  total: 3
 ---
 
 ## 基础文本样式

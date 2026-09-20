@@ -13,6 +13,15 @@
     "图表"
   ],
   "status": "evergreen",
+  "series": {
+    "name": "Markdown 实战",
+    "order": 3,
+    "total": 3,
+    "prev": {
+      "slug": "Qwik 与 SSR 笔记",
+      "title": "Qwik 与 SSR 笔记"
+    }
+  },
   "readingTime": {
     "minutes": 24,
     "words": 7298
@@ -1382,6 +1391,10 @@
     }
   ],
   "history": [
+    {
+      "date": "2026-09-19",
+      "message": "docs(notes): Mermaid 全览扒入 mermaid.live 全部 Sample Diagrams，按图种归类（每类多示例）"
+    },
     {
       "date": "2026-09-19",
       "message": "docs(notes): Mermaid 全览链接别名改为带图名、自我说明"
