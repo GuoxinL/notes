@@ -15,192 +15,192 @@
   ],
   "status": "evergreen",
   "readingTime": {
-    "minutes": 6,
-    "words": 1816
+    "minutes": 7,
+    "words": 1989
   },
   "headings": [
     {
-      "depth": 3,
+      "depth": 2,
       "text": "1. 椭圆曲线基础",
       "slug": "1-椭圆曲线基础"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "1.1 方程",
       "slug": "11-方程"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "1.2 常见椭圆曲线（256-bit 主流）",
       "slug": "12-常见椭圆曲线256-bit-主流"
     },
     {
-      "depth": 3,
+      "depth": 2,
       "text": "2. 私钥",
       "slug": "2-私钥"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "2.1 本质",
       "slug": "21-本质"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "2.2 三种表示方法对比",
       "slug": "22-三种表示方法对比"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "2.3 PKCS#8 内部结构（最常见）",
       "slug": "23-pkcs8-内部结构最常见"
     },
     {
-      "depth": 3,
+      "depth": 2,
       "text": "3. 公钥",
       "slug": "3-公钥"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "3.1 本质",
       "slug": "31-本质"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "3.2 四种表示方法",
       "slug": "32-四种表示方法"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "3.3 X.509 SubjectPublicKeyInfo 结构",
       "slug": "33-x509-subjectpublickeyinfo-结构"
     },
     {
-      "depth": 3,
+      "depth": 2,
       "text": "4. 签名",
       "slug": "4-签名"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "4.1 签名流程（一般）",
       "slug": "41-签名流程一般"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "4.2 SM2 签名特殊性",
       "slug": "42-sm2-签名特殊性"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "4.3 签名实现注意",
       "slug": "43-签名实现注意"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "4.4 签名值 (r, s) 表示",
       "slug": "44-签名值-r-s-表示"
     },
     {
-      "depth": 3,
+      "depth": 2,
       "text": "5. 地址",
       "slug": "5-地址"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "5.1 为何不直接用公钥？",
       "slug": "51-为何不直接用公钥"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "5.2 比特币地址算法（P2PKH）",
       "slug": "52-比特币地址算法p2pkh"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "5.3 以太坊地址算法（长安链主用）",
       "slug": "53-以太坊地址算法长安链主用"
     },
     {
-      "depth": 3,
+      "depth": 2,
       "text": "6. 节点 nodeid（libp2p）",
       "slug": "6-节点-nodeidlibp2p"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "6.1 概念",
       "slug": "61-概念"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "6.2 为什么 K1 是 16U 开头，其他是 Qm 开头？",
       "slug": "62-为什么-k1-是-16u-开头其他是-qm-开头"
     },
     {
-      "depth": 3,
+      "depth": 2,
       "text": "7. x509 证书",
       "slug": "7-x509-证书"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "7.1 编码链路",
       "slug": "71-编码链路"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "7.2 关键字段：SKI（Subject Key Identifier）",
       "slug": "72-关键字段skisubject-key-identifier"
     },
     {
-      "depth": 3,
+      "depth": 2,
       "text": "8. 密码机 / KMS",
       "slug": "8-密码机-kms"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "8.1 核心目标",
       "slug": "81-核心目标"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "8.2 接入方式",
       "slug": "82-接入方式"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "8.3 调用流程",
       "slug": "83-调用流程"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "8.4 KMS（云密码机）",
       "slug": "84-kms云密码机"
     },
     {
-      "depth": 3,
+      "depth": 2,
       "text": "9. 加解密（拓展）",
       "slug": "9-加解密拓展"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "9.1 非对称加解密",
       "slug": "91-非对称加解密"
     },
     {
-      "depth": 4,
+      "depth": 3,
       "text": "9.2 对称加解密",
       "slug": "92-对称加解密"
     },
     {
-      "depth": 3,
+      "depth": 2,
       "text": "附录 A：关键速查表",
       "slug": "附录-a关键速查表"
     },
     {
-      "depth": 3,
+      "depth": 2,
       "text": "附录 B：常见 OID",
       "slug": "附录-b常见-oid"
     },
     {
-      "depth": 3,
+      "depth": 2,
       "text": "附录 C：长安链私钥使用规范",
       "slug": "附录-c长安链私钥使用规范"
     }
@@ -216,17 +216,30 @@
     "type": "root",
     "children": [
       {
-        "type": "paragraph",
+        "type": "blockquote",
         "children": [
           {
-            "type": "text",
-            "value": "来源：C:\\node\\学无止境\\密码学\\椭圆曲线公私钥应用基础.md（36 张配图）\n主题：椭圆曲线数学基础 + 私钥/公钥/签名/地址 各种编码格式 + 实际应用（密码机、SM2 加密、libp2p 节点 ID）"
+            "type": "paragraph",
+            "children": [
+              {
+                "type": "text",
+                "value": "来源："
+              },
+              {
+                "type": "inlineCode",
+                "value": "C:\\node\\学无止境\\密码学\\椭圆曲线公私钥应用基础.md"
+              },
+              {
+                "type": "text",
+                "value": "（36 张配图）\n主题：椭圆曲线数学基础 + 私钥 / 公钥 / 签名 / 地址各种编码格式 + 实际应用（密码机、SM2 加密、libp2p 节点 ID）"
+              }
+            ]
           }
         ]
       },
       {
         "type": "heading",
-        "depth": 3,
+        "depth": 2,
         "children": [
           {
             "type": "text",
@@ -239,7 +252,7 @@
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -251,49 +264,108 @@
         }
       },
       {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "y² = x³ + a·x + b  mod p"
-          }
-        ]
+        "type": "math",
+        "meta": null,
+        "value": "y^2 \\equiv x^3 + ax + b \\pmod p",
+        "data": {
+          "hName": "pre",
+          "hChildren": [
+            {
+              "type": "element",
+              "tagName": "code",
+              "properties": {
+                "className": [
+                  "language-math",
+                  "math-display"
+                ]
+              },
+              "children": [
+                {
+                  "type": "text",
+                  "value": "y^2 \\equiv x^3 + ax + b \\pmod p"
+                }
+              ]
+            }
+          ]
+        }
       },
       {
         "type": "paragraph",
         "children": [
           {
-            "type": "text",
-            "value": "在有限域 Fp 上定义（p 为素数）"
-          }
-        ]
-      },
-      {
-        "type": "list",
-        "ordered": false,
-        "start": null,
-        "spread": false,
-        "children": [
-          {
-            "type": "listItem",
-            "spread": false,
-            "checked": null,
-            "children": []
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
+            "type": "inlineMath",
+            "value": "p",
+            "data": {
+              "hName": "code",
+              "hProperties": {
+                "className": [
+                  "language-math",
+                  "math-inline"
+                ]
+              },
+              "hChildren": [
+                {
+                  "type": "text",
+                  "value": "p"
+                }
+              ]
+            }
+          },
           {
             "type": "text",
-            "value": "曲线上的点 G 称为生成点（基点 Base Point）"
+            "value": " 为素数，曲线定义在有限域 "
+          },
+          {
+            "type": "inlineMath",
+            "value": "\\mathbb{F}_p",
+            "data": {
+              "hName": "code",
+              "hProperties": {
+                "className": [
+                  "language-math",
+                  "math-inline"
+                ]
+              },
+              "hChildren": [
+                {
+                  "type": "text",
+                  "value": "\\mathbb{F}_p"
+                }
+              ]
+            }
+          },
+          {
+            "type": "text",
+            "value": " 上；曲线上的点 "
+          },
+          {
+            "type": "inlineMath",
+            "value": "G",
+            "data": {
+              "hName": "code",
+              "hProperties": {
+                "className": [
+                  "language-math",
+                  "math-inline"
+                ]
+              },
+              "hChildren": [
+                {
+                  "type": "text",
+                  "value": "G"
+                }
+              ]
+            }
+          },
+          {
+            "type": "text",
+            "value": " 称为生成点（基点 Base Point）。"
           }
         ]
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -319,23 +391,48 @@
             "children": [
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "曲线"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "归属"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "典型场景"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "方程"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "备注"
+                  }
+                ]
               }
             ]
           },
@@ -373,8 +470,23 @@
                 "type": "tableCell",
                 "children": [
                   {
-                    "type": "text",
-                    "value": "y² = x³ + ax + b"
+                    "type": "inlineMath",
+                    "value": "y^2 = x^3 + ax + b",
+                    "data": {
+                      "hName": "code",
+                      "hProperties": {
+                        "className": [
+                          "language-math",
+                          "math-inline"
+                        ]
+                      },
+                      "hChildren": [
+                        {
+                          "type": "text",
+                          "value": "y^2 = x^3 + ax + b"
+                        }
+                      ]
+                    }
                   }
                 ]
               },
@@ -423,8 +535,23 @@
                 "type": "tableCell",
                 "children": [
                   {
-                    "type": "text",
-                    "value": "y² = x³ + ax + b"
+                    "type": "inlineMath",
+                    "value": "y^2 = x^3 + ax + b",
+                    "data": {
+                      "hName": "code",
+                      "hProperties": {
+                        "className": [
+                          "language-math",
+                          "math-inline"
+                        ]
+                      },
+                      "hChildren": [
+                        {
+                          "type": "text",
+                          "value": "y^2 = x^3 + ax + b"
+                        }
+                      ]
+                    }
                   }
                 ]
               },
@@ -432,8 +559,50 @@
                 "type": "tableCell",
                 "children": [
                   {
+                    "type": "inlineMath",
+                    "value": "a",
+                    "data": {
+                      "hName": "code",
+                      "hProperties": {
+                        "className": [
+                          "language-math",
+                          "math-inline"
+                        ]
+                      },
+                      "hChildren": [
+                        {
+                          "type": "text",
+                          "value": "a"
+                        }
+                      ]
+                    }
+                  },
+                  {
                     "type": "text",
-                    "value": "a, b 均非零"
+                    "value": "、"
+                  },
+                  {
+                    "type": "inlineMath",
+                    "value": "b",
+                    "data": {
+                      "hName": "code",
+                      "hProperties": {
+                        "className": [
+                          "language-math",
+                          "math-inline"
+                        ]
+                      },
+                      "hChildren": [
+                        {
+                          "type": "text",
+                          "value": "b"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "value": " 均非零"
                   }
                 ]
               }
@@ -473,8 +642,23 @@
                 "type": "tableCell",
                 "children": [
                   {
-                    "type": "text",
-                    "value": "y² = x³ + 7"
+                    "type": "inlineMath",
+                    "value": "y^2 = x^3 + 7",
+                    "data": {
+                      "hName": "code",
+                      "hProperties": {
+                        "className": [
+                          "language-math",
+                          "math-inline"
+                        ]
+                      },
+                      "hChildren": [
+                        {
+                          "type": "text",
+                          "value": "y^2 = x^3 + 7"
+                        }
+                      ]
+                    }
                   }
                 ]
               },
@@ -482,8 +666,50 @@
                 "type": "tableCell",
                 "children": [
                   {
+                    "type": "inlineMath",
+                    "value": "a = 0",
+                    "data": {
+                      "hName": "code",
+                      "hProperties": {
+                        "className": [
+                          "language-math",
+                          "math-inline"
+                        ]
+                      },
+                      "hChildren": [
+                        {
+                          "type": "text",
+                          "value": "a = 0"
+                        }
+                      ]
+                    }
+                  },
+                  {
                     "type": "text",
-                    "value": "a=0, b=7（简化）"
+                    "value": "、"
+                  },
+                  {
+                    "type": "inlineMath",
+                    "value": "b = 7",
+                    "data": {
+                      "hName": "code",
+                      "hProperties": {
+                        "className": [
+                          "language-math",
+                          "math-inline"
+                        ]
+                      },
+                      "hChildren": [
+                        {
+                          "type": "text",
+                          "value": "b = 7"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "value": "（简化）"
                   }
                 ]
               }
@@ -546,13 +772,114 @@
         "children": [
           {
             "type": "text",
-            "value": "关键差异：K1 曲线 a=0, b=7（参数最简），P-256 / SM2 a,b 均非零。不同曲线的私钥不能互通。"
+            "value": "关键差异：K1 曲线 "
+          },
+          {
+            "type": "inlineMath",
+            "value": "a = 0",
+            "data": {
+              "hName": "code",
+              "hProperties": {
+                "className": [
+                  "language-math",
+                  "math-inline"
+                ]
+              },
+              "hChildren": [
+                {
+                  "type": "text",
+                  "value": "a = 0"
+                }
+              ]
+            }
+          },
+          {
+            "type": "text",
+            "value": "、"
+          },
+          {
+            "type": "inlineMath",
+            "value": "b = 7",
+            "data": {
+              "hName": "code",
+              "hProperties": {
+                "className": [
+                  "language-math",
+                  "math-inline"
+                ]
+              },
+              "hChildren": [
+                {
+                  "type": "text",
+                  "value": "b = 7"
+                }
+              ]
+            }
+          },
+          {
+            "type": "text",
+            "value": "（参数最简），P-256 / SM2 的 "
+          },
+          {
+            "type": "inlineMath",
+            "value": "a",
+            "data": {
+              "hName": "code",
+              "hProperties": {
+                "className": [
+                  "language-math",
+                  "math-inline"
+                ]
+              },
+              "hChildren": [
+                {
+                  "type": "text",
+                  "value": "a"
+                }
+              ]
+            }
+          },
+          {
+            "type": "text",
+            "value": "、"
+          },
+          {
+            "type": "inlineMath",
+            "value": "b",
+            "data": {
+              "hName": "code",
+              "hProperties": {
+                "className": [
+                  "language-math",
+                  "math-inline"
+                ]
+              },
+              "hChildren": [
+                {
+                  "type": "text",
+                  "value": "b"
+                }
+              ]
+            }
+          },
+          {
+            "type": "text",
+            "value": " 均非零。"
+          },
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "text",
+                "value": "不同曲线的私钥不能互通。"
+              }
+            ]
           }
         ]
       },
       {
         "type": "heading",
-        "depth": 3,
+        "depth": 2,
         "children": [
           {
             "type": "text",
@@ -565,7 +892,7 @@
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -577,15 +904,6 @@
         }
       },
       {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "一个大整数（256-bit = 32 bytes）"
-          }
-        ]
-      },
-      {
         "type": "list",
         "ordered": false,
         "start": null,
@@ -595,22 +913,85 @@
             "type": "listItem",
             "spread": false,
             "checked": null,
-            "children": []
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "本质是一个大整数：256-bit = 32 bytes"
+                  }
+                ]
+              }
+            ]
+          },
           {
-            "type": "text",
-            "value": "闭区间 [1, n-1]，n 是曲线阶（order）"
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "取值范围：闭区间 "
+                  },
+                  {
+                    "type": "inlineMath",
+                    "value": "[1, n-1]",
+                    "data": {
+                      "hName": "code",
+                      "hProperties": {
+                        "className": [
+                          "language-math",
+                          "math-inline"
+                        ]
+                      },
+                      "hChildren": [
+                        {
+                          "type": "text",
+                          "value": "[1, n-1]"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "value": "，"
+                  },
+                  {
+                    "type": "inlineMath",
+                    "value": "n",
+                    "data": {
+                      "hName": "code",
+                      "hProperties": {
+                        "className": [
+                          "language-math",
+                          "math-inline"
+                        ]
+                      },
+                      "hChildren": [
+                        {
+                          "type": "text",
+                          "value": "n"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "value": " 为曲线阶（order）"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -636,23 +1017,48 @@
             "children": [
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "表示方法"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "长度"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "PEM 头"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "编码方式"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "长安链用法"
+                  }
+                ]
               }
             ]
           },
@@ -700,7 +1106,7 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "长安链 PK 模式（K1 曲线）"
+                    "value": "PK 模式（K1 曲线）"
                   }
                 ]
               }
@@ -731,7 +1137,7 @@
                 "type": "tableCell",
                 "children": [
                   {
-                    "type": "text",
+                    "type": "inlineCode",
                     "value": "BEGIN PRIVATE KEY"
                   }
                 ]
@@ -750,7 +1156,7 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "长安链国密（最通用）"
+                    "value": "国密（最通用）"
                   }
                 ]
               }
@@ -781,7 +1187,7 @@
                 "type": "tableCell",
                 "children": [
                   {
-                    "type": "text",
+                    "type": "inlineCode",
                     "value": "BEGIN EC PRIVATE KEY"
                   }
                 ]
@@ -800,7 +1206,7 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "长安链非国密（历史原因）"
+                    "value": "非国密（历史原因）"
                   }
                 ]
               }
@@ -810,7 +1216,7 @@
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -828,17 +1234,33 @@
         "value": "PrivateKeyInfo ::= SEQUENCE {\n    version                Version,            -- 0\n    privateKeyAlgorithm    AlgorithmIdentifier, -- EC + SM2\n    privateKey             OCTET STRING,        -- 嵌套 ECPrivateKey\n    attributes         [0] IMPLICIT Attributes OPTIONAL\n}\n\nECPrivateKey ::= SEQUENCE {\n    version         INTEGER { ecPrivkeyVer1(1) } -- 1\n    privateKey      OCTET STRING                  -- d（32 bytes 核心私钥）\n    parameters  [0] OBJECT IDENTIFIER OPTIONAL   -- 曲线 OID（如 SM2）\n    publicKey   [1] BIT STRING OPTIONAL           -- Q（68 bytes，含 04）\n}"
       },
       {
-        "type": "paragraph",
+        "type": "blockquote",
         "children": [
           {
-            "type": "text",
-            "value": "DER 编码注意：r/s 最高位是 1 时需加 0x00 前导，确保整数为正数。"
+            "type": "paragraph",
+            "children": [
+              {
+                "type": "text",
+                "value": "DER 编码注意\nr/s 最高位是 1 时需加 "
+              },
+              {
+                "type": "inlineCode",
+                "value": "0x00"
+              },
+              {
+                "type": "text",
+                "value": " 前导，确保整数为正数。"
+              }
+            ]
           }
-        ]
+        ],
+        "data": {
+          "callout": "warning"
+        }
       },
       {
         "type": "heading",
-        "depth": 3,
+        "depth": 2,
         "children": [
           {
             "type": "text",
@@ -851,7 +1273,7 @@
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -867,36 +1289,117 @@
         "children": [
           {
             "type": "text",
-            "value": "椭圆曲线上的坐标点 (x, y)，两个大整数"
+            "value": "椭圆曲线上的坐标点 "
+          },
+          {
+            "type": "inlineMath",
+            "value": "(x, y)",
+            "data": {
+              "hName": "code",
+              "hProperties": {
+                "className": [
+                  "language-math",
+                  "math-inline"
+                ]
+              },
+              "hChildren": [
+                {
+                  "type": "text",
+                  "value": "(x, y)"
+                }
+              ]
+            }
+          },
+          {
+            "type": "text",
+            "value": "，即两个大整数；由私钥 "
+          },
+          {
+            "type": "inlineMath",
+            "value": "d",
+            "data": {
+              "hName": "code",
+              "hProperties": {
+                "className": [
+                  "language-math",
+                  "math-inline"
+                ]
+              },
+              "hChildren": [
+                {
+                  "type": "text",
+                  "value": "d"
+                }
+              ]
+            }
+          },
+          {
+            "type": "text",
+            "value": " 计算得到："
           }
         ]
       },
       {
-        "type": "list",
-        "ordered": false,
-        "start": null,
-        "spread": false,
-        "children": [
-          {
-            "type": "listItem",
-            "spread": false,
-            "checked": null,
-            "children": []
-          }
-        ]
+        "type": "math",
+        "meta": null,
+        "value": "Q = d \\cdot G",
+        "data": {
+          "hName": "pre",
+          "hChildren": [
+            {
+              "type": "element",
+              "tagName": "code",
+              "properties": {
+                "className": [
+                  "language-math",
+                  "math-display"
+                ]
+              },
+              "children": [
+                {
+                  "type": "text",
+                  "value": "Q = d \\cdot G"
+                }
+              ]
+            }
+          ]
+        }
       },
       {
         "type": "paragraph",
         "children": [
           {
             "type": "text",
-            "value": "由私钥 d 计算：Q = d·G（G 是基点）"
+            "value": "其中 "
+          },
+          {
+            "type": "inlineMath",
+            "value": "G",
+            "data": {
+              "hName": "code",
+              "hProperties": {
+                "className": [
+                  "language-math",
+                  "math-inline"
+                ]
+              },
+              "hChildren": [
+                {
+                  "type": "text",
+                  "value": "G"
+                }
+              ]
+            }
+          },
+          {
+            "type": "text",
+            "value": " 是基点。"
           }
         ]
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -912,7 +1415,6 @@
         "align": [
           null,
           null,
-          null,
           null
         ],
         "children": [
@@ -921,19 +1423,30 @@
             "children": [
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "表示方法"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "长度"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
-              },
-              {
-                "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "结构"
+                  }
+                ]
               }
             ]
           },
@@ -962,14 +1475,22 @@
                 "type": "tableCell",
                 "children": [
                   {
+                    "type": "inlineCode",
+                    "value": "x"
+                  },
+                  {
                     "type": "text",
-                    "value": "`x"
+                    "value": " + "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "y"
+                  },
+                  {
+                    "type": "text",
+                    "value": " 直接拼接"
                   }
                 ]
-              },
-              {
-                "type": "tableCell",
-                "children": []
               }
             ]
           },
@@ -998,14 +1519,26 @@
                 "type": "tableCell",
                 "children": [
                   {
+                    "type": "inlineCode",
+                    "value": "0x02"
+                  },
+                  {
                     "type": "text",
-                    "value": "`0x02/0x03"
+                    "value": " / "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "0x03"
+                  },
+                  {
+                    "type": "text",
+                    "value": " + "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "x"
                   }
                 ]
-              },
-              {
-                "type": "tableCell",
-                "children": []
               }
             ]
           },
@@ -1034,14 +1567,26 @@
                 "type": "tableCell",
                 "children": [
                   {
+                    "type": "inlineCode",
+                    "value": "0x04"
+                  },
+                  {
                     "type": "text",
-                    "value": "`0x04"
+                    "value": " + "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "x"
+                  },
+                  {
+                    "type": "text",
+                    "value": " + "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "y"
                   }
                 ]
-              },
-              {
-                "type": "tableCell",
-                "children": []
               }
             ]
           },
@@ -1071,16 +1616,15 @@
                 "children": [
                   {
                     "type": "text",
+                    "value": "PEM 头 "
+                  },
+                  {
+                    "type": "inlineCode",
                     "value": "BEGIN PUBLIC KEY"
-                  }
-                ]
-              },
-              {
-                "type": "tableCell",
-                "children": [
+                  },
                   {
                     "type": "text",
-                    "value": "SubjectPublicKeyInfo（最正式）"
+                    "value": "，即 SubjectPublicKeyInfo（最正式）"
                   }
                 ]
               }
@@ -1112,8 +1656,32 @@
                 "type": "paragraph",
                 "children": [
                   {
+                    "type": "inlineCode",
+                    "value": "0x02"
+                  },
+                  {
                     "type": "text",
-                    "value": "0x02 → y 坐标是偶数"
+                    "value": " → y 坐标是偶数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "0x03"
+                  },
+                  {
+                    "type": "text",
+                    "value": " → y 坐标是奇数"
                   }
                 ]
               }
@@ -1129,23 +1697,26 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "0x03 → y 坐标是奇数"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "listItem",
-            "spread": false,
-            "checked": null,
-            "children": [
-              {
-                "type": "paragraph",
-                "children": [
+                    "value": "由 x 解 y："
+                  },
                   {
-                    "type": "text",
-                    "value": "由 x 解 y：y = √(x³ + ax + b) mod p"
+                    "type": "inlineMath",
+                    "value": "y = \\sqrt{x^3 + ax + b} \\bmod p",
+                    "data": {
+                      "hName": "code",
+                      "hProperties": {
+                        "className": [
+                          "language-math",
+                          "math-inline"
+                        ]
+                      },
+                      "hChildren": [
+                        {
+                          "type": "text",
+                          "value": "y = \\sqrt{x^3 + ax + b} \\bmod p"
+                        }
+                      ]
+                    }
                   }
                 ]
               }
@@ -1155,7 +1726,7 @@
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -1174,7 +1745,7 @@
       },
       {
         "type": "heading",
-        "depth": 3,
+        "depth": 2,
         "children": [
           {
             "type": "text",
@@ -1187,7 +1758,7 @@
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -1199,13 +1770,10 @@
         }
       },
       {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "msg bytes → hash(msg) → 用私钥签 → 签名值 (r, s)"
-          }
-        ]
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "msg bytes → hash(msg) → 用私钥签 → 签名值 (r, s)"
       },
       {
         "type": "paragraph",
@@ -1229,15 +1797,30 @@
             "children": [
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "签名算法"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "哈希算法"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "说明"
+                  }
+                ]
               }
             ]
           },
@@ -1281,7 +1864,7 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "其他（K1, P-256 等）"
+                    "value": "其他（K1、P-256 等）"
                   }
                 ]
               },
@@ -1309,7 +1892,7 @@
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -1325,49 +1908,127 @@
         "children": [
           {
             "type": "text",
-            "value": "关键差异：不是对 msg 直接哈希，而是对 ZA || M 哈希"
+            "value": "关键差异："
+          },
+          {
+            "type": "strong",
+            "children": [
+              {
+                "type": "text",
+                "value": "不是对 msg 直接哈希，而是对 ZA + M 哈希"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "value": "。"
           }
         ]
       },
       {
-        "type": "code",
-        "lang": null,
+        "type": "math",
         "meta": null,
-        "value": "ZA = SM3(ENTL || UID || a || b || Gx || Gy || Px || Py)\n    ↓\nM' = SM3(ZA || M)  -- 用户身份摘要 + 消息\n    ↓\n用 M' 生成签名 (r, s)"
+        "value": "ZA = \\mathrm{SM3}(\\mathrm{ENTL} \\parallel \\mathrm{UID} \\parallel a \\parallel b \\parallel G_x \\parallel G_y \\parallel P_x \\parallel P_y)",
+        "data": {
+          "hName": "pre",
+          "hChildren": [
+            {
+              "type": "element",
+              "tagName": "code",
+              "properties": {
+                "className": [
+                  "language-math",
+                  "math-display"
+                ]
+              },
+              "children": [
+                {
+                  "type": "text",
+                  "value": "ZA = \\mathrm{SM3}(\\mathrm{ENTL} \\parallel \\mathrm{UID} \\parallel a \\parallel b \\parallel G_x \\parallel G_y \\parallel P_x \\parallel P_y)"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "math",
+        "meta": null,
+        "value": "M' = \\mathrm{SM3}(ZA \\parallel M)",
+        "data": {
+          "hName": "pre",
+          "hChildren": [
+            {
+              "type": "element",
+              "tagName": "code",
+              "properties": {
+                "className": [
+                  "language-math",
+                  "math-display"
+                ]
+              },
+              "children": [
+                {
+                  "type": "text",
+                  "value": "M' = \\mathrm{SM3}(ZA \\parallel M)"
+                }
+              ]
+            }
+          ]
+        }
       },
       {
         "type": "paragraph",
         "children": [
           {
             "type": "text",
-            "value": "ENTL = UID 的 bit 长度"
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
+            "value": "最后用 "
+          },
+          {
+            "type": "inlineMath",
+            "value": "M'",
+            "data": {
+              "hName": "code",
+              "hProperties": {
+                "className": [
+                  "language-math",
+                  "math-inline"
+                ]
+              },
+              "hChildren": [
+                {
+                  "type": "text",
+                  "value": "M'"
+                }
+              ]
+            }
+          },
           {
             "type": "text",
-            "value": "UID：用户唯一标识（默认 16 字符 \"1234567812345678\"）"
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
+            "value": " 生成签名 "
+          },
+          {
+            "type": "inlineMath",
+            "value": "(r, s)",
+            "data": {
+              "hName": "code",
+              "hProperties": {
+                "className": [
+                  "language-math",
+                  "math-inline"
+                ]
+              },
+              "hChildren": [
+                {
+                  "type": "text",
+                  "value": "(r, s)"
+                }
+              ]
+            }
+          },
           {
             "type": "text",
-            "value": "a, b：椭圆曲线参数"
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "Gx, Gy：基点坐标"
+            "value": "。各字段含义："
           }
         ]
       },
@@ -1381,22 +2042,139 @@
             "type": "listItem",
             "spread": false,
             "checked": null,
-            "children": []
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "ENTL"
+                  },
+                  {
+                    "type": "text",
+                    "value": "：UID 的 bit 长度"
+                  }
+                ]
+              }
+            ]
+          },
           {
-            "type": "text",
-            "value": "Px, Py：用户公钥坐标"
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "UID"
+                  },
+                  {
+                    "type": "text",
+                    "value": "：用户唯一标识（默认 16 字符 "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "1234567812345678"
+                  },
+                  {
+                    "type": "text",
+                    "value": "）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "a"
+                  },
+                  {
+                    "type": "text",
+                    "value": "、"
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "b"
+                  },
+                  {
+                    "type": "text",
+                    "value": "：椭圆曲线参数"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "Gx"
+                  },
+                  {
+                    "type": "text",
+                    "value": "、"
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "Gy"
+                  },
+                  {
+                    "type": "text",
+                    "value": "：基点坐标"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "Px"
+                  },
+                  {
+                    "type": "text",
+                    "value": "、"
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "Py"
+                  },
+                  {
+                    "type": "text",
+                    "value": "：用户公钥坐标"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -1408,24 +2186,6 @@
         }
       },
       {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "signWithOpts / verifyWithOpts：哈希在函数内完成（传 Opts 指定哈希算法）"
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "sign / verify：需自己预先哈希好"
-          }
-        ]
-      },
-      {
         "type": "list",
         "ordered": false,
         "start": null,
@@ -1435,22 +2195,63 @@
             "type": "listItem",
             "spread": false,
             "checked": null,
-            "children": []
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "signWithOpts"
+                  },
+                  {
+                    "type": "text",
+                    "value": " / "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "verifyWithOpts"
+                  },
+                  {
+                    "type": "text",
+                    "value": "：哈希在函数内完成（传 Opts 指定哈希算法）"
+                  }
+                ]
+              }
+            ]
+          },
           {
-            "type": "text",
-            "value": "防止没哈希 / 二次哈希 的 bug"
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "sign"
+                  },
+                  {
+                    "type": "text",
+                    "value": " / "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "verify"
+                  },
+                  {
+                    "type": "text",
+                    "value": "：需自己预先哈希好，防止「没哈希 / 二次哈希」的 bug"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -1462,26 +2263,178 @@
         }
       },
       {
-        "type": "paragraph",
+        "type": "list",
+        "ordered": false,
+        "start": null,
+        "spread": false,
         "children": [
           {
-            "type": "text",
-            "value": "r：包含消息摘要的随机大整数（32 bytes）"
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "r"
+                  },
+                  {
+                    "type": "text",
+                    "value": "：包含消息摘要的随机大整数（32 bytes）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "s"
+                  },
+                  {
+                    "type": "text",
+                    "value": "：包含私钥和 r 信息的大整数（32 bytes）"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
       {
-        "type": "paragraph",
+        "type": "table",
+        "align": [
+          null,
+          null,
+          null
+        ],
         "children": [
           {
-            "type": "text",
-            "value": "s：包含私钥和 r 信息的大整数（32 bytes）\n|||\n|---|---|---|\n|raw|64 bytes / 128 hex|`r|\n|asn1|~69 bytes|SEQUENCE { r INTEGER, s INTEGER }（ECDSA-Signature）|"
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "格式"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "长度"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "结构"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "raw"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "64 bytes / 128 hex"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "r"
+                  },
+                  {
+                    "type": "text",
+                    "value": " + "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "s"
+                  },
+                  {
+                    "type": "text",
+                    "value": " 直接拼接"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "tableRow",
+            "children": [
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "asn1"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "~69 bytes"
+                  }
+                ]
+              },
+              {
+                "type": "tableCell",
+                "children": [
+                  {
+                    "type": "inlineCode",
+                    "value": "SEQUENCE { r INTEGER, s INTEGER }"
+                  },
+                  {
+                    "type": "text",
+                    "value": "（ECDSA-Signature）"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
       {
         "type": "heading",
-        "depth": 3,
+        "depth": 2,
         "children": [
           {
             "type": "text",
@@ -1494,7 +2447,7 @@
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -1506,83 +2459,6 @@
         }
       },
       {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "公钥较长（64-65 bytes），不便传输"
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "公钥未经过校验，出错难发现"
-          }
-        ]
-      },
-      {
-        "type": "list",
-        "ordered": false,
-        "start": null,
-        "spread": false,
-        "children": [
-          {
-            "type": "listItem",
-            "spread": false,
-            "checked": null,
-            "children": []
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "通过哈希+校验和得到短地址 + 错误检测"
-          }
-        ]
-      },
-      {
-        "type": "heading",
-        "depth": 4,
-        "children": [
-          {
-            "type": "text",
-            "value": "5.2 比特币地址算法（P2PKH）"
-          }
-        ],
-        "data": {
-          "headingId": "52-比特币地址算法p2pkh"
-        }
-      },
-      {
-        "type": "list",
-        "ordered": false,
-        "start": null,
-        "spread": false,
-        "children": [
-          {
-            "type": "listItem",
-            "spread": false,
-            "checked": null,
-            "children": []
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "生成椭圆曲线公钥"
-          }
-        ]
-      },
-      {
         "type": "list",
         "ordered": false,
         "start": null,
@@ -1598,7 +2474,7 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "secp256k1 曲线"
+                    "value": "公钥较长（64-65 bytes），不便传输"
                   }
                 ]
               }
@@ -1614,94 +2490,7 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "压缩（33 bytes）或未压缩（65 bytes）\n公钥哈希\nH₁ = SHA-256(pubkey)\nH₂ = RIPEMD-160(H₁)        -- 20 字节公钥哈希"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "添加版本字节\n比特币主网 P2PKH: 版本字节 = 0x00\n20 字节 → 21 字节"
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "校验和\nchecksum = SHA-256(SHA-256(前 21 字节))[:4]\n21 字节 → 25 字节"
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "Base58Check 编码\n25 字节 → 25 个 Base58 字符 → 比特币地址\n例: 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
-          }
-        ]
-      },
-      {
-        "type": "heading",
-        "depth": 4,
-        "children": [
-          {
-            "type": "text",
-            "value": "5.3 以太坊地址算法（长安链主用）"
-          }
-        ],
-        "data": {
-          "headingId": "53-以太坊地址算法长安链主用"
-        }
-      },
-      {
-        "type": "list",
-        "ordered": false,
-        "start": null,
-        "spread": false,
-        "children": [
-          {
-            "type": "listItem",
-            "spread": false,
-            "checked": null,
-            "children": []
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "生成椭圆曲线公钥"
-          }
-        ]
-      },
-      {
-        "type": "list",
-        "ordered": false,
-        "start": null,
-        "spread": false,
-        "children": [
-          {
-            "type": "listItem",
-            "spread": false,
-            "checked": null,
-            "children": [
-              {
-                "type": "paragraph",
-                "children": [
-                  {
-                    "type": "text",
-                    "value": "secp256k1 曲线"
+                    "value": "公钥未经过校验，出错难发现"
                   }
                 ]
               }
@@ -1717,95 +2506,7 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "未压缩（64 bytes，去掉前缀 0x04）\nKeccak-256 哈希\nH = Keccak-256(pubkey)    -- 以太坊使用的 SHA3 变体"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "取后 20 字节\naddress = H[12:32]\n例: 0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
-          }
-        ]
-      },
-      {
-        "type": "list",
-        "ordered": false,
-        "start": null,
-        "spread": false,
-        "children": [
-          {
-            "type": "listItem",
-            "spread": false,
-            "checked": null,
-            "children": []
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "可选 EIP-55 校验"
-          }
-        ]
-      },
-      {
-        "type": "list",
-        "ordered": false,
-        "start": null,
-        "spread": false,
-        "children": [
-          {
-            "type": "listItem",
-            "spread": false,
-            "checked": null,
-            "children": [
-              {
-                "type": "paragraph",
-                "children": [
-                  {
-                    "type": "text",
-                    "value": "大小写混合校验"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "listItem",
-            "spread": false,
-            "checked": null,
-            "children": [
-              {
-                "type": "paragraph",
-                "children": [
-                  {
-                    "type": "text",
-                    "value": "通过公钥哈希确定每个字母大小写"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": "listItem",
-            "spread": false,
-            "checked": null,
-            "children": [
-              {
-                "type": "paragraph",
-                "children": [
-                  {
-                    "type": "text",
-                    "value": "防止用户手动输入错误"
+                    "value": "通过哈希 + 校验和，得到短地址 + 错误检测"
                   }
                 ]
               }
@@ -1819,6 +2520,351 @@
         "children": [
           {
             "type": "text",
+            "value": "5.2 比特币地址算法（P2PKH）"
+          }
+        ],
+        "data": {
+          "headingId": "52-比特币地址算法p2pkh"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "start": 1,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "生成椭圆曲线公钥"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：secp256k1 曲线，压缩（33 bytes）或未压缩（65 bytes）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "公钥哈希"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "："
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "H₁ = SHA-256(pubkey)"
+                  },
+                  {
+                    "type": "text",
+                    "value": " → "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "H₂ = RIPEMD-160(H₁)"
+                  },
+                  {
+                    "type": "text",
+                    "value": "（20 字节公钥哈希）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "添加版本字节"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：比特币主网 P2PKH 版本字节 = "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "0x00"
+                  },
+                  {
+                    "type": "text",
+                    "value": "，20 字节 → 21 字节"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "校验和"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "："
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "checksum = SHA-256(SHA-256(前 21 字节))[:4]"
+                  },
+                  {
+                    "type": "text",
+                    "value": "，21 字节 → 25 字节"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "Base58Check 编码"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：25 字节 → 25 个 Base58 字符 → 比特币地址"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "例："
+          },
+          {
+            "type": "inlineCode",
+            "value": "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 3,
+        "children": [
+          {
+            "type": "text",
+            "value": "5.3 以太坊地址算法（长安链主用）"
+          }
+        ],
+        "data": {
+          "headingId": "53-以太坊地址算法长安链主用"
+        }
+      },
+      {
+        "type": "list",
+        "ordered": true,
+        "start": 1,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "生成椭圆曲线公钥"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：secp256k1 曲线，未压缩（64 bytes，去掉前缀 "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "0x04"
+                  },
+                  {
+                    "type": "text",
+                    "value": "）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "Keccak-256 哈希"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "："
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "H = Keccak-256(pubkey)"
+                  },
+                  {
+                    "type": "text",
+                    "value": "（以太坊使用的 SHA3 变体）"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "取后 20 字节"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "："
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "address = H[12:32]"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "strong",
+                    "children": [
+                      {
+                        "type": "text",
+                        "value": "可选 EIP-55 校验"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "text",
+                    "value": "：大小写混合校验，通过公钥哈希确定每个字母的大小写，防止用户手动输入错误"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "例："
+          },
+          {
+            "type": "inlineCode",
+            "value": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 2,
+        "children": [
+          {
+            "type": "text",
             "value": "6. 节点 nodeid（libp2p）"
           }
         ],
@@ -1828,7 +2874,7 @@
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -1844,36 +2890,21 @@
         "children": [
           {
             "type": "text",
-            "value": "libp2p 中节点的唯一标识，由节点的公钥（TLS）推算"
-          }
-        ]
-      },
-      {
-        "type": "list",
-        "ordered": false,
-        "start": null,
-        "spread": false,
-        "children": [
+            "value": "libp2p 中节点的唯一标识，由节点的公钥（TLS）推算，格式为 "
+          },
           {
-            "type": "listItem",
-            "spread": false,
-            "checked": null,
-            "children": []
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
+            "type": "inlineCode",
+            "value": "hash(tag + pubkey)"
+          },
           {
             "type": "text",
-            "value": "格式：hash(tag || pubkey) → Base58"
+            "value": " → Base58。"
           }
         ]
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -1889,7 +2920,7 @@
         "children": [
           {
             "type": "text",
-            "value": "核心：开头几位为哈希算法 tag"
+            "value": "核心：开头几位是哈希算法 tag。"
           }
         ]
       },
@@ -1907,19 +2938,39 @@
             "children": [
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "公钥类型"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "序列化与哈希"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "多哈希 tag"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "节点 ID 长度"
+                  }
+                ]
               }
             ]
           },
@@ -1948,7 +2999,7 @@
                 "type": "tableCell",
                 "children": [
                   {
-                    "type": "text",
+                    "type": "inlineCode",
                     "value": "mh.SHA2_256"
                   }
                 ]
@@ -1989,7 +3040,7 @@
                 "type": "tableCell",
                 "children": [
                   {
-                    "type": "text",
+                    "type": "inlineCode",
                     "value": "mh.ID"
                   }
                 ]
@@ -2030,7 +3081,7 @@
                 "type": "tableCell",
                 "children": [
                   {
-                    "type": "text",
+                    "type": "inlineCode",
                     "value": "mh.SHA2_256"
                   }
                 ]
@@ -2072,23 +3123,48 @@
             "children": [
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "公钥类型"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "原始字节"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "哈希后"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "Base58 解码后"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "字符数"
+                  }
+                ]
               }
             ]
           },
@@ -2249,13 +3325,13 @@
         "children": [
           {
             "type": "text",
-            "value": "Base58 长度 = 固定字符数，但解码后字节数 ≠ 固定（SHA-256 后通常是 34 字节）"
+            "value": "Base58 长度 = 固定字符数，但解码后字节数 ≠ 固定（SHA-256 后通常是 34 字节）。"
           }
         ]
       },
       {
         "type": "heading",
-        "depth": 3,
+        "depth": 2,
         "children": [
           {
             "type": "text",
@@ -2268,7 +3344,7 @@
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -2280,17 +3356,14 @@
         }
       },
       {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "ASN.1（结构描述） → DER（二进制编码） → PEM（Base64 + 头尾）"
-          }
-        ]
+        "type": "code",
+        "lang": null,
+        "meta": null,
+        "value": "ASN.1（结构描述） → DER（二进制编码） → PEM（Base64 + 头尾）"
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -2306,36 +3379,13 @@
         "children": [
           {
             "type": "text",
-            "value": "证书公钥的哈希值（按指定哈希算法）"
-          }
-        ]
-      },
-      {
-        "type": "list",
-        "ordered": false,
-        "start": null,
-        "spread": false,
-        "children": [
-          {
-            "type": "listItem",
-            "spread": false,
-            "checked": null,
-            "children": []
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "用于证书链追溯"
+            "value": "证书公钥的哈希值（按指定哈希算法），用于证书链追溯。"
           }
         ]
       },
       {
         "type": "heading",
-        "depth": 3,
+        "depth": 2,
         "children": [
           {
             "type": "text",
@@ -2348,7 +3398,7 @@
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -2360,24 +3410,6 @@
         }
       },
       {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "私钥不出机器（HSM）"
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
-          {
-            "type": "text",
-            "value": "使用 keyid 标识私钥/公钥"
-          }
-        ]
-      },
-      {
         "type": "list",
         "ordered": false,
         "start": null,
@@ -2387,22 +3419,55 @@
             "type": "listItem",
             "spread": false,
             "checked": null,
-            "children": []
-          }
-        ]
-      },
-      {
-        "type": "paragraph",
-        "children": [
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "私钥不出机器（HSM）"
+                  }
+                ]
+              }
+            ]
+          },
           {
-            "type": "text",
-            "value": "通过标准接口访问"
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "使用 keyid 标识私钥 / 公钥"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "listItem",
+            "spread": false,
+            "checked": null,
+            "children": [
+              {
+                "type": "paragraph",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "通过标准接口访问"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -2425,11 +3490,21 @@
             "children": [
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "接口"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "说明"
+                  }
+                ]
               }
             ]
           },
@@ -2483,7 +3558,7 @@
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -2496,8 +3571,8 @@
       },
       {
         "type": "list",
-        "ordered": false,
-        "start": null,
+        "ordered": true,
+        "start": 1,
         "spread": false,
         "children": [
           {
@@ -2558,7 +3633,7 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "用 session，keyid 访问对应密钥"
+                    "value": "用 session，以 keyid 访问对应密钥"
                   }
                 ]
               }
@@ -2590,7 +3665,7 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "获取签名/解密结果"
+                    "value": "获取签名 / 解密结果"
                   }
                 ]
               }
@@ -2600,7 +3675,7 @@
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -2653,7 +3728,7 @@
       },
       {
         "type": "heading",
-        "depth": 3,
+        "depth": 2,
         "children": [
           {
             "type": "text",
@@ -2666,7 +3741,7 @@
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -2690,15 +3765,30 @@
             "children": [
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "算法"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "支持情况"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "说明"
+                  }
+                ]
               }
             ]
           },
@@ -2742,7 +3832,7 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "国际椭圆曲线（P-256, K1）"
+                    "value": "国际椭圆曲线（P-256、K1）"
                   }
                 ]
               },
@@ -2790,15 +3880,30 @@
             "children": [
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "密文格式"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "来源"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "说明"
+                  }
+                ]
               }
             ]
           },
@@ -2873,13 +3978,13 @@
         "children": [
           {
             "type": "text",
-            "value": "工程中经常混淆\"C1C3C2 格式\"的密文需注意识别。"
+            "value": "工程中经常混淆「C1C3C2 格式」的密文，需注意识别。"
           }
         ]
       },
       {
         "type": "heading",
-        "depth": 4,
+        "depth": 3,
         "children": [
           {
             "type": "text",
@@ -2903,15 +4008,30 @@
             "children": [
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "算法"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "归属"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "密钥长度"
+                  }
+                ]
               }
             ]
           },
@@ -2941,7 +4061,7 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "128/192/256-bit 密钥"
+                    "value": "128 / 192 / 256-bit"
                   }
                 ]
               }
@@ -2973,7 +4093,7 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "128-bit 密钥，类 AES 结构"
+                    "value": "128-bit，类 AES 结构"
                   }
                 ]
               }
@@ -2983,7 +4103,7 @@
       },
       {
         "type": "heading",
-        "depth": 3,
+        "depth": 2,
         "children": [
           {
             "type": "text",
@@ -3006,11 +4126,21 @@
             "children": [
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "项"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "值"
+                  }
+                ]
               }
             ]
           },
@@ -3077,7 +4207,15 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "65 bytes（0x04 + x + y）"
+                    "value": "65 bytes（"
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "0x04"
+                  },
+                  {
+                    "type": "text",
+                    "value": " + x + y）"
                   }
                 ]
               }
@@ -3099,8 +4237,20 @@
                 "type": "tableCell",
                 "children": [
                   {
+                    "type": "inlineCode",
+                    "value": "0x02"
+                  },
+                  {
                     "type": "text",
-                    "value": "0x02（y 偶）/ 0x03（y 奇）"
+                    "value": "（y 偶）/ "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "0x03"
+                  },
+                  {
+                    "type": "text",
+                    "value": "（y 奇）"
                   }
                 ]
               }
@@ -3169,7 +4319,15 @@
                 "children": [
                   {
                     "type": "text",
-                    "value": "后 20 字节 → 0x + 40 hex 字符"
+                    "value": "后 20 字节 → "
+                  },
+                  {
+                    "type": "inlineCode",
+                    "value": "0x"
+                  },
+                  {
+                    "type": "text",
+                    "value": " + 40 hex 字符"
                   }
                 ]
               }
@@ -3225,7 +4383,7 @@
       },
       {
         "type": "heading",
-        "depth": 3,
+        "depth": 2,
         "children": [
           {
             "type": "text",
@@ -3248,11 +4406,21 @@
             "children": [
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "OID"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "含义"
+                  }
+                ]
               }
             ]
           },
@@ -3352,7 +4520,7 @@
       },
       {
         "type": "heading",
-        "depth": 3,
+        "depth": 2,
         "children": [
           {
             "type": "text",
@@ -3376,15 +4544,30 @@
             "children": [
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "曲线"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "私钥格式"
+                  }
+                ]
               },
               {
                 "type": "tableCell",
-                "children": []
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "说明"
+                  }
+                ]
               }
             ]
           },
@@ -3464,11 +4647,19 @@
         ]
       },
       {
+        "type": "thematicBreak"
+      },
+      {
         "type": "paragraph",
         "children": [
           {
-            "type": "text",
-            "value": "整理版本：v1.0 · 2026-08-18"
+            "type": "emphasis",
+            "children": [
+              {
+                "type": "text",
+                "value": "整理版本：v1.0 · 2026-08-18"
+              }
+            ]
           }
         ]
       }
