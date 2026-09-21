@@ -7,7 +7,8 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "validate": "node scripts/validate.mjs",
-    "dev": "node scripts/build.mjs && node scripts/validate.mjs"
+    "dev": "node scripts/build.mjs && node scripts/validate.mjs",
+    "prepare": "husky"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
@@ -17,5 +18,8 @@
     "remark-parse": "^11.0.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
   }
 }

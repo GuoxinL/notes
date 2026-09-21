@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+set -e
+
+# 仅当 content/ 或 scripts/ 有暂存变更时才重新构建 build/，
+# 避免每次 commit 都因 generatedAt 时间戳产生无谓的 build 噪声 diff。
+changed=$(git diff --cached --name-only -- 'content/' 'scripts/')
+if [ -n "$changed" ]; then
+  echo "[pre-commit] 检测到 content/scripts 变更，重新构建 notes build/ ..."
+  npm run build
+  git add build/
+fi

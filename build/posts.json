@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-21T02:03:47.360Z",
+  "generatedAt": "2026-09-21T10:35:40.068Z",
   "sourceRef": "GuoxinL/notes",
   "toolchain": {
     "node": "24.20.0",
@@ -1078,7 +1078,7 @@
       "slug": "椭圆曲线公私钥应用基础-整理版",
       "title": "椭圆曲线公私钥应用基础-整理版",
       "date": "2026-08-18",
-      "updated": "2026-09-18",
+      "updated": "2026-09-21",
       "description": "整理椭圆曲线的数学基础，以及私钥、公钥、签名、地址的各种编码格式，并给出密码机、SM2 加解密与 libp2p 节点 ID 等实际应用。",
       "tags": [
         "密码学",
