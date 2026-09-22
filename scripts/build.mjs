@@ -74,45 +74,11 @@ function normalizeSeries(fm) {
   return undefined;
 }
 
-// ── 评论容器（方案 Phase 2）：每篇文章对应 GuoxinL/notes 的一个 Issue 作为评论存储 ──
-// token 解析优先级：GITHUB_TOKEN → GH_TOKEN → 本机 gh auth token（用户 owner 登录即具备 notes Issues 写权限）。
-// 返回 '' 表示无可用 token（不建容器，留待 Phase 3 Worker 运行期懒建兜底）。
-async function resolveGitHubToken() {
-  if (process.env.GITHUB_TOKEN) return String(process.env.GITHUB_TOKEN).trim();
-  if (process.env.GH_TOKEN) return String(process.env.GH_TOKEN).trim();
-  try {
-    const t = execFileSync('gh', ['auth', 'token'], { encoding: 'utf8' }).trim();
-    if (t) return t;
-  } catch { /* gh 未登录或不可用 */ }
-  return '';
-}
-
-/** 在 GuoxinL/notes 创建评论容器 Issue，返回 issue_number。失败抛错由调用方记录。 */
-async function createCommentIssue(token, slug, title) {
-  const res = await fetch(`https://api.github.com/repos/${REPO_SLUG}/issues`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github+json',
-      'User-Agent': 'notes-build',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      title,
-      body:
-        `本 Issue 是 guoxin.space /notes 文章「${slug}」的评论容器，由构建脚本自动创建。\n` +
-        `读者经站点使用本站 GitHub 账号登录后，评论将写入此 Issue（经 Cloudflare Worker 代理，token 为读者自身 GitHub access_token）。\n` +
-        `请勿在本 Issue 下手动评论。`,
-      labels: ['comments-container'],
-    }),
-  });
-  if (!res.ok) {
-    const err = await res.text().catch(() => '');
-    throw new Error(`GitHub API ${res.status}: ${err.slice(0, 200)}`);
-  }
-  const data = await res.json();
-  return data.number;
-}
+// ── 评论容器映射（build/comments.json）──
+// slug → issue_number。容器 Issue「不在构建阶段创建」（避免构建脚本产生外部副作用），
+// 改由 Phase 3 Cloudflare Worker 运行期「懒建」：用户首次为某 slug 发评时，
+// Worker 用 GH_TOKEN 创建 Issue 容器，并把 slug→issue_number 经 GitHub Contents API 写回本文件。
+// 构建阶段仅读取既有映射并原样保留（排序后写回），确保运行期写入的映射在重新构建时不丢失。
 
 // ── 自定义 remark 插件 ──
 // [[target|alias]] → wikiLink ; ![[target|alias]] → wikiEmbed
@@ -582,43 +548,18 @@ async function main() {
   seriesOut.sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
   writeFileSync(join(BUILD_DIR, 'series.json'), JSON.stringify(seriesOut, null, 2));
 
-  // ── 评论容器映射（build/comments.json，方案 Phase 2）──
-  // slug → issue_number。默认仅产出/保留映射、不创建 Issue（安全、可重复 build）；
-  // 设 COMMENTS_BUILD_ISSUES=1 且存在可用 GitHub token 时，才为缺失 slug 幂等创建 Issue 容器。
+  // ── 评论容器映射（build/comments.json）──
+  // slug → issue_number。构建阶段不创建 Issue（外部副作用交由 Phase 3 Worker 运行期懒建）；
+  // 此处仅读取既有映射并原样保留，避免重新构建覆盖运行期写入的映射。
   const commentsPath = join(BUILD_DIR, 'comments.json');
   let commentsMap = {};
   try { commentsMap = JSON.parse(readFileSync(commentsPath, 'utf8')); } catch { commentsMap = {}; }
   if (typeof commentsMap !== 'object' || commentsMap === null) commentsMap = {};
-  const wantedSlugs = docs.map(({ doc }) => doc.slug);
-  const missingSlugs = wantedSlugs.filter((s) => !(s in commentsMap));
-  let createdCount = 0;
-  if (process.env.COMMENTS_BUILD_ISSUES === '1' && missingSlugs.length) {
-    const tok = await resolveGitHubToken();
-    if (!tok) {
-      console.warn(`  ⚠ 未配置 GitHub token，跳过建评论容器；以下 ${missingSlugs.length} 篇将由 Phase 3 运行期懒建兜底：`);
-      console.warn('    ' + missingSlugs.join('、'));
-    } else {
-      for (const slug of missingSlugs) {
-        const d = summaryBySlug.get(slug);
-        const title = `评论 · ${d ? d.title : slug}`;
-        try {
-          const num = await createCommentIssue(tok, slug, title);
-          commentsMap[slug] = num;
-          createdCount++;
-          console.log(`  + 建评论容器 #${num} ← ${slug}`);
-        } catch (e) {
-          console.warn(`  ⚠ 建评论容器失败 ${slug}：${e.message}`);
-        }
-      }
-    }
-  } else if (missingSlugs.length) {
-    console.log(`  · comments.json：${wantedSlugs.length - missingSlugs.length} 篇已有映射，${missingSlugs.length} 篇待建（设 COMMENTS_BUILD_ISSUES=1 执行建容器）`);
-  }
   const sortedKeys = Object.keys(commentsMap).sort();
   const sortedMap = {};
   for (const k of sortedKeys) sortedMap[k] = commentsMap[k];
   writeFileSync(commentsPath, JSON.stringify(sortedMap, null, 2) + '\n');
-  console.log(`✓ comments.json：${sortedKeys.length} 条映射（本次新建 ${createdCount}）`);
+  console.log(`✓ comments.json：${sortedKeys.length} 条映射（运行期懒建，构建阶段不创建 Issue）`);
 
   console.log(
     `✓ 构建完成：${docs.length} 篇文章 → build/（posts.json + posts/*.json + all.json + search-index.json + series.json + comments.json）`
