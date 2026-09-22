@@ -3,7 +3,7 @@
  * 校验 build/ 产出严格对齐站点 app/src/lib/notes/types.ts 的 ArticleDoc / PostsIndex 契约。
  * 用法：node scripts/validate.mjs
  */
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { visit } from 'unist-util-visit';
@@ -123,6 +123,29 @@ try {
   }
 } catch (e) {
   fail(`series.json 读取/解析失败: ${e.message}`);
+}
+
+// ── comments.json（方案 Phase 2）：评论容器映射 slug → issue_number ──
+try {
+  const cpath = join(BUILD, 'comments.json');
+  if (!existsSync(cpath)) {
+    console.warn('  ⚠ comments.json 不存在（评论容器尚未产出；Phase 2 build 将生成，或由 Phase 3 运行期懒建）');
+  } else {
+    const cm = JSON.parse(readFileSync(cpath, 'utf8'));
+    if (typeof cm !== 'object' || cm === null || Array.isArray(cm)) fail('comments.json 不是对象');
+    else {
+      const known = new Set(index.posts.map((p) => p.slug));
+      let n = 0;
+      for (const [slug, num] of Object.entries(cm)) {
+        n++;
+        if (typeof num !== 'number' || !Number.isInteger(num) || num <= 0) fail(`comments.json[${slug}] 非法 issue_number: ${num}`);
+        if (!known.has(slug)) console.warn(`  ⚠ comments.json slug="${slug}" 不在 posts.json（孤儿映射）`);
+      }
+      ok(`comments.json 含 ${n} 条映射`);
+    }
+  }
+} catch (e) {
+  fail(`comments.json 读取/解析失败: ${e.message}`);
 }
 
 console.log(errors === 0 ? '\n✓ 全部校验通过' : `\n✗ ${errors} 处校验失败`);
